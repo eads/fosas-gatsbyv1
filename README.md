@@ -11,3 +11,10 @@ gatsby new gatsby-example-site
 ## Deploy
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
+
+## Hacky data processing
+
+```
+cat static/map-data/mx.json | jq '[.objects.states.geometries[] | .properties]' > src/data/mxstates.json
+cat static/map-data/mx.json | jq '[.objects.municipalities.geometries[] | .properties]' > src/data/mxmunicipalities.json
+```

@@ -1,0 +1,130 @@
+[
+  {
+    "state_code": 9,
+    "state_name": "Distrito Federal"
+  },
+  {
+    "state_code": 12,
+    "state_name": "Guerrero"
+  },
+  {
+    "state_code": 15,
+    "state_name": "México"
+  },
+  {
+    "state_code": 17,
+    "state_name": "Morelos"
+  },
+  {
+    "state_code": 25,
+    "state_name": "Sinaloa"
+  },
+  {
+    "state_code": 2,
+    "state_name": "Baja California"
+  },
+  {
+    "state_code": 26,
+    "state_name": "Sonora"
+  },
+  {
+    "state_code": 3,
+    "state_name": "Baja California Sur"
+  },
+  {
+    "state_code": 32,
+    "state_name": "Zacatecas"
+  },
+  {
+    "state_code": 10,
+    "state_name": "Durango"
+  },
+  {
+    "state_code": 8,
+    "state_name": "Chihuahua"
+  },
+  {
+    "state_code": 6,
+    "state_name": "Colima"
+  },
+  {
+    "state_code": 18,
+    "state_name": "Nayarit"
+  },
+  {
+    "state_code": 16,
+    "state_name": "Michoacán de Ocampo"
+  },
+  {
+    "state_code": 14,
+    "state_name": "Jalisco"
+  },
+  {
+    "state_code": 7,
+    "state_name": "Chiapas"
+  },
+  {
+    "state_code": 27,
+    "state_name": "Tabasco"
+  },
+  {
+    "state_code": 20,
+    "state_name": "Oaxaca"
+  },
+  {
+    "state_code": 11,
+    "state_name": "Guanajuato"
+  },
+  {
+    "state_code": 1,
+    "state_name": "Aguascalientes"
+  },
+  {
+    "state_code": 22,
+    "state_name": "Querétaro"
+  },
+  {
+    "state_code": 24,
+    "state_name": "San Luis Potosí"
+  },
+  {
+    "state_code": 29,
+    "state_name": "Tlaxcala"
+  },
+  {
+    "state_code": 21,
+    "state_name": "Puebla"
+  },
+  {
+    "state_code": 13,
+    "state_name": "Hidalgo"
+  },
+  {
+    "state_code": 30,
+    "state_name": "Veracruz de Ignacio de la Llave"
+  },
+  {
+    "state_code": 19,
+    "state_name": "Nuevo León"
+  },
+  {
+    "state_code": 5,
+    "state_name": "Coahuila de Zaragoza"
+  },
+  {
+    "state_code": 28,
+    "state_name": "Tamaulipas"
+  },
+  {
+    "state_code": 31,
+    "state_name": "Yucatán"
+  },
+  {
+    "state_code": 4,
+    "state_name": "Campeche"
+  },
+  {
+    "state_code": 23,
+    "state_name": "Quintana Roo"
+  }
+]

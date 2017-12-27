@@ -1,13 +1,67 @@
 import React from 'react'
-import Link from 'gatsby-link'
-import StateMunicipioMap from '../components/StateMunicipioMap.js'
+import Link from "gatsby-link";
+import * as pym from 'pym.js'
 
+class IndexPage extends React.Component {
 
-const IndexPage = () => (
-  <div>
-    <h1>Hello world</h1>
-    <StateMunicipioMap selected_state={31} />
-  </div>
-)
+  constructor(props) {
+    super(props)
+    this.state = {
+      iframeSrc: '/veracruz-de-ignacio-de-la-llave'
+    }
+  }
+
+  clickPreviewLink(e) {
+    e.preventDefault();
+    this.setState({
+      iframeSrc: e.target.href
+    });
+  }
+
+  createEmbed(src) {
+    return {__html: '<p data-pym-src="' + src + '"></p>'};
+  }
+
+  render() {
+    // Horribly hacky, but that's OK for what we need to do
+    setTimeout(pym.autoInit, 0)
+    return (
+      <div className="preview">
+        <div className="pages">
+          <ul>
+          {this.props.data.allSitePage.edges.map((page, i) => (
+            <li key={'page_' + i}><Link to={page.node.path} onClick={this.clickPreviewLink.bind(this)}>{page.node.path}</Link></li>
+          ))}
+          </ul>
+        </div>
+
+        <div className="switcher">
+          <button>Mobile (480px)</button>
+          <button>Tablet (768px)</button>
+          <button>Content well (1210px)</button>
+          <button>100%</button>
+        </div>
+
+        <div
+          dangerouslySetInnerHTML={this.createEmbed(this.state.iframeSrc)}></div>
+
+        <p>Embed code:</p>
+        <textarea value={'<p data-pym-src="' + this.state.iframeSrc + '">Loading...</p>'} readOnly />
+      </div>
+    )
+  }
+}
 
 export default IndexPage
+
+export const pageQuery = graphql`
+  query AllPages {
+    allSitePage {
+      edges {
+        node {
+          path
+        }
+      }
+    }
+  }
+`

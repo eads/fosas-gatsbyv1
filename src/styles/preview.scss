@@ -1,0 +1,26 @@
+@import "variables";
+
+.preview {
+  * { margin: 0; }
+  background-color: #ccc;
+  min-height: 100vh;
+  padding: 1rem;
+  iframe {
+    width: 500px;
+    border: 4px dashed #777;
+  }
+  .switcher {
+    margin-bottom: 2rem;
+  }
+  .pages {
+    float: right;
+    width: 20%;
+    background-color: #ccc;
+  }
+
+  textarea {
+    width: 100%;
+    max-width: 600px;
+    height: 2rem;
+  }
+}
