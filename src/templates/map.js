@@ -5,6 +5,9 @@ import * as pym from 'pym.js'
 class MapTemplate extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
     this.pymChild = new pym.Child({ polling: 500 });
   }
 

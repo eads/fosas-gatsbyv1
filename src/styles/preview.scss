@@ -2,25 +2,54 @@
 
 .preview {
   * { margin: 0; }
-  background-color: #ccc;
+  background-color: #eee;
   min-height: 100vh;
   padding: 1rem;
+
   iframe {
-    width: 500px;
+    width: 100%;
+    max-width: 800px;
     border: 4px dashed #777;
   }
   .switcher {
     margin-bottom: 2rem;
   }
   .pages {
-    float: right;
-    width: 20%;
-    background-color: #ccc;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 150px;
+    background-color: #fff;
+    padding: 1rem;
+    overflow: scroll;
   }
 
   textarea {
-    width: 100%;
-    max-width: 600px;
-    height: 2rem;
+    width: 100% !important;
+    max-width: 800px;
+    font-size: .9rem;
+    font-family: Courier New, monospace;
+    height: 2.6rem;
+    line-height: 1.5;
+    white-space: pre-line;
+  }
+
+  ul, li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    text-align: left;
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+
+  a {
+    font-size: 0.9rem;
+    color: black;
   }
 }

@@ -24,7 +24,9 @@ class IndexPage extends React.Component {
 
   render() {
     // Horribly hacky, but that's OK for what we need to do
-    setTimeout(pym.autoInit, 0)
+    if (typeof window != 'undefined') {
+      setTimeout(pym.autoInit, 0)
+    }
     return (
       <div className="preview">
         <div className="pages">
@@ -46,7 +48,8 @@ class IndexPage extends React.Component {
           dangerouslySetInnerHTML={this.createEmbed(this.state.iframeSrc)}></div>
 
         <p>Embed code:</p>
-        <textarea value={'<p data-pym-src="' + this.state.iframeSrc + '">Loading...</p>'} readOnly />
+        <textarea value={'<p data-pym-src="' + this.state.iframeSrc + '">Loading...</p>\n\
+          <script type="text/javascript" src="https://pym.nprapps.org/pym-loader.v1.min.js"></script>'} readOnly />
       </div>
     )
   }
