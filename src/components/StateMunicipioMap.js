@@ -3,6 +3,7 @@ import axios from 'axios';
 import slugify from 'slugify';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { navigateTo } from "gatsby-link"
+import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl";
 
 import * as _ from 'lodash';
 import * as d3Lib from 'd3';
@@ -16,15 +17,20 @@ const data = [
   {name: '2016', uv: 2800, pv: 2600, amt: 2000},
 ];
 
+const Map = ReactMapboxGl({
+  accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
+  minZoom: 5.1,
+  maxZoom: 7.9,
+});
+
 const d3 = Object.assign({}, d3Lib, d3ScaleChromatic);
 
 class StateMunicipioMap extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mxTopoJson: null,
       selectedState: props.selectedState,
-      selectedYear: 'y2013',
+      selectedYear: '2013',
       width: 0,
       height: 0
     }
@@ -41,30 +47,30 @@ class StateMunicipioMap extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/map-data/mx.json')
-      .then(res => {
-        window.addEventListener("resize", this.updateDimensions.bind(this));
-        var mx = res.data;
-        mx.objects.municipalities.geometries.map(function(o) {
-          var rand = Math.floor(2 + Math.random() * 5);
-          o.properties.years = {
-            'y2013': rand,
-            'y2014': rand - Math.round(Math.random() + 1),
-            'y2015': rand,
-            'y2016': rand + Math.round(Math.random())
-          };
-        });
-        this.color = d3.scaleThreshold()
-            .domain(d3.range(2, 20))
-            .range(d3.schemeOrRd[9]),
-        this.projection = d3.geoMercator();
-        this.path = d3.geoPath(this.projection);
-        this.municipalities = topojson.feature(mx, mx.objects.municipalities);
-        this.states = topojson.feature(mx, mx.objects.states);
-        this.setState({
-          mxTopoJson: mx
-        }, this.updateDimensions.bind(this));
-      });
+    //axios.get('/map-data/mx.json')
+      //.then(res => {
+        //window.addEventListener("resize", this.updateDimensions.bind(this));
+        //var mx = res.data;
+        //mx.objects.municipalities.geometries.map(function(o) {
+          //var rand = Math.floor(2 + Math.random() * 5);
+          //o.properties.years = {
+            //'y2013': rand,
+            //'y2014': rand - Math.round(Math.random() + 1),
+            //'y2015': rand,
+            //'y2016': rand + Math.round(Math.random())
+          //};
+        //});
+        //this.color = d3.scaleThreshold()
+            //.domain(d3.range(2, 20))
+            //.range(d3.schemeOrRd[9]),
+        //this.projection = d3.geoMercator();
+        //this.path = d3.geoPath(this.projection);
+        //this.municipalities = topojson.feature(mx, mx.objects.municipalities);
+        //this.states = topojson.feature(mx, mx.objects.states);
+        //this.setState({
+          //mxTopoJson: mx
+        //}, this.updateDimensions.bind(this));
+      //});
   }
 
   onStateClick(state) {
@@ -83,98 +89,50 @@ class StateMunicipioMap extends React.Component {
     });
   }
 
+  tilesetLoaded(source) {
+    console.log(source);
+  }
+
   render() {
-    if (!this.state.mxTopoJson) return <div>loading</div>;
-
-    var selectedState = this.state.selectedState;
-    var color = this.color;
-    var path = this.path;
-    var onChange = this.onChange.bind(this);
-
-    var theState = _.filter(this.state.mxTopoJson.objects.states.geometries, function(o) {
-      return o.properties.state_code == selectedState;
-    });
-
-    var focusedState = topojson.feature(this.state.mxTopoJson, {type:"GeometryCollection", geometries: theState});
-    this.projection.fitExtent([
-        [this.state.width * 0.2, this.state.height * 0.2],
-        [this.state.width * 0.8, this.state.height * 0.8]
-      ], focusedState);
-
-
-    var features = _.sortBy(this.municipalities.features, [function(o) { return o.properties.state_code == selectedState }]  ); // Use Lodash to sort array by 'name'
-    var stateFeatures = this.states.features;
-
-    var selectedYear = this.state.selectedYear;
+    var property = this.state.selectedYear + '_fosas';
 
     return <div className="container">
-      <div className="controls">
-        <h1>
-          {theState[0].properties.state_name}
-        </h1>
-        <p>
-          Selected year: {selectedYear.slice(1)} 
-          <input type="range" min="2013" max="2016" step="1" value={parseInt(selectedYear.slice(1))} onChange={onChange} />
-        </p>
-      </div>
-
-      <div className="chart-wrapper">
-        <ResponsiveContainer aspect={3}>
-          <BarChart data={data} stackOffset="sign">
-           <XAxis dataKey="name" />
-           <Bar dataKey="pv" fill="#999999" />
-           <Bar dataKey="uv" fill="#aa3333" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="municipio-map-wrapper" ref={(el) => { this.wrapperEl = el; }}>
-        <div className="municipio-map">
-          <svg className="map" width={this.state.width} height={this.state.height}>
-            <g>{
-              stateFeatures.map((state, i) => {
-                var onStateClick = this.onStateClick.bind(this, state);
-                  return <path
-                      stroke="#ffffff"
-                      strokeWidth="1.5"
-                      key={'state_' + i}
-                      d={path(state)}
-                      style={{fill: "#dddddd"}}
-                      onClick={onStateClick}
-                    />
-              })
-            }</g>
-            <g>{
-              features.map(function(municipality, i) {
-                if (municipality.properties.state_code == selectedState) {
-                  var assignedColor = color(municipality.properties.years[selectedYear]).substr(1);
-                  return <path
-                      stroke="#FC8259"
-                      strokeWidth="1"
-                      key={'municipality_' + i}
-                      d={path(municipality)}
-                      style={{fill: assignedColor}}
-                    />
-                }
-              })
-            }</g>
-            <g>{
-              stateFeatures.map((state, i) => {
-                var onStateClick = this.onStateClick.bind(this, state);
-                return <text
-                    key={'state_' + i}
-                    x={path.centroid(state)[0]}
-                    y={path.centroid(state)[1]}
-                    className="map-label"
-                    onClick={onStateClick}
-                  >
-                    {state.properties.state_name}
-                  </text>
-              })
-            }</g>
-          </svg>
-        </div>
-      </div>
+      <h1>Map</h1>
+      <Map
+        style="mapbox://styles/davideads/cjbr9vxjd7ssv2spp4n4w39nh"
+        containerStyle={{
+          height: "95vh",
+          width: "65vw"
+        }}
+        center={[-103.401254, 23.568096]}
+        zoom={[5]}
+      >
+        <Source
+          id="MxMunicipalities"
+          tileJsonSource={
+            {type: 'vector', url: 'mapbox://davideads.7hc85ep1' }
+          }
+          onSourceLoaded={this.tilesetLoaded.bind(this)}
+        />
+        <Layer
+          id="wtf"
+          sourceId="MxMunicipalities"
+          sourceLayer="mx-geojson-8a95ky"
+          type="fill"
+          before="waterway-label"
+          paint={{
+              'fill-color': {
+                  property: property,
+                  stops: [
+                      [0, '#ffffff'],
+                      [50, '#555555']
+                  ]
+              },
+              'fill-opacity': 0.2
+          }}
+        />
+        <ZoomControl />
+      </Map>
     </div>
   }
 }
