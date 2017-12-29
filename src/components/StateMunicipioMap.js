@@ -3,7 +3,7 @@ import axios from 'axios';
 import slugify from 'slugify';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { navigateTo } from "gatsby-link"
-import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl";
+import ReactMapboxGl, { Source, Layer, ZoomControl, GeoJSONLayer }  from "react-mapbox-gl";
 
 import * as _ from 'lodash';
 import * as d3Lib from 'd3';
@@ -30,9 +30,11 @@ class StateMunicipioMap extends React.Component {
     super(props);
     this.state = {
       selectedState: props.selectedState,
-      selectedYear: '2013',
+      selectedYear: '2006',
       width: 0,
-      height: 0
+      height: 0,
+      mapCenter: [-103.401254, 23.568096],
+      mapZoom: 5
     }
   }
 
@@ -85,12 +87,17 @@ class StateMunicipioMap extends React.Component {
 
   onChange(e) {
     this.setState({
-      selectedYear: 'y' + e.target.value
+      selectedYear: parseInt(e.target.value),
+      center: this.mapbox.state.map.getCenter(),
+      mapZoom: this.mapbox.state.map.getZoom()
     });
   }
 
   tilesetLoaded(source) {
-    console.log(source);
+    //console.log(Map);
+    //console.log(source);
+    //console.log(arguments);
+    //debugger;
   }
 
   render() {
@@ -98,14 +105,21 @@ class StateMunicipioMap extends React.Component {
 
     return <div className="container">
       <h1>Map</h1>
+      <p>
+        Selected year: {this.state.selectedYear}
+        <input type="range" min="2006" max="2016" step="1" value={this.state.selectedYear} onChange={this.onChange.bind(this)} />
+      </p>
+
+
       <Map
-        style="mapbox://styles/davideads/cjbr9vxjd7ssv2spp4n4w39nh"
+        style="mapbox://styles/davideads/cjbrhq8dz8r4l2spcryp96h6q"
         containerStyle={{
           height: "95vh",
           width: "65vw"
         }}
-        center={[-103.401254, 23.568096]}
-        zoom={[5]}
+        center={this.state.mapCenter}
+        zoom={[this.state.mapZoom]}
+        ref={(mapbox) => { this.mapbox = mapbox; }}
       >
         <Source
           id="MxMunicipalities"
@@ -120,7 +134,22 @@ class StateMunicipioMap extends React.Component {
           sourceLayer="mx-geojson-8a95ky"
           type="fill"
           before="waterway-label"
+          filter={['==', 'state_code', 10]}
           paint={{
+              'fill-color': {
+                  property: property,
+                  stops: [
+                      [0, '#ffffff'],
+                      [60, '#ff0000']
+                  ]
+              },
+              'fill-opacity': 0.4
+          }}
+        />
+        {/*
+        <GeoJSONLayer
+          data='/map-data/mx-geojson-merged.json'
+          fillPaint={{
               'fill-color': {
                   property: property,
                   stops: [
@@ -131,6 +160,7 @@ class StateMunicipioMap extends React.Component {
               'fill-opacity': 0.2
           }}
         />
+        */}
         <ZoomControl />
       </Map>
     </div>

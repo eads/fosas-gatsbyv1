@@ -7,6 +7,13 @@ def merge_data():
         for feature in data['features']:
             mun_code = feature['properties'].get('mun_code')
             if mun_code:
+                feature['properties']['2006_fosas'] = random.randint(0, 50)
+                feature['properties']['2007_fosas'] = random.randint(0, 50)
+                feature['properties']['2008_fosas'] = random.randint(0, 50)
+                feature['properties']['2009_fosas'] = random.randint(0, 50)
+                feature['properties']['2010_fosas'] = random.randint(0, 50)
+                feature['properties']['2011_fosas'] = random.randint(0, 50)
+                feature['properties']['2012_fosas'] = random.randint(0, 50)
                 feature['properties']['2013_fosas'] = random.randint(0, 50)
                 feature['properties']['2014_fosas'] = random.randint(0, 50)
                 feature['properties']['2015_fosas'] = random.randint(0, 50)
