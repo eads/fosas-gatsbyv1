@@ -21,36 +21,22 @@ body {
   padding-top: 60%;
   position: relative;
   background-color: #73BEEB;
-}
-
-.map {
-  width: 100%;
-  path {
-    transition: fill 0.4s ease-in-out;
-    fill: #e1e1e1;
-  }
-  .map-label {
-    fill: #444444;
-    paint-order: stroke;
-    stroke: rgba(255, 255, 255, 0.7);
-    stroke-width: 2px;
-    stroke-linecap: butt;
-    stroke-linejoin: miter;
-    font-size: 0.7rem;
-    text-transform: uppercase;
+  .municipio-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 }
 
-.municipio-map {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+h1 {
+  font-size: 1.5rem;
 }
 
 .controls {
   font-size: 1rem;
+  padding: 1.5rem 0;
 }
 
 .chart-wrapper {

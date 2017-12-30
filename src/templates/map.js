@@ -13,7 +13,7 @@ class MapTemplate extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <StateMunicipioMap selectedState={this.props.data.mxmunicipalitiesJson.state_code}/>
       </div>
     )

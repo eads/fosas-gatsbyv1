@@ -1,25 +1,49 @@
 import json
 import random
+import pandas as pd
+import numpy as np
 
 def merge_data():
-    with open('mx-geojson.json') as f:
-        data = json.load(f)
-        for feature in data['features']:
-            mun_code = feature['properties'].get('mun_code')
-            if mun_code:
-                feature['properties']['2006_fosas'] = random.randint(0, 50)
-                feature['properties']['2007_fosas'] = random.randint(0, 50)
-                feature['properties']['2008_fosas'] = random.randint(0, 50)
-                feature['properties']['2009_fosas'] = random.randint(0, 50)
-                feature['properties']['2010_fosas'] = random.randint(0, 50)
-                feature['properties']['2011_fosas'] = random.randint(0, 50)
-                feature['properties']['2012_fosas'] = random.randint(0, 50)
-                feature['properties']['2013_fosas'] = random.randint(0, 50)
-                feature['properties']['2014_fosas'] = random.randint(0, 50)
-                feature['properties']['2015_fosas'] = random.randint(0, 50)
-                feature['properties']['2016_fosas'] = random.randint(0, 50)
+    lookup = {}
 
-    with open('mx-geojson-merged.json', 'w') as f:
+    with open("mapas-data-concentrado.xlsx", "rb") as f:
+        dfs = pd.read_excel(f, sheet_name=None)
+
+    for sheetname, df in dfs.items():
+        state_code = int(sheetname.split(' ')[0])
+        pivot = pd.pivot_table(df, index=["municipio_code", "year"], fill_value=0, aggfunc=np.sum, values=["num_cuerpos", "num_fosas"])
+
+        pivot_dict = pivot.reset_index().to_dict("records")
+
+        final_dict = {}
+        for row in pivot_dict:
+            if not final_dict.get(row['municipio_code']):
+                final_dict[row['municipio_code']] = {}
+
+            try:
+                final_dict[row['municipio_code']][int(row['year'])] = {
+                    'num_cuerpos': int(row.get('num_cuerpos', 0)),
+                    'num_fosas': int(row.get('num_fosas', 0)),
+                }
+            except ValueError:
+                print(sheetname)
+
+        lookup[state_code] = final_dict
+
+    with open('mx.json') as f:
+        data = json.load(f)
+        for feature in data['objects']['municipalities']['geometries']:
+            state_code = feature['properties']['state_code']
+            mun_code = feature['properties']['mun_code']
+            mun_data = lookup[state_code].get(mun_code)
+            for year in range(2006, 2017):
+                if mun_data and mun_data.get(year):
+                    print(mun_data[year].get('num_fosas'))
+                    feature['properties'][str(year) + '_fosas'] = mun_data[year].get('num_fosas')
+                else:
+                    feature['properties'][str(year) + '_fosas'] = 0
+
+    with open('../static/map-data/mx-topojson-merged.json', 'w') as f:
         json.dump(data, f)
 
 if __name__ == '__main__':
