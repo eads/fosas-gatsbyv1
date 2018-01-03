@@ -59,7 +59,9 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query AllPages {
-    allSitePage {
+    allSitePage (
+      sort: { order: ASC, fields: [path] }
+    ) {
       edges {
         node {
           path

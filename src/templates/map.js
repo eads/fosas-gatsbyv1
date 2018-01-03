@@ -14,7 +14,7 @@ class MapTemplate extends React.Component {
   render() {
     return (
       <div className="container">
-        <StateMunicipioMap selectedState={this.props.data.mxmunicipalitiesJson.state_code}/>
+        <StateMunicipioMap selectedState={this.props.data.mxstatesJson.state_code} stateName={this.props.data.mxstatesJson.state_name}/>
       </div>
     )
   }
@@ -24,10 +24,9 @@ export default MapTemplate
 
 export const pageQuery = graphql`
   query StateByCode($state_code: Int!) {
-    mxmunicipalitiesJson(state_code: { eq: $state_code } ) {
+    mxstatesJson(state_code: { eq: $state_code } ) {
       state_code
-      mun_name
-      mun_code
+      state_name
     }
   }
 `

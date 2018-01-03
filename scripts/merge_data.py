@@ -33,15 +33,18 @@ def merge_data():
     with open('mx.json') as f:
         data = json.load(f)
         for feature in data['objects']['municipalities']['geometries']:
+            total_fosas = 0
             state_code = feature['properties']['state_code']
             mun_code = feature['properties']['mun_code']
             mun_data = lookup[state_code].get(mun_code)
             for year in range(2006, 2017):
                 if mun_data and mun_data.get(year):
-                    print(mun_data[year].get('num_fosas'))
                     feature['properties'][str(year) + '_fosas'] = mun_data[year].get('num_fosas')
+                    total_fosas += mun_data[year].get('num_fosas')
                 else:
                     feature['properties'][str(year) + '_fosas'] = 0
+
+            feature['properties']['total_fosas'] = total_fosas
 
     with open('../static/map-data/mx-topojson-merged.json', 'w') as f:
         json.dump(data, f)

@@ -15,6 +15,6 @@ gatsby new gatsby-example-site
 ## Hacky data processing
 
 ```
-cat static/map-data/mx.json | jq '[.objects.states.geometries[] | .properties]' > src/data/mxstates.json
-cat static/map-data/mx.json | jq '[.objects.municipalities.geometries[] | .properties]' > src/data/mxmunicipalities.json
+cat scripts/mx.json | jq '[.objects.states.geometries[] | .properties]' > src/data/mxstates.json
+cat scripts/mx.json | jq '[.objects.municipalities.geometries[] | .properties]' > src/data/mxmunicipalities.json
 ```
