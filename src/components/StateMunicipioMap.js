@@ -11,15 +11,17 @@ import * as _ from 'lodash';
 import * as topojson from 'topojson-client';
 
 
-const Map = ReactMapboxGl({
-  accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
-  minZoom: 4,
-  maxZoom: 7.9,
-});
-
 class StateMunicipioMap extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
+    if (typeof window === `undefined`) { return null }
+
+    this.Map = ReactMapboxGl({
+      accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
+      minZoom: 4,
+      maxZoom: 7.9,
+    })
+
     this.state = {
       selectedState: props.selectedState,
       selectedStateName: '',
@@ -105,12 +107,13 @@ class StateMunicipioMap extends React.Component {
     });
   }
 
-
-
   render() {
-    var property = this.state.showYear ? this.state.selectedYear + '_' + this.state.selectedProp : 'total_' + this.state.selectedProp;
-    var setMapProp = this.setMapProp.bind(this);
-    var setMapYearStatus = this.setMapYearStatus.bind(this);
+    if (typeof window === `undefined`) { return null; }
+
+    var property = this.state.showYear ? this.state.selectedYear + '_' + this.state.selectedProp : 'total_' + this.state.selectedProp
+    var setMapProp = this.setMapProp.bind(this)
+    var setMapYearStatus = this.setMapYearStatus.bind(this)
+    var Map = this.Map
 
     return <div>
       <div className="state-details">

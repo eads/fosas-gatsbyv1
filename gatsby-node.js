@@ -12,6 +12,12 @@ exports.modifyWebpackConfig = ({ config, stage }) => {
     node: { fs: 'empty', child_process: 'empty', pym: 'empty' },
     module: { noParse: /(mapbox-gl)\.js$/ },
   })
+  if (stage === "build-html") {
+    config.loader("null", {
+      test: /(mapbox-gl)\.js$/,
+      loader: "null-loader",
+    });
+  }
   return config
 }
 
