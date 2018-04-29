@@ -10,6 +10,7 @@ exports.modifyWebpackConfig = ({ config, stage }) => {
   // Fix for D3
   config.merge({
     node: { fs: 'empty', child_process: 'empty', pym: 'empty' },
+    module: { noParse: /(mapbox-gl)\.js$/ },
   })
   return config
 }

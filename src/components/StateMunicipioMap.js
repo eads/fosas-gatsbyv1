@@ -82,9 +82,8 @@ class StateMunicipioMap extends React.Component {
 
   onSelectorChange(e) {
     this.setState({
+      showYear: true,
       selectedYear: parseInt(e.target.value),
-
-      // If not specified, map inherits initial center and zoom level
       center: this.mapbox.state.map.getCenter(),
       mapZoom: this.mapbox.state.map.getZoom(),
     });
@@ -183,64 +182,76 @@ class StateMunicipioMap extends React.Component {
           </Map>
         </div>
       </div>
-      <div className="controls">
-        <RadioGroup
-          name="select-prop"
-          className="prop-selector"
-          selectedValue={this.state.selectedProp}
-          onChange={setMapProp}>
 
+      <RadioGroup
+        name="select-prop"
+        className="prop-selector controls"
+        selectedValue={this.state.selectedProp}
+        onChange={setMapProp}>
+
+        <div>
           <Radio value="num_fosas" id="num_fosas" />
           <label htmlFor="num_fosas">
             Fosas
           </label>
+        </div>
 
+        <div>
           <Radio value="num_cuerpos" id="num_cuerpos" />
           <label htmlFor="num_cuerpos">
             Cuerpos
           </label>
+        </div>
 
+        <div>
           <Radio value="num_cuerpos_identificados" id="num_cuerpos_identificados" />
           <label htmlFor="num_cuerpos_identificados">
             Cuerpos Identificados
           </label>
+        </div>
 
+        <div>
           <Radio value="num_restos" id="num_restos" />
           <label htmlFor="num_restos">
             Restos
           </label>
+        </div>
 
-        </RadioGroup>
-      </div>
-      <div className="controls">
+      </RadioGroup>
 
-        <RadioGroup
-          name="select-year-status"
-          className="year-status-selector"
-          selectedValue={this.state.showYear ? 'on' : 'off'}
-          onChange={setMapYearStatus}>
+      <RadioGroup
+        name="select-year-status"
+        className="year-status-selector controls"
+        selectedValue={this.state.showYear ? 'on' : 'off'}
+        onChange={setMapYearStatus}>
 
-          <div>
-            <Radio value="off" id="select-year-status-off" />
-            <label htmlFor="select-year-status-off">
-              Todos años
-            </label>
-          </div>
+        <div>
+          <Radio value="off" id="select-year-status-off" />
+          <label htmlFor="select-year-status-off">
+            Todos años
+          </label>
+        </div>
 
-          <div>
-            <Radio value="on" id="select-year-status-on" />
-            <label htmlFor="select-year-status-on" className={this.state.showYear ? 'enabled' : 'disabled'}>
-              Select año
-              <span className="year-slider">
-                Selected year: {this.state.selectedYear}
-                <input type="range" min="2006" max="2016" step="1" value={this.state.selectedYear} onChange={this.onSelectorChange.bind(this)}
-                  disabled={this.state.showYear ? false : true}
-                />
-              </span>
-            </label>
-          </div>
-        </RadioGroup>
-      </div>
+        <div>
+          <Radio value="on" id="select-year-status-on" />
+          <label htmlFor="select-year-status-on" className={this.state.showYear ? 'enabled' : 'disabled'}>
+            Select año
+            <div className="year-slider">
+              <span>2006</span>
+              <input 
+                type="range"
+                min="2006"
+                max="2016"
+                step="1"
+                value={this.state.selectedYear}
+                onChange={this.onSelectorChange.bind(this)}
+              />
+              <span>2016</span>
+              <strong> {this.state.selectedYear}</strong>
+            </div>
+          </label>
+        </div>
+      </RadioGroup>
     </div>
   }
 }
