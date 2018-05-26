@@ -1,7 +1,12 @@
+# import geojson
 import json
-import random
 import pandas as pd
 import numpy as np
+import codecs
+
+from shapely.geometry import mapping, shape
+from pprint import pprint
+from copy import deepcopy
 
 PROPS = ['num_fosas',
          'num_cuerpos',
@@ -12,7 +17,7 @@ PROPS = ['num_fosas',
 def merge_data():
     lookup = {}
 
-    with open("mapas-data-concentrado.xlsx", "rb") as f:
+    with open("data/mapas-data-concentrado.xlsx", "rb") as f:
         dfs = pd.read_excel(f, sheet_name=None)
 
     for sheetname, df in dfs.items():
@@ -33,13 +38,23 @@ def merge_data():
 
         lookup[state_code] = final_dict
 
-    with open('mx.json') as f:
+    maxes = {prop: 0 for prop in PROPS}
+    centers = {
+        'type': 'FeatureCollection',
+        'name': 'municipalescentroids',
+        'features': [],
+    }
+    with codecs.open('data/municipalities.geojson', encoding='utf-8', errors="ignore") as f:
         data = json.load(f)
-        for feature in data['objects']['municipalities']['geometries']:
+        for feature in data['features']:
+
             totals = dict((prop, 0) for prop in PROPS)
-            state_code = feature['properties']['state_code']
-            mun_code = feature['properties']['mun_code']
+            state_code = int(feature['properties']['CVE_ENT'])
+            mun_code = int(feature['properties']['CVE_MUN'])
             mun_data = lookup[state_code].get(mun_code)
+
+            feature['properties']['fosasData'] = mun_data
+
             for prop in PROPS:
                 for year in range(2006, 2017):
                     if mun_data and mun_data.get(year) and mun_data[year].get(prop, 0) > 1:
@@ -52,9 +67,25 @@ def merge_data():
 
             for prop in PROPS:
                 feature['properties']['total_' + prop] = totals[prop]
+                if totals[prop] > maxes[prop]:
+                    maxes[prop] = totals[prop]
 
-    with open('../static/map-data/mx-topojson-merged.json', 'w') as f:
+            try:
+                shp = shape(feature['geometry'])
+                feature_centroid = mapping(shp.representative_point())
+                center_feature = deepcopy(feature)
+                center_feature['geometry'] = feature_centroid
+                centers['features'].append(center_feature)
+            except:
+                print('encountered one')
+
+    with open('data/municipales-fosas.geojson', 'w') as f:
         json.dump(data, f)
+
+    with open('data/municipales-fosas-centroids.geojson', 'w') as f:
+        json.dump(centers, f)
+
+    pprint(maxes)
 
 if __name__ == '__main__':
     merge_data()
