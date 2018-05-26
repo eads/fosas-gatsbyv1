@@ -23,7 +23,7 @@ class MapTemplate extends React.Component {
 export default MapTemplate
 
 export const pageQuery = graphql`
-  query StateByCode($state_code: Int!) {
+  query StateByCode($state_code: String!) {
     mxstatesJson(state_code: { eq: $state_code } ) {
       state_code
       state_name

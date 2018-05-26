@@ -54,7 +54,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           path: slug,
           component: path.resolve(`./src/templates/map.js`),
           context: {
-            // Data passed to context s available in page queries as GraphQL variables.
+            // Data passed to context available in page queries as GraphQL variables.
             state_code: node.state_code,
           },
         })

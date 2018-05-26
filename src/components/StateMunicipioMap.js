@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMapboxGl, { Source, Layer, ZoomControl, GeoJSONLayer }  from "react-mapbox-gl";
+import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl";
 import axios from 'axios';
 import bbox from '@turf/bbox';
 import slugify from 'slugify';
@@ -24,237 +24,159 @@ class StateMunicipioMap extends React.Component {
 
     this.state = {
       selectedState: props.selectedState,
-      selectedStateName: '',
-      selectedProp: 'num_fosas',
-      selectedYear: '2006',
-      showYear: false,
+      selectedStateName: props.selectedStateName,
       mapCenter: [-103.401254, 23.568096],
-      mapZoom: 5,
-      mxAllMunicipalities: null,
-      mxAllStates: null,
-      mxMunicipalities: null,
-      mxStates: null,
+      mapZoom: 6,
+      municipalesData: [],
     }
+
   }
 
-  filterMunicipalitiesByState(muniFeatures, stateCode) {
-    return {
-      features: _.filter(muniFeatures.features, (f) => { return f.properties.state_code == stateCode }),
-      type: 'FeatureCollection'
+  onData = (map, data) => {
+    if (data.sourceId == "municipales" && data.isSourceLoaded) {
+      var features = map.querySourceFeatures("municipales", {
+          sourceLayer: "municipalitiesfosas",
+          filter: ["==", "CVE_ENT", this.state.selectedState],
+      })
+      var sorted = features.sort((a, b) => parseInt(a.properties.total_num_fosas) > parseInt(b.properties.total_num_fosas)).reverse()
+      console.log(sorted)
+      this.setState({
+        municipalesData: sorted
+      })
     }
-  }
-
-  filterState(stateFeatures, stateCode) {
-    return {
-      features: _.filter(stateFeatures.features, (f) => { return f.properties.state_code == stateCode }),
-      type: 'FeatureCollection'
-    }
-  }
-
-  selectState(stateCode) {
-    var activeState = this.filterState(this.state.mxAllStates, stateCode);
-    var stateBbox = bbox(transformScale(activeState, 1.2));
-    this.mapbox.state.map.fitBounds(stateBbox);
-
-    var munis = this.filterMunicipalitiesByState(this.state.mxAllMunicipalities, stateCode);
-
-    this.setState({
-      selectedState: stateCode,
-      selectedStateName: activeState.features[0].properties.state_name,
-      mxMunicipalities: munis,
-      center: this.mapbox.state.map.getCenter(),
-      mapZoom: this.mapbox.state.map.getZoom(),
-    });
-  }
-
-  componentDidMount() {
-    axios.get('/map-data/mx-topojson-merged.json')
-      .then(res => {
-        var mx = res.data;
-        this.setState({
-          mxAllMunicipalities: topojson.feature(mx, mx.objects.municipalities),
-          mxAllStates: topojson.feature(mx, mx.objects.states)
-        }, this.selectState.bind(this, this.state.selectedState));
-      });
-  }
-
-  onStateClick(e) {
-    this.selectState(e.features[0].properties.state_code)
-  }
-
-  onSelectorChange(e) {
-    this.setState({
-      showYear: true,
-      selectedYear: parseInt(e.target.value),
-      center: this.mapbox.state.map.getCenter(),
-      mapZoom: this.mapbox.state.map.getZoom(),
-    });
-  }
-
-  setMapProp(value) {
-    this.setState({
-      selectedProp: value,
-      center: this.mapbox.state.map.getCenter(),
-      mapZoom: this.mapbox.state.map.getZoom(),
-    });
-  }
-
-  setMapYearStatus(value) {
-    this.setState({
-      showYear: value == 'on' ? true : false,
-      center: this.mapbox.state.map.getCenter(),
-      mapZoom: this.mapbox.state.map.getZoom(),
-    });
   }
 
   render() {
     if (typeof window === `undefined`) { return null; }
-
-    var property = this.state.showYear ? this.state.selectedYear + '_' + this.state.selectedProp : 'total_' + this.state.selectedProp
-    var setMapProp = this.setMapProp.bind(this)
-    var setMapYearStatus = this.setMapYearStatus.bind(this)
-    var Map = this.Map
+    const { Map } = this
+    console.log(this.state)
 
     return <div>
+
       <div className="state-details">
         <h1>{this.state.selectedStateName}</h1>
       </div>
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjbrhq8dz8r4l2spcryp96h6q"
+            style="mapbox://styles/davideads/cjhfdld1208y82so2rhup98zc"
             center={this.state.mapCenter}
             zoom={[this.state.mapZoom]}
             containerStyle={{
               height: "100%",
               width: "100%"
             }}
+            onData={this.onData}
             ref={(mapbox) => { this.mapbox = mapbox; }}
           >
-            {this.state.mxMunicipalities &&
-            <div>
-              <GeoJSONLayer
-                id="all-states"
-                data={this.state.mxAllStates}
-                before='waterway-label'
-                fillPaint={{
-                    'fill-color': 'rgba(255, 255, 255, 0.15)',
-                    'fill-opacity': 1
-                }}
-                fillOnClick={this.onStateClick.bind(this)}
-              />
-              <GeoJSONLayer
-                id="muni-choropleth"
-                data={this.state.mxMunicipalities}
-                before='waterway-label'
-                fillPaint={{
-                    'fill-color': {
-                        property: property,
-                        stops: [
-                          [-1, 'rgba(255, 255, 255, 0.1)'],
-                          [0, 'rgba(255, 255, 255, 0.25)'],
-                          [5, '#EED322'],
-                          [10, '#E6B71E'],
-                          [15, '#DA9C20'],
-                          [20, '#CA8323'],
-                          [25, '#B86B25'],
-                          [30, '#A25626'],
-                          [60, '#8B4225'],
-                          [90, '#723122']
-                        ]
-                    },
-                    'fill-opacity': 1
-                }}
-              />
-              <GeoJSONLayer
-                id="muni-lines"
-                data={this.state.mxMunicipalities}
-                before='waterway-label'
-                linePaint={{
-                  'line-color': '#ffffff',
-                  'line-width': 0.1,
-                  'line-opacity': 0.25,
-                }}
-                layerOptions={{
-                  minzoom: 4.5
-                }}
-              />
-            </div>
-            }
+            <Source
+              id="centroids"
+              tileJsonSource={{
+                'type': 'vector',
+                'url': 'mapbox://davideads.4id9ndop'
+              }}
+            />
+
+            <Source
+              id="municipales"
+              tileJsonSource={{
+                'type': 'vector',
+                'url': 'mapbox://davideads.9qk2tt17'
+              }}
+            />
+
+            <Layer
+              id="municipioFillLayer"
+              sourceId="municipales"
+              sourceLayer="municipalitiesfosas"
+              before="place-city-md-s"
+
+              filter={["==", "CVE_ENT", this.state.selectedState]}
+
+              type='fill'
+              paint={{
+                'fill-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'total_num_fosas'],
+                    0, 'rgba(255, 255, 255, 0)',
+                    5, 'rgba(255, 255, 255, .4)',
+                    20, 'rgba(255, 255, 255, .5)',
+                    50, 'rgba(255, 255, 255, .6)',
+                    75, 'rgba(255, 255, 255, .7)',
+                ],
+              }}
+
+              minZoom={6.5}
+            />
+
+            <Layer
+              id="municipioOutlineLayer"
+              sourceId="municipales"
+              sourceLayer="municipalitiesfosas"
+              before="place-city-md-s"
+
+              filter={["==", "CVE_ENT", this.state.selectedState]}
+
+              type='line'
+              paint={{
+                'line-color': '#555',
+                'line-width': 0.5,
+              }}
+            />
+
+            <Layer
+              id="centroidLayer"
+              sourceId="centroids"
+              sourceLayer="municipales-fosas-centroids-8ldfwu"
+              before="place-city-md-s"
+
+              filter={["==", "CVE_ENT", this.state.selectedState]}
+
+              type='circle'
+              paint={{
+                'circle-radius': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', 'total_num_fosas'],
+                    0, 0,
+                    5, 10,
+                    20, 15,
+                    50, 25,
+                    75, 30,
+                ],
+                'circle-color': '#fff',
+                'circle-opacity': 0.6,
+                'circle-stroke-width': 0.5,
+                'circle-stroke-color': '#000'
+              }}
+
+              maxZoom={6.5}
+            />
             <ZoomControl />
           </Map>
         </div>
       </div>
-
-      <RadioGroup
-        name="select-prop"
-        className="prop-selector controls"
-        selectedValue={this.state.selectedProp}
-        onChange={setMapProp}>
-
-        <div>
-          <Radio value="num_fosas" id="num_fosas" />
-          <label htmlFor="num_fosas">
-            Fosas
-          </label>
-        </div>
-
-        <div>
-          <Radio value="num_cuerpos" id="num_cuerpos" />
-          <label htmlFor="num_cuerpos">
-            Cuerpos
-          </label>
-        </div>
-
-        <div>
-          <Radio value="num_cuerpos_identificados" id="num_cuerpos_identificados" />
-          <label htmlFor="num_cuerpos_identificados">
-            Cuerpos Identificados
-          </label>
-        </div>
-
-        <div>
-          <Radio value="num_restos" id="num_restos" />
-          <label htmlFor="num_restos">
-            Restos
-          </label>
-        </div>
-
-      </RadioGroup>
-
-      <RadioGroup
-        name="select-year-status"
-        className="year-status-selector controls"
-        selectedValue={this.state.showYear ? 'on' : 'off'}
-        onChange={setMapYearStatus}>
-
-        <div>
-          <Radio value="off" id="select-year-status-off" />
-          <label htmlFor="select-year-status-off">
-            Todos años
-          </label>
-        </div>
-
-        <div>
-          <Radio value="on" id="select-year-status-on" />
-          <label htmlFor="select-year-status-on" className={this.state.showYear ? 'enabled' : 'disabled'}>
-            Select año
-            <div className="year-slider">
-              <span>2006</span>
-              <input 
-                type="range"
-                min="2006"
-                max="2016"
-                step="1"
-                value={this.state.selectedYear}
-                onChange={this.onSelectorChange.bind(this)}
-              />
-              <span>2016</span>
-              <strong> {this.state.selectedYear}</strong>
-            </div>
-          </label>
-        </div>
-      </RadioGroup>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Fosas</th>
+            <th>Cuerpos</th>
+          </tr>
+        </thead>
+        <tbody>
+        {this.state.municipalesData.map( (feature, i) => (
+          <tr
+            key={'feature'+i}
+          >
+            <td>{feature.properties.NOM_MUN}</td>
+            <td>{feature.properties.total_num_fosas}</td>
+            <td>{feature.properties.total_num_cuerpos}</td>
+          </tr>
+        ))}
+        </tbody>
+      </table>
     </div>
   }
 }
