@@ -14,7 +14,8 @@ PROPS = ['num_fosas',
          'num_restos',
          'identificados']
 
-def merge_data():
+
+def merge_municipality_data():
     lookup = {}
 
     with open("data/mapas-data-concentrado.xlsx", "rb") as f:
@@ -23,7 +24,6 @@ def merge_data():
     for sheetname, df in dfs.items():
         state_code = int(sheetname.split(' ')[0])
         pivot = pd.pivot_table(df, index=["municipio_code", "year"], fill_value=0, aggfunc=np.sum, values=PROPS)
-
         pivot_dict = pivot.reset_index().to_dict("records")
 
         final_dict = {}
@@ -44,7 +44,7 @@ def merge_data():
         'name': 'municipalescentroids',
         'features': [],
     }
-    with codecs.open('data/municipalities.geojson', encoding='utf-8', errors="ignore") as f:
+    with codecs.open('data/municipales.geojson', encoding='utf-8', errors="replace") as f:
         data = json.load(f)
         for feature in data['features']:
 
@@ -53,22 +53,45 @@ def merge_data():
             mun_code = int(feature['properties']['CVE_MUN'])
             mun_data = lookup[state_code].get(mun_code)
 
-            feature['properties']['fosasData'] = mun_data
+            # feature['properties']['yearlyFosasData'] = mun_data
 
-            for prop in PROPS:
-                for year in range(2006, 2017):
+            cumulative_fosas_data = []
+
+            for year in range(2006, 2017):
+                cumulative_dict = {'year': year}
+
+                for prop in PROPS:
                     if mun_data and mun_data.get(year) and mun_data[year].get(prop, 0) > 1:
-                        feature['properties'][str(year) + '_' + prop] = int(mun_data[year].get(prop))
+                        feature['properties'][prop + '_' + str(year)] = int(mun_data[year].get(prop))
                         totals[prop] += int(mun_data[year].get(prop))
-                    elif mun_data and mun_data.get(year) and mun_data[year].get(prop) == 0:
-                        feature['properties'][str(year) + '_' + prop] = 0
+                    # elif mun_data and mun_data.get(year) and mun_data[year].get(prop) == 0:
+                        # feature['properties'][prop + '_' + str(year)] = 0
                     else:
-                        feature['properties'][str(year) + '_' + prop] = -1
+                        feature['properties'][prop + '_' + str(year)] = 0
+
+                    if len(cumulative_fosas_data):
+                        cumulative_dict[prop] = cumulative_fosas_data[-1].get(prop) + feature['properties'][prop + '_' + str(year)]
+                        feature['properties'][prop + '_cumulative_' + str(year)] = cumulative_fosas_data[-1].get(prop) + feature['properties'][prop + '_' + str(year)]
+                    else:
+                        cumulative_dict[prop] = feature['properties'][prop + '_' + str(year)]
+                        feature['properties'][prop + '_cumulative_' + str(year)] = feature['properties'][prop + '_' + str(year)]
+
+                cumulative_fosas_data.append(cumulative_dict)
+
+            # feature['properties']['cumulativeFosasData'] = cumulative_fosas_data
+
+            if (feature['properties']['num_fosas_cumulative_2016'] > 0):
+                pprint(feature['properties'])
 
             for prop in PROPS:
-                feature['properties']['total_' + prop] = totals[prop]
+                feature['properties'][prop + '_total'] = totals[prop]
                 if totals[prop] > maxes[prop]:
                     maxes[prop] = totals[prop]
+
+            if totals['num_fosas'] > 0:
+                print("---" * 30)
+                print(str(state_code) + " - " + str(mun_code))
+                pprint([[x['year'], x['num_fosas']] for x in cumulative_fosas_data])
 
             try:
                 shp = shape(feature['geometry'])
@@ -77,7 +100,7 @@ def merge_data():
                 center_feature['geometry'] = feature_centroid
                 centers['features'].append(center_feature)
             except:
-                print('encountered one')
+                print('encountered feature w/o centroid pls fix')
 
     with open('data/municipales-fosas.geojson', 'w') as f:
         json.dump(data, f)
@@ -85,7 +108,53 @@ def merge_data():
     with open('data/municipales-fosas-centroids.geojson', 'w') as f:
         json.dump(centers, f)
 
-    pprint(maxes)
+
+def merge_state_data():
+    lookup = {}
+
+    with open("data/mapas-data-concentrado.xlsx", "rb") as f:
+        dfs = pd.read_excel(f, sheet_name=None)
+
+    for sheetname, df in dfs.items():
+        sheet_state_code = int(sheetname.split(' ')[0])
+        pivot = pd.pivot_table(df, index=["state_code", "year"], fill_value=0, aggfunc=np.sum, values=PROPS)
+        pivot_dict = pivot.reset_index().to_dict("records")
+        final_data = [dict([k, int(v)]  for k,v in row.items()) for row in pivot_dict]
+        lookup[sheet_state_code] = final_data
+
+    maxes = {prop: 0 for prop in PROPS}
+    centers = {
+        'type': 'FeatureCollection',
+        'name': 'municipalescentroids',
+        'features': [],
+    }
+    with codecs.open('data/estatales.geojson', encoding='utf-8', errors="replace") as f:
+        data = json.load(f)
+        for feature in data['features']:
+            totals = dict((prop, 0) for prop in PROPS)
+            state_code = int(feature['properties']['CVE_ENT'])
+            state_data = lookup[state_code]
+            feature['properties']['yearlyFosasData'] = state_data
+
+            for prop in PROPS:
+                feature['properties'][prop + '_total'] = sum(item.get(prop, 0) for item in state_data)
+
+            try:
+                shp = shape(feature['geometry'])
+                feature_centroid = mapping(shp.representative_point())
+                center_feature = deepcopy(feature)
+                center_feature['geometry'] = feature_centroid
+                centers['features'].append(center_feature)
+            except:
+                print('encountered feature w/o centroid pls fix')
+
+    with open('data/estatales-fosas.geojson', 'w') as f:
+        json.dump(data, f)
+
+    with open('data/estatales-fosas-centroids.geojson', 'w') as f:
+        json.dump(centers, f)
+
 
 if __name__ == '__main__':
-    merge_data()
+    merge_municipality_data()
+    merge_state_data()

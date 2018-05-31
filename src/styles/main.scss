@@ -8,18 +8,31 @@ html, body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
+h1 {
+  text-align: center;
+}
+
 .container {
-  max-width: 700px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 10px;
+}
+
+.slider-container {
+  margin: 30px auto 30px auto;
+  padding: 0 20px;
+  width: 70%;
+  max-width: 600px;
 }
 
 .municipio-map-wrapper {
   height: 0;
   overflow: hidden;
   width: 100%;
-  padding-top: 60%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 50%;
   position: relative;
-  background-color: #73BEEB;
   .municipio-map {
     position: absolute;
     top: 0;
@@ -29,127 +42,20 @@ html, body {
   }
 }
 
-h1 {
-  font-size: 1.5rem;
-}
-
-.controls {
-  font-size: .8rem;
-  padding: 0.5rem 0.5rem;
-  background-color: #f4f4f4;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-
+.indicators {
   display: flex;
-
-  label {
-    text-transform: uppercase;
-  }
-
-  .year-slider {
-    font-size: 0.7rem;
-    margin-top: .2rem;
-    strong {
-      margin-left: 0.5rem;
-    }
-  }
-
-  input[type="range"] {
-    outline: none;
-    -webkit-appearance:none;
-    max-width: 250px;
-    height:2px;
-    background: #333;
-    background-position:center;
-    background-repeat:no-repeat;
-    position: relative;
-    top: -0.2rem;
-  }
-
-  input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:.8rem;
-    height:.8rem;
-    border-radius: 100%;
-    background: #333;
-    position:relative;
-    z-index:3;
-    cursor: pointer;
-  }
-
-  input[type="radio"]:checked,
-  input[type="radio"]:not(:checked) {
-      position: absolute;
-      left: -9999px;
-  }
-  input[type="radio"]:checked + label,
-  input[type="radio"]:not(:checked) + label
-  {
-    position: relative;
-    padding-left: 1.4rem;
-    margin-right: 1.18rem;
-    cursor: pointer;
-    line-height: 1.18rem;
-    display: inline-block;
-    color: #333;
-  }
-  input[type="radio"]:checked + label:before,
-  input[type="radio"]:not(:checked) + label:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 1.06rem;
-    height: 1.06rem;
-    border: 0.06rem solid #bbb;
-    border-radius: 100%;
-    background: #fff;
-  }
-  input[type="radio"]:checked + label:after,
-  input[type="radio"]:not(:checked) + label:after {
-    content: '';
-    width: .7rem;
-    height: .7rem;
-    background: #000;
-    position: absolute;
-    top: .25rem;
-    left: .25rem;
-    border-radius: 100%;
-    -webkit-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-  }
-  input[type="radio"]:not(:checked) + label:after {
-    opacity: 0;
-    -webkit-transform: scale(0);
-    transform: scale(0);
-  }
-  input[type="radio"]:checked + label:after {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-
 }
 
-.chart-wrapper {
-  margin: 0 auto;
-  max-width: 300px;
-
-  .recharts-text {
-    font-size: 0.8rem;
-  }
-
-  .recharts-xAxis {
-    .recharts-cartesian-axis-line {
-      stroke: none;
-    }
-  }
+.indicator-block {
+  width: 25%;
+  text-align: center;
+}
+.recharts-text {
+  font-size: 10px;
 }
 
-@media screen and (max-width: 735px) {
-  html, body {
-    font-size: 15px;
-  }
+@media screen and (max-width: 800px) {
+  //.container {
+    //padding: 0 20px;
+  //}
 }
