@@ -78,20 +78,15 @@ def merge_municipality_data():
 
                 cumulative_fosas_data.append(cumulative_dict)
 
-            # feature['properties']['cumulativeFosasData'] = cumulative_fosas_data
-
-            if (feature['properties']['num_fosas_cumulative_2016'] > 0):
-                pprint(feature['properties'])
-
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = totals[prop]
                 if totals[prop] > maxes[prop]:
                     maxes[prop] = totals[prop]
 
-            if totals['num_fosas'] > 0:
-                print("---" * 30)
-                print(str(state_code) + " - " + str(mun_code))
-                pprint([[x['year'], x['num_fosas']] for x in cumulative_fosas_data])
+            # if totals['num_fosas'] > 0:
+                # print("---" * 30)
+                # print(str(state_code) + " - " + str(mun_code))
+                # pprint([[x['year'], x['num_fosas']] for x in cumulative_fosas_data])
 
             try:
                 shp = shape(feature['geometry'])
@@ -125,9 +120,11 @@ def merge_state_data():
     maxes = {prop: 0 for prop in PROPS}
     centers = {
         'type': 'FeatureCollection',
-        'name': 'municipalescentroids',
+        'name': 'estatalescentroids',
         'features': [],
     }
+
+    state_meta = []
     with codecs.open('data/estatales.geojson', encoding='utf-8', errors="replace") as f:
         data = json.load(f)
         for feature in data['features']:
@@ -139,14 +136,20 @@ def merge_state_data():
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = sum(item.get(prop, 0) for item in state_data)
 
-            try:
-                shp = shape(feature['geometry'])
-                feature_centroid = mapping(shp.representative_point())
-                center_feature = deepcopy(feature)
-                center_feature['geometry'] = feature_centroid
-                centers['features'].append(center_feature)
-            except:
-                print('encountered feature w/o centroid pls fix')
+            shp = shape(feature['geometry'])
+            representative_point = mapping(shp.representative_point())
+            centroid = mapping(shp.centroid)
+
+            center_feature = deepcopy(feature)
+            center_feature['geometry'] = representative_point
+            centers['features'].append(center_feature)
+
+            state_meta.append({
+                'state_code': feature['properties']['CVE_ENT'],
+                'state_name': feature['properties']['NOM_ENT'],
+                'representative_point': representative_point,
+                'centroid': centroid,
+            })
 
     with open('data/estatales-fosas.geojson', 'w') as f:
         json.dump(data, f)
@@ -154,6 +157,8 @@ def merge_state_data():
     with open('data/estatales-fosas-centroids.geojson', 'w') as f:
         json.dump(centers, f)
 
+    with open('src/data/mxstates.json', 'w') as f:
+        json.dump(state_meta, f)
 
 if __name__ == '__main__':
     merge_municipality_data()
