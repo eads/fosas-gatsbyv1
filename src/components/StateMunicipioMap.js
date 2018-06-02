@@ -12,7 +12,8 @@ const d3 = { ...d3Scale, ...d3ScaleChromatic }
 
 import 'rc-slider/assets/index.css';
 
-const VARS = ['fosas', 'cuerpos', 'cuerpos_identificados', 'restos']
+const BEFORELAYER = 'small city labels'
+const VARS = ['fosas', 'cuerpos'] // ['cuerpos_identificados', 'restos']
 const YEARS = _.range(2006, 2017)
 
 const STATE_DATA_TEMPLATE = { yearlyFosasData: [] }
@@ -32,13 +33,15 @@ class StateMunicipioMap extends React.Component {
     super(props)
     if (typeof window === `undefined`) { return null }
 
+    console.log(props)
+
     this.state = {
-      selectedState: props.selectedState,
-      stateName: props.stateName,
+      selectedState: props.selectedState.state_code,
+      stateName: props.selectedState.state_name,
       selectedVar: VARS[0],
       selectedYear: 2005,
-      mapCenter: [-103.401254, 23.568096],
-      mapZoom: 5.5,
+      //mapCenter: props.selectedState.centroid.coordinates,
+      //mapZoom: 5.5,
       stateData: STATE_DATA_TEMPLATE,
     }
   }
@@ -95,9 +98,11 @@ class StateMunicipioMap extends React.Component {
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjhfdld1208y82so2rhup98zc"
-            center={this.state.mapCenter}
-            zoom={[this.state.mapZoom]}
+            style="mapbox://styles/davideads/cjhipex780dkz2rlttuuadp4f"
+            center={this.props.selectedState.centroid.coordinates}
+            zoom={[5.5]}
+            bearing={[0]}
+            pitch={[0]}
             containerStyle={{
               height: "100%",
               width: "100%"
