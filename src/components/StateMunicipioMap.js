@@ -33,15 +33,11 @@ class StateMunicipioMap extends React.Component {
     super(props)
     if (typeof window === `undefined`) { return null }
 
-    console.log(props)
-
     this.state = {
       selectedState: props.selectedState.state_code,
       stateName: props.selectedState.state_name,
       selectedVar: VARS[0],
       selectedYear: 2005,
-      //mapCenter: props.selectedState.centroid.coordinates,
-      //mapZoom: 5.5,
       stateData: STATE_DATA_TEMPLATE,
     }
   }
@@ -56,7 +52,7 @@ class StateMunicipioMap extends React.Component {
       if (features.length && _.isEqual(this.state.stateData, STATE_DATA_TEMPLATE)) {
         features[0].properties.yearlyFosasData = JSON.parse(features[0].properties.yearlyFosasData)
         this.setState({
-          stateData: features[0].properties
+          stateData: features[0].properties,
         })
       }
     }
@@ -71,12 +67,8 @@ class StateMunicipioMap extends React.Component {
   render() {
     if (typeof window === `undefined`) { return null; }
 
-    //const yearColor = d3.scaleSequential(d3.interpolateCool)
-      //.domain([0, 9])
-
-    const yearColor = d3.scaleLinear()
+    const yearColor = d3.scaleSequential(d3.interpolateCool)
       .domain([2006, 2016])
-      .range(['rgb(110, 64, 170)', 'rgb(26, 213, 177)'])
 
     const yearMarks = {
       2005: { label: 'Total', style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': '#000', 'fontSize': '13px', 'fontWeight': 'bold' } }
@@ -108,6 +100,7 @@ class StateMunicipioMap extends React.Component {
               width: "100%"
             }}
             onSourceData={this.onSourceData}
+            ref={(mapbox) => { this.mapbox = mapbox; }}
           >
 
             <Source
@@ -132,117 +125,118 @@ class StateMunicipioMap extends React.Component {
                 'type': 'vector',
                 'url': 'mapbox://davideads.7deav60y'
               }}
-            />
+              />
 
             <Layer
-              id="municipioFillLayer"
-              sourceId="municipales"
-              sourceLayer="municipalitiesfosas"
-              before="place-city-md-s"
+              id="stateFillLayer"
+              sourceId="estatales"
+              sourceLayer="estatalesfosas"
+              before={BEFORELAYER}
 
               filter={["==", "CVE_ENT", this.state.selectedState]}
 
               type='fill'
               paint={{
-                'fill-color': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', selectedColumn],
-                    0, 'rgba(255, 255, 255, 0)',
-                    5, 'rgba(255, 255, 255, .4)',
-                    20, 'rgba(255, 255, 255, .5)',
-                    50, 'rgba(255, 255, 255, .6)',
-                    75, 'rgba(255, 255, 255, .7)',
-                ],
+                'fill-color': '#fff',
+                'fill-opacity': 0.5,
               }}
+            />
 
-              minZoom={10.5}
+
+
+            <Layer
+              id="stateOutlineLayer"
+              sourceId="estatales"
+              sourceLayer="estatalesfosas"
+              before={BEFORELAYER}
+
+              filter={["==", "CVE_ENT", this.state.selectedState]}
+
+              type='line'
+              paint={{
+                'line-color': '#333',
+                'line-width': 1.2,
+              }}
             />
 
             <Layer
               id="municipioOutlineLayer"
               sourceId="municipales"
               sourceLayer="municipalitiesfosas"
-              before="place-city-md-s"
+              before={BEFORELAYER}
 
               filter={["==", "CVE_ENT", this.state.selectedState]}
 
               type='line'
               paint={{
-                'line-color': '#555',
+                'line-color': '#ccc',
                 'line-width': 0.5,
-              }}
-              />
-
-            <Layer
-              id="stateOutlineLayer"
-              sourceId="estatales"
-              sourceLayer="estatalesfosas"
-              before="place-city-md-s"
-
-              filter={["==", "CVE_ENT", this.state.selectedState]}
-
-              type='line'
-              paint={{
-                'line-color': '#fff',
-                'line-width': 1.2,
               }}
             />
 
-            {YEARS.reverse().map( (year, i) => (
+            {(this.state.selectedYear != 2005) && <Layer
+              id={"centroidLayer"}
+              sourceId="centroids"
+              sourceLayer="municipales-fosas-centroids-avkz1u"
+              before={BEFORELAYER}
+
+              filter={["==", "CVE_ENT", this.state.selectedState]}
+
+              type='circle'
+              //layout={{
+                //visibility: (this.state.selectedYear != 2005) ? 'visible' : 'none',
+              //}}
+              paint={{
+                'circle-radius': [
+                    'interpolate',
+                    ['linear'],
+                    ['get', selectedColumn],
+                    0, 0,
+                    5, 10,
+                    40, 50
+                ],
+                'circle-color': yearColor(this.state.selectedYear),
+                'circle-opacity': 1,
+                'circle-stroke-width': 1,
+                'circle-stroke-color': '#fff'
+              }}
+            />}
+
+            {(this.state.selectedYear == 2005) && YEARS.reverse().map( (theYear, i) => { 
+              console.log('called')
+              return (
               <Layer
                 id={"centroidLayer"+i}
                 sourceId="centroids"
                 sourceLayer="municipales-fosas-centroids-avkz1u"
-                before="place-city-md-s"
+                before={(i === 0) ? BEFORELAYER : "centroidLayer"+ (i-1)}
                 key={'cumulative'+i}
 
                 filter={["==", "CVE_ENT", this.state.selectedState]}
 
                 type='circle'
+                layout={{
+                  visibility: (this.state.selectedYear == 2005) ? 'visible' : 'none',
+                }}
                 paint={{
-                  'circle-radius': (this.state.selectedYear > 2005) ? 0 : [
+                  'circle-radius': [
                       'interpolate',
                       ['linear'],
-                      ['get', 'num_' + this.state.selectedVar + '_cumulative_' + year],
+                      ['get', 'num_' + this.state.selectedVar + '_cumulative_' + theYear],
                       0, 0,
-                      32, 20
+                      5, 10,
+                      40, 50
                   ],
-                  'circle-color': yearColor(year),
+                  'circle-color': yearColor(theYear),
                   'circle-opacity': 1,
-                  'circle-stroke-width': 0,
-                  'circle-stroke-color': '#fff'
+                  'circle-stroke-width': 0.5,
+                  'circle-stroke-color': '#fff',
+                  'circle-stroke-opacity': 0.7,
                 }}
-
-                maxZoom={10.5}
               />
-            ))}
+            )})}
 
-            <Layer
-              id={"centroidLayer"}
-              sourceId="centroids"
-              sourceLayer="municipales-fosas-centroids-avkz1u"
-              before="place-city-md-s"
-
-              filter={["==", "CVE_ENT", this.state.selectedState]}
-
-              type='circle'
-              paint={{
-                'circle-radius': (this.state.selectedYear == 2005) ? 0 : [
-                    'interpolate',
-                    ['linear'],
-                    ['get', selectedColumn],
-                    0, 0,
-                    32, 20
-                ],
-                'circle-color': yearColor(this.state.selectedYear),
-                'circle-opacity': 1,
-                'circle-stroke-width': 0,
-                'circle-stroke-color': '#fff'
-              }}
-
-              maxZoom={10.5}
-            />
+            {console.log(this.mapbox && this.mapbox.state && this.mapbox.state.map && this.mapbox.state.map.getStyle().layers)}
 
             <ZoomControl />
           </Map>
@@ -290,35 +284,3 @@ class StateMunicipioMap extends React.Component {
 }
 
 export default StateMunicipioMap;
-
-
-
-            /*
-            {(this.state.selectedYear == 2005) && this.state.stateData.yearlyFosasData.reverse().map( (year, i) => {
-              var selectedVar = 'num_' + this.state.selectedVar
-              var strokeWidth = this.dotStrokeScale(year[selectedVar])
-              var currentDotRadius = _.clone(pastDotRadius)
-              pastDotRadius += currentDotRadius
-              console.log(currentDotRadius, year)
-
-              return (
-                <Layer
-                  key={"centroids_"+i}
-                  id={"centroidLayer"+i}
-                  sourceId="centroids"
-                  sourceLayer="municipales-fosas-centroids-8ldfwu"
-
-                  filter={["==", "CVE_ENT", this.state.selectedState]}
-
-                  type='circle'
-                  paint={{
-                    'circle-radius': currentDotRadius,
-                    'circle-opacity': 1,
-                    'circle-stroke-width': strokeWidth,
-                    'circle-stroke-color': "rgba(" + (i * 25) + ", " + (i * 25) + ", 255, 1)"
-                  }}
-
-                  maxZoom={10.5}
-                />
-            )})}
-            */
