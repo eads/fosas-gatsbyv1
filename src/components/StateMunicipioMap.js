@@ -218,49 +218,21 @@ class StateMunicipioMap extends React.Component {
                 'line-color': '#ccc',
                 'line-width': 0.5,
               }}
-            />
+              />
 
-            {(this.state.selectedYear != 2005) && <Layer
-              id={"centroidLayer"}
-              sourceId="centroids"
-              sourceLayer="municipales-fosas-centroids-avkz1u"
-              before={BEFORELAYER}
-
-              filter={["==", "CVE_ENT", this.state.selectedState]}
-
-              type='circle'
-              layout={{
-                visibility: (this.state.selectedYear > 2005) ? 'visible' : 'none',
-              }}
-              paint={{
-                'circle-radius': [
-                    'interpolate',
-                    ['linear'],
-                    ['get', selectedColumn],
-                    0, 0,
-                    5, 10,
-                    40, 50
-                ],
-                'circle-color': yearColor(this.state.selectedYear),
-                'circle-opacity': 1,
-                'circle-stroke-width': 1,
-                'circle-stroke-color': '#fff'
-              }}
-            />}
-
-            {YEARS.reverse().map( (theYear, i) => (
+            {YEARS.map( (theYear, i) => (
               <Layer
-                id={"centroidLayer"+i}
+                id={"centroidLayer"+theYear}
                 sourceId="centroids"
                 sourceLayer="municipales-fosas-centroids-avkz1u"
-                before={(i === 0) ? BEFORELAYER : "centroidLayer"+ (i-1)}
-                key={'cumulative'+i}
+                before={(i === 0) ? BEFORELAYER : "centroidLayer"+ (theYear-1)}
+                key={'cumulative'+theYear}
 
                 filter={["==", "CVE_ENT", this.state.selectedState]}
 
                 type='circle'
                 layout={{
-                  visibility: (this.state.selectedYear == 2005) ? 'visible' : 'none',
+                  visibility: (this.state.selectedYear == 2005 || this.state.selectedYear >= theYear) ? 'visible' : 'none',
                 }}
                 paint={{
                   'circle-radius': [
@@ -273,7 +245,7 @@ class StateMunicipioMap extends React.Component {
                   ],
                   'circle-color': yearColor(theYear),
                   'circle-opacity': 1,
-                  'circle-stroke-width': 2,
+                  'circle-stroke-width': 0,
                   'circle-stroke-color': '#fff',
                   'circle-stroke-opacity': 1,
                 }}
