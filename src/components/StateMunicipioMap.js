@@ -2,15 +2,11 @@ import React from 'react';
 import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl";
 
 import * as _ from 'lodash';
-import {ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Cell} from 'recharts'
-
-import Slider, { Range } from 'rc-slider';
 
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 const d3 = { ...d3Scale, ...d3ScaleChromatic }
 
-import 'rc-slider/assets/index.css';
 
 const BEFORELAYER = 'small city labels'
 const VARS = ['fosas', 'cuerpos'] // ['cuerpos_identificados', 'restos']
@@ -40,6 +36,8 @@ class StateMunicipioMap extends React.Component {
       selectedYear: 2005,
       stateData: STATE_DATA_TEMPLATE,
     }
+
+    this.onSlideChange = this.onSlideChange.bind(this)
   }
 
   onSourceData = (map, data) => {
@@ -54,13 +52,14 @@ class StateMunicipioMap extends React.Component {
         this.setState({
           stateData: features[0].properties,
         })
+        console.log(features[0].properties)
       }
     }
   }
 
-  onYearSliderChange = (value) => {
+  onSlideChange = (event) => {
     this.setState({
-      selectedYear: value
+      selectedYear: event.target.value
     })
   }
 
@@ -68,7 +67,7 @@ class StateMunicipioMap extends React.Component {
     if (typeof window === `undefined`) { return null; }
 
     const yearColor = d3.scaleSequential(d3.interpolateCool)
-      .domain([2006, 2016])
+      .domain([2016, 2006])
 
     const yearMarks = {
       2005: { label: 'Total', style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': '#000', 'fontSize': '13px', 'fontWeight': 'bold' } }
@@ -85,6 +84,55 @@ class StateMunicipioMap extends React.Component {
     return <div>
       <div className="state-details">
         <h1>{this.state.stateName}</h1>
+      </div>
+
+      <div className="slider-container">
+        <div className="chart">
+          <div
+          key={"yearrowtotal"}
+          className="bar-container year-total"
+          >
+            <span className="indicator-label">TOTAL TK</span>
+            <span className="year-label">Total</span>
+          </div>
+          {this.state.stateData.yearlyFosasData.map( (yearRow, i) => (
+            <div
+            key={"yearrow"+i}
+            className={"bar-container year-" + yearRow.year}
+            >
+              {(yearRow.num_fosas < 0) ?
+                <span className="indicator-no-data">No data</span> :
+                <span className="indicator-label">{yearRow.num_fosas}</span>
+              }
+              <div
+                className="bar"
+                style={{
+                  height: yearRow.num_fosas * 2,
+                  backgroundColor: yearColor(yearRow.year)
+                }}
+              />
+              <span
+                className="year-label"
+                style={{
+                  color: '#fff',
+                  borderTop: "2px solid #fff",
+                  fontSize: 10,
+                  padding: 2,
+                  backgroundColor: yearColor(yearRow.year)
+                }}
+              >
+                {yearRow.year}
+              </span>
+            </div>
+          ))}
+        </div>
+        <input
+          type="range"
+          min="2005"
+          max="2016"
+          value={this.state.selectedYear}
+          onChange={this.onSlideChange}
+        />
       </div>
 
       <div className="municipio-map-wrapper">
@@ -123,7 +171,7 @@ class StateMunicipioMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.7deav60y'
+                'url': 'mapbox://davideads.19be2zld'
               }}
               />
 
@@ -141,8 +189,6 @@ class StateMunicipioMap extends React.Component {
                 'fill-opacity': 0.5,
               }}
             />
-
-
 
             <Layer
               id="stateOutlineLayer"
@@ -183,9 +229,9 @@ class StateMunicipioMap extends React.Component {
               filter={["==", "CVE_ENT", this.state.selectedState]}
 
               type='circle'
-              //layout={{
-                //visibility: (this.state.selectedYear != 2005) ? 'visible' : 'none',
-              //}}
+              layout={{
+                visibility: (this.state.selectedYear > 2005) ? 'visible' : 'none',
+              }}
               paint={{
                 'circle-radius': [
                     'interpolate',
@@ -202,9 +248,7 @@ class StateMunicipioMap extends React.Component {
               }}
             />}
 
-            {(this.state.selectedYear == 2005) && YEARS.reverse().map( (theYear, i) => { 
-              console.log('called')
-              return (
+            {YEARS.reverse().map( (theYear, i) => (
               <Layer
                 id={"centroidLayer"+i}
                 sourceId="centroids"
@@ -224,61 +268,22 @@ class StateMunicipioMap extends React.Component {
                       ['linear'],
                       ['get', 'num_' + this.state.selectedVar + '_cumulative_' + theYear],
                       0, 0,
-                      5, 10,
-                      40, 50
+                      5, 20,
+                      40, 80
                   ],
                   'circle-color': yearColor(theYear),
                   'circle-opacity': 1,
-                  'circle-stroke-width': 0.5,
+                  'circle-stroke-width': 2,
                   'circle-stroke-color': '#fff',
-                  'circle-stroke-opacity': 0.7,
+                  'circle-stroke-opacity': 1,
                 }}
               />
-            )})}
-
-            {console.log(this.mapbox && this.mapbox.state && this.mapbox.state.map && this.mapbox.state.map.getStyle().layers)}
+            ))}
 
             <ZoomControl />
           </Map>
         </div>
       </div>
-
-      <div className="slider-container">
-        <Slider
-          min={2005}
-          max={2016}
-          step={1}
-          marks={yearMarks}
-          value={this.state.selectedYear}
-          onChange={this.onYearSliderChange}
-        />
-      </div>
-
-      <div className="indicators">
-      {VARS.map( (varname, i) => (
-        <div key={'total'+i} className="indicator-block">
-          <p>{varname}: {this.state.stateData['num_' + varname + '_total']}</p>
-          <ResponsiveContainer aspect={2}>
-            <BarChart
-              data={this.state.stateData.yearlyFosasData}
-            >
-              <CartesianGrid strokeDasharray="3 3"/>
-              <XAxis dataKey="year" type="number" domain={[2006, 2016]} />
-              <YAxis/>
-              <Bar dataKey={'num_' + varname} fill="#8884d8">
-                {
-                  this.state.stateData.yearlyFosasData.map((row, i) => {
-                    const color = yearColor(row.year)
-                    return <Cell key={"cell"+i} fill={color} />
-                  })
-                }
-               </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      ))}
-      </div>
-
     </div>
   }
 }

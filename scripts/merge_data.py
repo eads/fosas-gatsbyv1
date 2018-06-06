@@ -83,11 +83,6 @@ def merge_municipality_data():
                 if totals[prop] > maxes[prop]:
                     maxes[prop] = totals[prop]
 
-            # if totals['num_fosas'] > 0:
-                # print("---" * 30)
-                # print(str(state_code) + " - " + str(mun_code))
-                # pprint([[x['year'], x['num_fosas']] for x in cumulative_fosas_data])
-
             try:
                 shp = shape(feature['geometry'])
                 feature_centroid = mapping(shp.representative_point())
@@ -131,7 +126,21 @@ def merge_state_data():
             totals = dict((prop, 0) for prop in PROPS)
             state_code = int(feature['properties']['CVE_ENT'])
             state_data = lookup[state_code]
-            feature['properties']['yearlyFosasData'] = state_data
+
+            yearlyData = []
+            state_data_dict = dict([(row['year'], row) for row in state_data])
+            for year in range(2006, 2017):
+                row = state_data_dict.get(year, False)
+                if not row:
+                    row = { 'year': year, 'state_code': state_code }
+                    for prop in PROPS:
+                        row[prop] = -1
+                yearlyData.append(row)
+
+            feature['properties']['yearlyFosasData'] = yearlyData
+
+            if state_code == 25:
+                pprint(yearlyData)
 
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = sum(item.get(prop, 0) for item in state_data)
@@ -161,5 +170,5 @@ def merge_state_data():
         json.dump(state_meta, f)
 
 if __name__ == '__main__':
-    merge_municipality_data()
+    # merge_municipality_data()
     merge_state_data()
