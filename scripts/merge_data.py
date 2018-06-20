@@ -123,7 +123,6 @@ def merge_state_data():
     with codecs.open('data/estatales.geojson', encoding='utf-8', errors="replace") as f:
         data = json.load(f)
         for feature in data['features']:
-            totals = dict((prop, 0) for prop in PROPS)
             state_code = int(feature['properties']['CVE_ENT'])
             state_data = lookup[state_code]
 
@@ -132,22 +131,26 @@ def merge_state_data():
             for year in range(2006, 2017):
                 row = state_data_dict.get(year, False)
                 if not row:
-                    row = { 'year': year, 'state_code': state_code }
+                    row = {'year': year, 'state_code': state_code}
                     for prop in PROPS:
                         row[prop] = -1
                 yearlyData.append(row)
 
             feature['properties']['yearlyFosasData'] = yearlyData
 
-            if state_code == 25:
-                pprint(yearlyData)
-
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = sum(item.get(prop, 0) for item in state_data)
+                try:
+                    feature['properties'][prop + '_max'] = max(item.get(prop, 0) for item in state_data)
+                except ValueError:
+                    feature['properties'][prop + '_max'] = 0
+
+            feature['properties']['all_max'] = max(feature['properties'][prop + '_max'] for prop in PROPS)
 
             shp = shape(feature['geometry'])
             representative_point = mapping(shp.representative_point())
             centroid = mapping(shp.centroid)
+            bounds = shp.bounds
 
             center_feature = deepcopy(feature)
             center_feature['geometry'] = representative_point
@@ -158,6 +161,7 @@ def merge_state_data():
                 'state_name': feature['properties']['NOM_ENT'],
                 'representative_point': representative_point,
                 'centroid': centroid,
+                'bounds': bounds,
             })
 
     with open('data/estatales-fosas.geojson', 'w') as f:

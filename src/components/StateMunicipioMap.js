@@ -1,11 +1,17 @@
-import React from 'react';
-import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl";
+import React from 'react'
+import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl"
 
-import * as _ from 'lodash';
+import ContainerDimensions from 'react-container-dimensions'
+
+import * as _ from 'lodash'
+
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
 
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
 const d3 = { ...d3Scale, ...d3ScaleChromatic }
+
 
 
 const BEFORELAYER = 'small city labels'
@@ -20,8 +26,8 @@ VARS.map((variable) => {
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
-  minZoom: 4,
-  maxZoom: 7.9,
+  minZoom: 3.5,
+  maxZoom: 8,
 })
 
 class StateMunicipioMap extends React.Component {
@@ -30,7 +36,7 @@ class StateMunicipioMap extends React.Component {
     if (typeof window === `undefined`) { return null }
 
     this.state = {
-      selectedState: props.selectedState.state_code,
+      stateCode: props.selectedState.state_code,
       stateName: props.selectedState.state_name,
       selectedVar: VARS[0],
       selectedYear: 2005,
@@ -38,6 +44,7 @@ class StateMunicipioMap extends React.Component {
     }
 
     this.onSlideChange = this.onSlideChange.bind(this)
+    this.onVarChange = this.onVarChange.bind(this)
   }
 
   onSourceData = (map, data) => {
@@ -45,29 +52,36 @@ class StateMunicipioMap extends React.Component {
     if (data.sourceId == 'estatales') {
       const features = map.querySourceFeatures("estatales", {
         sourceLayer: "estatalesfosas",
-        filter: ["==", "CVE_ENT", this.state.selectedState],
+        filter: ["==", "CVE_ENT", this.state.stateCode],
       })
       if (features.length && _.isEqual(this.state.stateData, STATE_DATA_TEMPLATE)) {
         features[0].properties.yearlyFosasData = JSON.parse(features[0].properties.yearlyFosasData)
+        console.log(features[0].properties)
         this.setState({
           stateData: features[0].properties,
         })
-        console.log(features[0].properties)
       }
     }
   }
 
-  onSlideChange = (event) => {
+  onSlideChange(value) {
     this.setState({
-      selectedYear: event.target.value
+      selectedYear: value
+    })
+  }
+
+  onVarChange(value) {
+    this.setState({
+      selectedVar: value
     })
   }
 
   render() {
     if (typeof window === `undefined`) { return null; }
 
-    const yearColor = d3.scaleSequential(d3.interpolateCool)
-      .domain([2016, 2006])
+    const yearColor = d3.scaleSequential(d3.interpolateViridis)
+    //const yearColor = d3.scaleSequential(d3.interpolateWarm)
+      .domain([2006, 2016])
 
     const yearMarks = {
       2005: { label: 'Total', style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': '#000', 'fontSize': '13px', 'fontWeight': 'bold' } }
@@ -87,62 +101,94 @@ class StateMunicipioMap extends React.Component {
       </div>
 
       <div className="slider-container">
-        <div className="chart">
-          <div
-          key={"yearrowtotal"}
-          className="bar-container year-total"
-          >
-            <span className="indicator-label">TOTAL TK</span>
-            <span className="year-label">Total</span>
-          </div>
-          {this.state.stateData.yearlyFosasData.map( (yearRow, i) => (
-            <div
-            key={"yearrow"+i}
-            className={"bar-container year-" + yearRow.year}
-            >
-              {(yearRow.num_fosas < 0) ?
-                <span className="indicator-no-data">No data</span> :
-                <span className="indicator-label">{yearRow.num_fosas}</span>
-              }
+        <div className="chart-wrapper">
+          <ContainerDimensions>
+          { ({ height }) =>
+            <div className="chart">
               <div
-                className="bar"
-                style={{
-                  height: yearRow.num_fosas * 2,
-                  backgroundColor: yearColor(yearRow.year)
-                }}
-              />
-              <span
-                className="year-label"
-                style={{
-                  color: '#fff',
-                  borderTop: "2px solid #fff",
-                  fontSize: 10,
-                  padding: 2,
-                  backgroundColor: yearColor(yearRow.year)
-                }}
+                key={"yearrowtotal"}
+                className="bar-container year-total"
               >
-                {yearRow.year}
-              </span>
+                <span
+                  className="year-label"
+                  style={{
+                    color: "#fff",
+                    fontSize: 11,
+                    padding: 2,
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Total
+                </span>
+              </div>
+              {this.state.stateData.yearlyFosasData.map( (yearRow, i) => (
+                <div
+                key={"yearrow"+i}
+                className={"bar-container year-" + yearRow.year}
+                >
+                  {(yearRow['num_' + this.state.selectedVar] < 0) ?
+                    <span className="indicator-no-data">No data</span> :
+                    <span className="indicator-label">{yearRow['num_' + this.state.selectedVar]}</span>
+                  }
+                  <div
+                    className="bar"
+                    style={{
+                      height: (yearRow['num_' + this.state.selectedVar] / this.state.stateData['all_max']) * (height - 50),
+                      backgroundColor: yearColor(yearRow.year)
+                    }}
+                  />
+                  <span
+                    className="year-label"
+                    style={{
+                      color: '#fff',
+                      borderTop: "2px solid #111",
+                      fontSize: 11,
+                      padding: 2,
+                      backgroundColor: yearColor(yearRow.year)
+                    }}
+                  >
+                    {yearRow.year}
+                  </span>
+                </div>
+              ))}
             </div>
+          }
+          </ContainerDimensions>
+        </div>
+
+        <div className="slider">
+          <Slider
+            min={2005} max={2016}
+            value={this.state.selectedYear}
+            onChange={this.onSlideChange}
+          />
+        </div>
+
+        <div className="toggle-buttons">
+          {VARS.map( (varName, i) => (
+            <button
+              key={"selectbutton"+varName}
+              value={varName}
+              onClick={this.onVarChange.bind(this, varName)}
+              className={(this.state.selectedVar == varName) ? 'active': null}
+            >
+              <strong>{varName}</strong> {this.state.stateData['num_' + varName + '_total']}
+            </button>
           ))}
         </div>
-        <input
-          type="range"
-          min="2005"
-          max="2016"
-          value={this.state.selectedYear}
-          onChange={this.onSlideChange}
-        />
+
       </div>
 
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjhipex780dkz2rlttuuadp4f"
-            center={this.props.selectedState.centroid.coordinates}
-            zoom={[5.5]}
-            bearing={[0]}
+            style="mapbox://styles/davideads/cji5jndqn3ikl2smqcis7gm2x"
             pitch={[0]}
+            center={this.props.selectedState.centroid.coordinates}
+            maxBounds={[[-120.12776, 12.5388286402], [-84.811982388, 34.72083]]}
+            fitBounds={[this.props.selectedState.bounds.slice(0, 2), this.props.selectedState.bounds.slice(2)]}
+            fitBoundsOptions={{padding: 40}}
             containerStyle={{
               height: "100%",
               width: "100%"
@@ -171,9 +217,9 @@ class StateMunicipioMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.19be2zld'
+                'url': 'mapbox://davideads.2hnqk450'
               }}
-              />
+            />
 
             <Layer
               id="stateFillLayer"
@@ -181,12 +227,12 @@ class StateMunicipioMap extends React.Component {
               sourceLayer="estatalesfosas"
               before={BEFORELAYER}
 
-              filter={["==", "CVE_ENT", this.state.selectedState]}
+              filter={["==", "CVE_ENT", this.state.stateCode]}
 
               type='fill'
               paint={{
-                'fill-color': '#fff',
-                'fill-opacity': 0.5,
+                'fill-color': '#777',
+                'fill-opacity': 0.15,
               }}
             />
 
@@ -196,12 +242,12 @@ class StateMunicipioMap extends React.Component {
               sourceLayer="estatalesfosas"
               before={BEFORELAYER}
 
-              filter={["==", "CVE_ENT", this.state.selectedState]}
+              filter={["==", "CVE_ENT", this.state.stateCode]}
 
               type='line'
               paint={{
-                'line-color': '#333',
-                'line-width': 1.2,
+                'line-color': '#999',
+                'line-width': 1,
               }}
             />
 
@@ -211,11 +257,11 @@ class StateMunicipioMap extends React.Component {
               sourceLayer="municipalitiesfosas"
               before={BEFORELAYER}
 
-              filter={["==", "CVE_ENT", this.state.selectedState]}
+              filter={["==", "CVE_ENT", this.state.stateCode]}
 
               type='line'
               paint={{
-                'line-color': '#ccc',
+                'line-color': '#666',
                 'line-width': 0.5,
               }}
               />
@@ -228,26 +274,26 @@ class StateMunicipioMap extends React.Component {
                 before={(i === 0) ? BEFORELAYER : "centroidLayer"+ (theYear-1)}
                 key={'cumulative'+theYear}
 
-                filter={["==", "CVE_ENT", this.state.selectedState]}
+                filter={["==", "CVE_ENT", this.state.stateCode]}
 
                 type='circle'
                 layout={{
-                  visibility: (this.state.selectedYear == 2005 || this.state.selectedYear >= theYear) ? 'visible' : 'none',
+                  visibility: (this.state.selectedYear == 2005 || this.state.selectedYear == theYear) ? 'visible' : 'none',
                 }}
                 paint={{
                   'circle-radius': [
                       'interpolate',
                       ['linear'],
-                      ['get', 'num_' + this.state.selectedVar + '_cumulative_' + theYear],
+                      ['get', 'num_' + this.state.selectedVar + ((this.state.selectedYear == 2005) ? '_cumulative_' : '_') + theYear],
                       0, 0,
-                      5, 20,
-                      40, 80
+                      10, 20,
+                      40, 35
                   ],
                   'circle-color': yearColor(theYear),
-                  'circle-opacity': 1,
+                  'circle-opacity': 0.8,
                   'circle-stroke-width': 0,
                   'circle-stroke-color': '#fff',
-                  'circle-stroke-opacity': 1,
+                  'circle-stroke-opacity': 0.3,
                 }}
               />
             ))}

@@ -29,6 +29,7 @@ export const pageQuery = graphql`
     mxstatesJson(state_code: { eq: $state_code } ) {
       state_code
       state_name
+      bounds
       centroid {
         coordinates
       }
