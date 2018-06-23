@@ -5,7 +5,6 @@ import numpy as np
 import codecs
 
 from shapely.geometry import mapping, shape
-from pprint import pprint
 from copy import deepcopy
 
 PROPS = ['num_fosas',
@@ -18,7 +17,7 @@ PROPS = ['num_fosas',
 def merge_municipality_data():
     lookup = {}
 
-    with open("data/mapas-data-concentrado.xlsx", "rb") as f:
+    with open("data/source/mapas-data-concentrado.xlsx", "rb") as f:
         dfs = pd.read_excel(f, sheet_name=None)
 
     for sheetname, df in dfs.items():
@@ -44,7 +43,7 @@ def merge_municipality_data():
         'name': 'municipalescentroids',
         'features': [],
     }
-    with codecs.open('data/municipales.geojson', encoding='utf-8', errors="replace") as f:
+    with codecs.open('data/source-geojson/municipales.json', encoding='utf-8', errors="replace") as f:
         data = json.load(f)
         for feature in data['features']:
 
@@ -92,17 +91,17 @@ def merge_municipality_data():
             except:
                 print('encountered feature w/o centroid pls fix')
 
-    with open('data/municipales-fosas.geojson', 'w') as f:
+    with open('data/processed-geojson/municipales.json', 'w') as f:
         json.dump(data, f)
 
-    with open('data/municipales-fosas-centroids.geojson', 'w') as f:
+    with open('data/processed-geojson/municipales-centroids.json', 'w') as f:
         json.dump(centers, f)
 
 
 def merge_state_data():
     lookup = {}
 
-    with open("data/mapas-data-concentrado.xlsx", "rb") as f:
+    with open("data/source/mapas-data-concentrado.xlsx", "rb") as f:
         dfs = pd.read_excel(f, sheet_name=None)
 
     for sheetname, df in dfs.items():
@@ -120,7 +119,7 @@ def merge_state_data():
     }
 
     state_meta = []
-    with codecs.open('data/estatales.geojson', encoding='utf-8', errors="replace") as f:
+    with codecs.open('data/source-geojson/estatales.json', encoding='utf-8', errors="replace") as f:
         data = json.load(f)
         for feature in data['features']:
             state_code = int(feature['properties']['CVE_ENT'])
@@ -164,15 +163,15 @@ def merge_state_data():
                 'bounds': bounds,
             })
 
-    with open('data/estatales-fosas.geojson', 'w') as f:
+    with open('data/processed-geojson/estatales.json', 'w') as f:
         json.dump(data, f)
 
-    with open('data/estatales-fosas-centroids.geojson', 'w') as f:
+    with open('data/processed-geojson/estatales-centroids.json', 'w') as f:
         json.dump(centers, f)
 
     with open('src/data/mxstates.json', 'w') as f:
         json.dump(state_meta, f)
 
 if __name__ == '__main__':
-    # merge_municipality_data()
+    merge_municipality_data()
     merge_state_data()
