@@ -1,13 +1,21 @@
-data/municipales.geojson : data/areas_geoestadisticas_municipales.shp
-	ogr2ogr data/municipalities.geojson data/areas_geoestadisticas_municipales.shp -f GeoJSON -t_srs "+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0"
+GEOGRAPHIES = municipales estatales
 
-data/estatales.geojson : data/areas_geoestadisticas_estatales.shp
-	ogr2ogr data/estatales.geojson data/areas_geoestadisticas_estatales.shp -f GeoJSON -t_srs "+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0"
+.PHONY: all geojson merge
+all: geojson
+geojson: $(patsubst %, data/source-geojson/%.json, $(GEOGRAPHIES))
+merge: data/processed-geojson/municipales.json data/processed-geojson/municipales-centroids.json data/processed-geojson/estatales.json data/processed-geojson/estatales-centroids.json src/data/mxstates.json
+tiles: $(patsubst %, data/mbtiles/%.mbtiles, $(GEOGRAPHIES)) $(patsubst %, data/mbtiles/%-centroids.mbtiles, $(GEOGRAPHIES))
 
-data/municipales-fosas.geojson : data/municipales.geojson data/mapas-data-concentrado.xlsx
+data/source-geojson/%.json : data/shapefiles/areas_geoestadisticas_%.shp
+	ogr2ogr $@ $< -f GeoJSON -t_srs "+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0"
+
+# this is UGLY
+data/processed-geojson/municipales.json data/processed-geojson/municipales-centroids.json data/processed-geojson/estatales.json data/processed-geojson/estatales-centroids.json src/data/mxstates.json : data/source-geojson/municipales.json data/source/mapas-data-concentrado.xlsx
 	python scripts/merge_data.py
 
 
+data/mbtiles/%.mbtiles : data/processed-geojson/%.json
+	tippecanoe -o $@ -Z 3 -z 8 $<
 
-#data/municipalities-fosas-simplified.geojson : data/municipalities-fosas.geojson
-	#cat data/municipalities-fosas.geojson | simplify-geojson -t 0.001 > data/municipalities-fosas-simplified.geojson
+data/mbtiles/%-centroids.mbtiles : data/processed-geojson/%-centroids.json
+	tippecanoe -o $@ -Z 3 -z 8 $<
