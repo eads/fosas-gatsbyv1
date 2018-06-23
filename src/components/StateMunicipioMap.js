@@ -24,12 +24,6 @@ VARS.map((variable) => {
 })
 
 
-const Map = ReactMapboxGl({
-  accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
-  minZoom: 3.5,
-  maxZoom: 8,
-})
-
 class StateMunicipioMap extends React.Component {
   constructor(props) {
     super(props)
@@ -42,6 +36,12 @@ class StateMunicipioMap extends React.Component {
       selectedYear: 2005,
       stateData: STATE_DATA_TEMPLATE,
     }
+
+    this.Map = ReactMapboxGl({
+      accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
+      minZoom: 3.5,
+      maxZoom: 8,
+    })
 
     this.onSlideChange = this.onSlideChange.bind(this)
     this.onVarChange = this.onVarChange.bind(this)
