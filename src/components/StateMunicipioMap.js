@@ -14,7 +14,7 @@ const d3 = { ...d3Scale, ...d3ScaleChromatic }
 
 
 
-const BEFORELAYER = 'small city labels'
+const BEFORELAYER = 'terrain'
 const VARS = ['fosas', 'cuerpos'] // ['cuerpos_identificados', 'restos']
 const YEARS = _.range(2006, 2017)
 
@@ -35,6 +35,8 @@ class StateMunicipioMap extends React.Component {
       selectedVar: VARS[0],
       selectedYear: 2005,
       stateData: STATE_DATA_TEMPLATE,
+      maxFosas: null,
+      maxCuerpos: null,
     }
 
     this.Map = ReactMapboxGl({
@@ -56,12 +58,26 @@ class StateMunicipioMap extends React.Component {
       })
       if (features.length && _.isEqual(this.state.stateData, STATE_DATA_TEMPLATE)) {
         features[0].properties.yearlyFosasData = JSON.parse(features[0].properties.yearlyFosasData)
-        console.log(features[0].properties)
         this.setState({
           stateData: features[0].properties,
         })
       }
     }
+    if (data.sourceId == 'centroids') {
+      const features = map.querySourceFeatures("centroids", {
+        sourceLayer: "municipales-fosas-centroids-avkz1u",
+        filter: ["==", "CVE_ENT", this.state.stateCode],
+      })
+      if (features.length) {
+        const maxFosas = _.max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)))
+        const maxCuerpos = _.max(features.map( (feature) => (feature.properties.num_cuerpos_cumulative_2016)))
+        this.setState({
+          maxFosas: maxFosas,
+          maxCuerpos: maxCuerpos,
+        })
+      }
+    }
+
   }
 
   onSlideChange(value) {
@@ -79,9 +95,18 @@ class StateMunicipioMap extends React.Component {
   render() {
     if (typeof window === `undefined`) { return null; }
 
+    const Map = this.Map
+
     const yearColor = d3.scaleSequential(d3.interpolateViridis)
-    //const yearColor = d3.scaleSequential(d3.interpolateWarm)
       .domain([2006, 2016])
+
+    if (this.state.selectedVar == 'fosas') {
+      var sqrtScale = d3.scaleSqrt().domain([1, this.state.maxFosas]).range([0, 35])
+      var circleSteps = _.flatten(_.range(1, this.state.maxFosas).map( (value, i) => ( [i, sqrtScale(value)] ) ));
+    } else {
+      var sqrtScale = d3.scaleSqrt().domain([1, this.state.maxCuerpos]).range([0, 35])
+      var circleSteps = _.flatten(_.range(1, this.state.maxCuerpos).map( (value, i) => ( [i, sqrtScale(value)] ) ));
+    }
 
     const yearMarks = {
       2005: { label: 'Total', style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': '#000', 'fontSize': '13px', 'fontWeight': 'bold' } }
@@ -126,6 +151,7 @@ class StateMunicipioMap extends React.Component {
                 <div
                 key={"yearrow"+i}
                 className={"bar-container year-" + yearRow.year}
+                onClick={this.onSlideChange.bind(this, yearRow.year)}
                 >
                   {(yearRow['num_' + this.state.selectedVar] < 0) ?
                     <span className="indicator-no-data">No data</span> :
@@ -183,12 +209,12 @@ class StateMunicipioMap extends React.Component {
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cji5jndqn3ikl2smqcis7gm2x"
+            style="mapbox://styles/davideads/cjirt87zo2kuw2rp7da7jmizf/"
             pitch={[0]}
             center={this.props.selectedState.centroid.coordinates}
             maxBounds={[[-120.12776, 12.5388286402], [-84.811982388, 34.72083]]}
             fitBounds={[this.props.selectedState.bounds.slice(0, 2), this.props.selectedState.bounds.slice(2)]}
-            fitBoundsOptions={{padding: 40}}
+            fitBoundsOptions={{padding: 10}}
             containerStyle={{
               height: "100%",
               width: "100%"
@@ -231,8 +257,8 @@ class StateMunicipioMap extends React.Component {
 
               type='fill'
               paint={{
-                'fill-color': '#777',
-                'fill-opacity': 0.15,
+                'fill-color': '#181818',
+                'fill-opacity': 1,
               }}
             />
 
@@ -246,7 +272,7 @@ class StateMunicipioMap extends React.Component {
 
               type='line'
               paint={{
-                'line-color': '#999',
+                'line-color': '#888',
                 'line-width': 1,
               }}
             />
@@ -263,6 +289,7 @@ class StateMunicipioMap extends React.Component {
               paint={{
                 'line-color': '#666',
                 'line-width': 0.5,
+                'line-opacity': 0.3
               }}
               />
 
@@ -282,15 +309,13 @@ class StateMunicipioMap extends React.Component {
                 }}
                 paint={{
                   'circle-radius': [
-                      'interpolate',
-                      ['linear'],
+                      'step',
                       ['get', 'num_' + this.state.selectedVar + ((this.state.selectedYear == 2005) ? '_cumulative_' : '_') + theYear],
-                      0, 0,
-                      10, 20,
-                      40, 35
+                      0,
+                      ...circleSteps
                   ],
                   'circle-color': yearColor(theYear),
-                  'circle-opacity': 0.8,
+                  'circle-opacity': (this.state.selectedYear == 2005) ? 1 : 1,
                   'circle-stroke-width': 0,
                   'circle-stroke-color': '#fff',
                   'circle-stroke-opacity': 0.3,

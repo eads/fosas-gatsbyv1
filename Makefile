@@ -13,9 +13,11 @@ data/source-geojson/%.json : data/shapefiles/areas_geoestadisticas_%.shp
 data/processed-geojson/municipales.json data/processed-geojson/municipales-centroids.json data/processed-geojson/estatales.json data/processed-geojson/estatales-centroids.json src/data/mxstates.json : data/source-geojson/municipales.json data/source/mapas-data-concentrado.xlsx
 	python scripts/merge_data.py
 
-
 data/mbtiles/%.mbtiles : data/processed-geojson/%.json
 	tippecanoe -o $@ -Z 3 -z 8 $<
 
 data/mbtiles/%-centroids.mbtiles : data/processed-geojson/%-centroids.json
 	tippecanoe -o $@ -Z 3 -z 8 $<
+
+static/tiles/%/ : data/mbtiles/%.mbtiles
+	mb-util --image_format=pbf data/mbtiles/$*.mbtiles static/tiles/$*/

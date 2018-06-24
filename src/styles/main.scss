@@ -33,7 +33,7 @@ h1 {
 .slider-container .chart-wrapper {
   height: 0;
   position: relative;
-  padding-top: 30%;
+  padding-top: 25%;
 }
 
 .slider-container .chart-wrapper .chart {
@@ -52,6 +52,12 @@ h1 {
   text-align: center;
   padding: 4px;
   margin-top: auto;
+  &:hover {
+    cursor: move;
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+  }
 }
 
 .slider-container .chart .bar {
@@ -97,7 +103,7 @@ h1 {
   height: 0;
   overflow: hidden;
   width: 100%;
-  max-width: 600px;
+  max-width: 860px;
   margin: 0 auto;
   padding-top: 40%;
   position: relative;
