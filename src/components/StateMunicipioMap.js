@@ -29,20 +29,34 @@ class StateMunicipioMap extends React.Component {
     super(props)
     if (typeof window === `undefined`) { return null }
 
+    const yearColor = d3.scaleSequential(d3.interpolateViridis).domain([2006, 2016]);
+
+    const yearMarks = {
+      2005: { label: 'Total', style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': '#000', 'fontSize': '13px', 'fontWeight': 'bold' } }
+    }
+    YEARS.map((year, i) => {
+      yearMarks[year] = { label: year.toString(), style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': yearColor(year), 'fontSize': '13px' } }
+    })
+
     this.state = {
       stateCode: props.selectedState.state_code,
       stateName: props.selectedState.state_name,
       selectedVar: VARS[0],
       selectedYear: 2005,
       stateData: STATE_DATA_TEMPLATE,
+      yearColor: yearColor,
       maxFosas: null,
       maxCuerpos: null,
+      fosasSteps: [],
+      cuerposSteps: [],
+      yearMarks: yearMarks,
     }
 
     this.Map = ReactMapboxGl({
       accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
       minZoom: 3.5,
       maxZoom: 8,
+      center: props.selectedState.centroid.coordinates
     })
 
     this.onSlideChange = this.onSlideChange.bind(this)
@@ -50,10 +64,11 @@ class StateMunicipioMap extends React.Component {
   }
 
   onSourceData = (map, data) => {
+
     // Get data from state
     if (data.sourceId == 'estatales') {
       const features = map.querySourceFeatures("estatales", {
-        sourceLayer: "estatalesfosas",
+        sourceLayer: "estatales",
         filter: ["==", "CVE_ENT", this.state.stateCode],
       })
       if (features.length && _.isEqual(this.state.stateData, STATE_DATA_TEMPLATE)) {
@@ -65,10 +80,10 @@ class StateMunicipioMap extends React.Component {
     }
     if (data.sourceId == 'centroids') {
       const features = map.querySourceFeatures("centroids", {
-        sourceLayer: "municipales-fosas-centroids-avkz1u",
+        sourceLayer: "municipalescentroids",
         filter: ["==", "CVE_ENT", this.state.stateCode],
       })
-      if (features.length) {
+      if (features.length && this.state.maxFosas == null && this.state.maxCuerpos == null) {
         const maxFosas = _.max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)))
         const maxCuerpos = _.max(features.map( (feature) => (feature.properties.num_cuerpos_cumulative_2016)))
         this.setState({
@@ -95,26 +110,16 @@ class StateMunicipioMap extends React.Component {
   render() {
     if (typeof window === `undefined`) { return null; }
 
-    const Map = this.Map
-
-    const yearColor = d3.scaleSequential(d3.interpolateViridis)
-      .domain([2006, 2016])
+    const { Map } = this;
+    const { yearColor, yearMarks } = this.state;
 
     if (this.state.selectedVar == 'fosas') {
-      var sqrtScale = d3.scaleSqrt().domain([1, this.state.maxFosas]).range([0, 35])
+      var sqrtScale = d3.scaleSqrt().domain([1, this.state.maxFosas]).range([0, 20])
       var circleSteps = _.flatten(_.range(1, this.state.maxFosas).map( (value, i) => ( [i, sqrtScale(value)] ) ));
     } else {
-      var sqrtScale = d3.scaleSqrt().domain([1, this.state.maxCuerpos]).range([0, 35])
+      var sqrtScale = d3.scaleSqrt().domain([1, this.state.maxCuerpos]).range([0, 20])
       var circleSteps = _.flatten(_.range(1, this.state.maxCuerpos).map( (value, i) => ( [i, sqrtScale(value)] ) ));
     }
-
-    const yearMarks = {
-      2005: { label: 'Total', style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': '#000', 'fontSize': '13px', 'fontWeight': 'bold' } }
-    }
-    YEARS.map((year, i) => {
-      yearMarks[year] = { label: year.toString(), style: { 'paddingTop': '3px', 'paddingBottom': '3px', 'color': '#fff', 'backgroundColor': yearColor(year), 'fontSize': '13px' } }
-    })
-
 
     // "2005" as alias for "total" hack
     const selectedYear = (this.state.selectedYear === 2005) ? 'total' : this.state.selectedYear
@@ -210,8 +215,6 @@ class StateMunicipioMap extends React.Component {
         <div className="municipio-map">
           <Map
             style="mapbox://styles/davideads/cjirt87zo2kuw2rp7da7jmizf/"
-            pitch={[0]}
-            center={this.props.selectedState.centroid.coordinates}
             maxBounds={[[-120.12776, 12.5388286402], [-84.811982388, 34.72083]]}
             fitBounds={[this.props.selectedState.bounds.slice(0, 2), this.props.selectedState.bounds.slice(2)]}
             fitBoundsOptions={{padding: 10}}
@@ -227,7 +230,7 @@ class StateMunicipioMap extends React.Component {
               id="centroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.d613g3h7'
+                'url': 'mapbox://davideads.5rgtszcw'
               }}
             />
 
@@ -235,7 +238,7 @@ class StateMunicipioMap extends React.Component {
               id="municipales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.9qk2tt17'
+                'url': 'mapbox://davideads.aekfu8a3'
               }}
             />
 
@@ -243,14 +246,14 @@ class StateMunicipioMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.2hnqk450'
+                'url': 'mapbox://davideads.7vp1dlm9'
               }}
             />
 
             <Layer
               id="stateFillLayer"
               sourceId="estatales"
-              sourceLayer="estatalesfosas"
+              sourceLayer="estatales"
               before={BEFORELAYER}
 
               filter={["==", "CVE_ENT", this.state.stateCode]}
@@ -265,7 +268,7 @@ class StateMunicipioMap extends React.Component {
             <Layer
               id="stateOutlineLayer"
               sourceId="estatales"
-              sourceLayer="estatalesfosas"
+              sourceLayer="estatales"
               before={BEFORELAYER}
 
               filter={["==", "CVE_ENT", this.state.stateCode]}
@@ -280,9 +283,10 @@ class StateMunicipioMap extends React.Component {
             <Layer
               id="municipioOutlineLayer"
               sourceId="municipales"
-              sourceLayer="municipalitiesfosas"
+              sourceLayer="municipales"
               before={BEFORELAYER}
-
+              minZoom={1}
+              maxZoom={11}
               filter={["==", "CVE_ENT", this.state.stateCode]}
 
               type='line'
@@ -297,11 +301,12 @@ class StateMunicipioMap extends React.Component {
               <Layer
                 id={"centroidLayer"+theYear}
                 sourceId="centroids"
-                sourceLayer="municipales-fosas-centroids-avkz1u"
+                sourceLayer="municipalescentroids"
                 before={(i === 0) ? BEFORELAYER : "centroidLayer"+ (theYear-1)}
                 key={'cumulative'+theYear}
-
                 filter={["==", "CVE_ENT", this.state.stateCode]}
+                minZoom={1}
+                maxZoom={11}
 
                 type='circle'
                 layout={{
@@ -315,7 +320,7 @@ class StateMunicipioMap extends React.Component {
                       ...circleSteps
                   ],
                   'circle-color': yearColor(theYear),
-                  'circle-opacity': (this.state.selectedYear == 2005) ? 1 : 1,
+                  'circle-opacity': (this.state.selectedYear == 2005) ? 1 : .9,
                   'circle-stroke-width': 0,
                   'circle-stroke-color': '#fff',
                   'circle-stroke-opacity': 0.3,

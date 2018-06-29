@@ -8,10 +8,10 @@ from shapely.geometry import mapping, shape
 from copy import deepcopy
 
 PROPS = ['num_fosas',
-         'num_cuerpos',
-         'num_cuerpos_identificados',
-         'num_restos',
-         'identificados']
+         'num_cuerpos']
+         # 'num_cuerpos_identificados',
+         # 'num_restos',
+         # 'identificados']
 
 
 def merge_municipality_data():
@@ -83,13 +83,24 @@ def merge_municipality_data():
                     maxes[prop] = totals[prop]
 
             try:
-                shp = shape(feature['geometry'])
-                feature_centroid = mapping(shp.representative_point())
-                center_feature = deepcopy(feature)
-                center_feature['geometry'] = feature_centroid
-                centers['features'].append(center_feature)
+                make_centroid = False
+                for prop in PROPS:
+                    if feature['properties'][prop + '_total'] > 0:
+                        make_centroid = True
+                        break
+
+                if make_centroid:
+                    shp = shape(feature['geometry'])
+                    feature_centroid = mapping(shp.representative_point())
+                    center_feature = deepcopy(feature)
+                    center_feature['geometry'] = feature_centroid
+                    centers['features'].append(center_feature)
             except:
                 print('encountered feature w/o centroid pls fix')
+
+
+            # Just adding to the ugliness. Only centroids have data...
+            feature['properties'] = {'CVE_ENT': feature['properties']['CVE_ENT']}
 
     with open('data/processed-geojson/municipales.json', 'w') as f:
         json.dump(data, f)
