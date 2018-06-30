@@ -1,6 +1,6 @@
 import React from "react";
-import StateMunicipioMap from '../components/StateMunicipioMap.js'
-import * as pym from 'pym.js'
+import StateMapWrapper from '../components/StateMapWrapper';
+import * as pym from 'pym.js';
 
 class MapTemplate extends React.Component {
   constructor(props) {
@@ -13,11 +13,9 @@ class MapTemplate extends React.Component {
 
   render() {
     return (
-      <div className="container">
-      <StateMunicipioMap
+      <StateMapWrapper
         selectedState={this.props.data.mxstatesJson}
       />
-      </div>
     )
   }
 }

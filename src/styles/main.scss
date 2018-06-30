@@ -9,140 +9,146 @@ html, body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
-h1 {
-  text-align: center;
-}
-
-.container {
-  max-width: 1100px;
+.state-details {
+  max-width: 700px;
   margin: 0 auto;
-  padding: 10px;
-}
-
-.slider-container {
-  margin: 30px auto 30px auto;
   padding: 0 20px;
-  width: 70%;
-  max-width: 560px;
-  text-align: center;
 }
 
-.slider-container input {
-  width: 94%;
-}
-.slider-container .chart-wrapper {
-  height: 0;
-  position: relative;
-  padding-top: 25%;
-}
+//h1 {
+  //text-align: center;
+//}
 
-.slider-container .chart-wrapper .chart {
-  display: flex;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.slider-container .chart .bar-container {
-  width: 9.09%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  padding: 4px;
-  margin-top: auto;
-  &:hover {
-    cursor: move;
-    cursor: grab;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
-  }
-}
+//.container {
+  //max-width: 1100px;
+  //margin: 0 auto;
+  //padding: 10px;
+//}
 
-.slider-container .chart .bar {
-  transition: height .4s ease;
-}
+//.slider-container {
+  //margin: 30px auto 30px auto;
+  //padding: 0 20px;
+  //width: 70%;
+  //max-width: 560px;
+  //text-align: center;
+//}
 
-.slider-container .slider {
-  padding: 0 5%;
-}
+//.slider-container input {
+  //width: 94%;
+//}
+//.slider-container .chart-wrapper {
+  //height: 0;
+  //position: relative;
+  //padding-top: 25%;
+//}
 
-.slider-container .toggle-buttons {
-  margin: 15px 0;
-}
-
-.slider-container .toggle-buttons button {
-  font-size: 16px;
-  border-radius: 0;
-  color: #eee;
-  border: 1px solid #777;
-  background-color: #333;
-  padding: 10px 30px;
-  text-transform: uppercase;
-  outline: none;
-  transition: background-color 0.4s ease;
-  position: relative;
-  &:nth-child(1) {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
-  &:nth-child(2) {
-    margin-left: -2px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-  }
-  &.active {
-    background-color: #000;
-    border-color: #ddd;
-    z-index: 1;
-  }
-}
-
-.municipio-map-wrapper {
-  height: 0;
-  overflow: hidden;
-  width: 100%;
-  max-width: 860px;
-  margin: 0 auto;
-  padding-top: 40%;
-  position: relative;
-  .municipio-map {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.indicators {
-  display: flex;
-}
-
-.indicator-block {
-  width: 50%;
-  text-align: center;
-}
-.recharts-text {
-  font-size: 10px;
-}
-
-.indicator-label {
-  font-size: 14px;
-  padding-bottom: 4px;
-}
-.year-total .indicator-label {
-  font-weight: bold;
-}
-
-.indicator-no-data {
-  font-size: 12px;
-  color: #999;
-}
-
-@media screen and (max-width: 800px) {
-  //.container {
-    //padding: 0 20px;
+//.slider-container .chart-wrapper .chart {
+  //display: flex;
+  //position: absolute;
+  //top: 0;
+  //left: 0;
+  //width: 100%;
+  //height: 100%;
+//}
+//.slider-container .chart .bar-container {
+  //width: 9.09%;
+  //flex: 1;
+  //display: flex;
+  //flex-direction: column;
+  //text-align: center;
+  //padding: 4px;
+  //margin-top: auto;
+  //&:hover {
+    //cursor: move;
+    //cursor: grab;
+    //cursor: -webkit-grab;
+    //cursor: -moz-grab;
   //}
-}
+//}
+
+//.slider-container .chart .bar {
+  //transition: height .4s ease;
+//}
+
+//.slider-container .slider {
+  //padding: 0 5%;
+//}
+
+//.slider-container .toggle-buttons {
+  //margin: 15px 0;
+//}
+
+//.slider-container .toggle-buttons button {
+  //font-size: 16px;
+  //border-radius: 0;
+  //color: #eee;
+  //border: 1px solid #777;
+  //background-color: #333;
+  //padding: 10px 30px;
+  //text-transform: uppercase;
+  //outline: none;
+  //transition: background-color 0.4s ease;
+  //position: relative;
+  //&:nth-child(1) {
+    //border-top-left-radius: 5px;
+    //border-bottom-left-radius: 5px;
+  //}
+  //&:nth-child(2) {
+    //margin-left: -2px;
+    //border-top-right-radius: 5px;
+    //border-bottom-right-radius: 5px;
+  //}
+  //&.active {
+    //background-color: #000;
+    //border-color: #ddd;
+    //z-index: 1;
+  //}
+//}
+
+//.municipio-map-wrapper {
+  //height: 0;
+  //overflow: hidden;
+  //width: 100%;
+  //max-width: 860px;
+  //margin: 0 auto;
+  //padding-top: 40%;
+  //position: relative;
+  //.municipio-map {
+    //position: absolute;
+    //top: 0;
+    //left: 0;
+    //width: 100%;
+    //height: 100%;
+  //}
+//}
+
+//.indicators {
+  //display: flex;
+//}
+
+//.indicator-block {
+  //width: 50%;
+  //text-align: center;
+//}
+//.recharts-text {
+  //font-size: 10px;
+//}
+
+//.indicator-label {
+  //font-size: 14px;
+  //padding-bottom: 4px;
+//}
+//.year-total .indicator-label {
+  //font-weight: bold;
+//}
+
+//.indicator-no-data {
+  //font-size: 12px;
+  //color: #999;
+//}
+
+//@media screen and (max-width: 800px) {
+  ////.container {
+    ////padding: 0 20px;
+  ////}
+//}
