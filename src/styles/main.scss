@@ -1,154 +1,164 @@
 @import "variables";
 
+/* Body */
 html, body {
   margin: 0;
-  padding: 0 0 2rem 0;
+  padding: 0;
   font-size: 17px;
   background-color: #1E282C;
-  color: #eee;
+  color: #f8f8f8;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
-.state-details {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 0 20px;
+/* Dead Simple Grid (c) 2015 Vladimir Agafonkin */
+.row .row { margin:  0 -2.5em; }
+.col      { padding: 0  2.5em; }
+
+.row:after {
+    content: "";
+    clear: both;
+    display: table;
 }
 
-//h1 {
-  //text-align: center;
-//}
+@media only screen {
+  .col {
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
 
-//.container {
-  //max-width: 1100px;
-  //margin: 0 auto;
-  //padding: 10px;
-//}
+/* Page grid */
+@media only screen and (min-width: 860px) {
+	.map { width: 60%; }
+	.controls { width: 40%; }
+}
 
-//.slider-container {
-  //margin: 30px auto 30px auto;
-  //padding: 0 20px;
-  //width: 70%;
-  //max-width: 560px;
-  //text-align: center;
-//}
 
-//.slider-container input {
-  //width: 94%;
-//}
-//.slider-container .chart-wrapper {
-  //height: 0;
-  //position: relative;
-  //padding-top: 25%;
-//}
+/* Content wrapper */
+.state-details {
+  max-width: 1280px;
+  margin: 0 auto;
+}
 
-//.slider-container .chart-wrapper .chart {
-  //display: flex;
-  //position: absolute;
-  //top: 0;
-  //left: 0;
-  //width: 100%;
-  //height: 100%;
-//}
-//.slider-container .chart .bar-container {
-  //width: 9.09%;
-  //flex: 1;
-  //display: flex;
-  //flex-direction: column;
-  //text-align: center;
-  //padding: 4px;
-  //margin-top: auto;
-  //&:hover {
-    //cursor: move;
-    //cursor: grab;
-    //cursor: -webkit-grab;
-    //cursor: -moz-grab;
-  //}
-//}
+.state-details > div {
+  margin-bottom: 30px;
+}
 
-//.slider-container .chart .bar {
-  //transition: height .4s ease;
-//}
+/* Toogle buttons */
+.toggle-buttons button {
+  width: 50%;
+  font-size: 16px;
+  border-radius: 0;
+  color: #eee;
+  border: 1px solid #777;
+  background-color: #333;
+  padding: 10px 30px;
+  text-transform: uppercase;
+  outline: none;
+  transition: background-color 0.4s ease;
+  position: relative;
+  &:nth-child(1) {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  &:nth-child(2) {
+    margin-left: -2px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  &.active {
+    background-color: #000;
+    border-color: #ddd;
+    z-index: 1;
+  }
+}
 
-//.slider-container .slider {
-  //padding: 0 5%;
-//}
+/* Map */
+.municipio-map-wrapper {
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 80%;
+  position: relative;
+}
+.municipio-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
-//.slider-container .toggle-buttons {
-  //margin: 15px 0;
-//}
+/* Slider */
+.slider-container {
+  display: flex;
+  margin: 2.5rem 0;
+}
+.slider-container button {
+  padding: 4px 7px;
+  background-color: #000;
+  color: #ccc;
+  border: 1px solid #999;
+  border-radius: 3px;
+  font-size: 20px;
+  line-height: 1;
+}
+.slider-container .rc-slider {
+  width: calc(100% - 60px) !important;
+  margin-left: auto;
+}
 
-//.slider-container .toggle-buttons button {
-  //font-size: 16px;
-  //border-radius: 0;
-  //color: #eee;
-  //border: 1px solid #777;
-  //background-color: #333;
-  //padding: 10px 30px;
-  //text-transform: uppercase;
-  //outline: none;
-  //transition: background-color 0.4s ease;
-  //position: relative;
-  //&:nth-child(1) {
-    //border-top-left-radius: 5px;
-    //border-bottom-left-radius: 5px;
-  //}
-  //&:nth-child(2) {
-    //margin-left: -2px;
-    //border-top-right-radius: 5px;
-    //border-bottom-right-radius: 5px;
-  //}
-  //&.active {
-    //background-color: #000;
-    //border-color: #ddd;
-    //z-index: 1;
-  //}
-//}
+/* Chart */
+.chart-wrapper {
+  height: 0;
+  position: relative;
+  padding-top: 40%;
+}
 
-//.municipio-map-wrapper {
-  //height: 0;
-  //overflow: hidden;
-  //width: 100%;
-  //max-width: 860px;
-  //margin: 0 auto;
-  //padding-top: 40%;
-  //position: relative;
-  //.municipio-map {
-    //position: absolute;
-    //top: 0;
-    //left: 0;
-    //width: 100%;
-    //height: 100%;
-  //}
-//}
+.chart {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.chart .bar-container {
+  width: 10%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: auto;
+}
+.chart .bar {
+  transition: height .4s ease;
+  width: calc(100% - 8px);
+  margin: 0 auto;
+}
+.chart .year-label {
+  font-size: 10px;
+  border-top: 1px solid #999;
+}
 
-//.indicators {
-  //display: flex;
-//}
+.indicator-block {
+  width: 50%;
+  text-align: center;
+}
+.indicator-label {
+  margin-top: auto;
+  font-size: 14px;
+  padding-bottom: 4px;
+}
+.year-total .indicator-label {
+  font-weight: bold;
+}
 
-//.indicator-block {
-  //width: 50%;
-  //text-align: center;
-//}
-//.recharts-text {
-  //font-size: 10px;
-//}
+.indicator-no-data {
+  font-size: 9px;
+  color: #999;
+}
 
-//.indicator-label {
-  //font-size: 14px;
-  //padding-bottom: 4px;
-//}
-//.year-total .indicator-label {
-  //font-weight: bold;
-//}
 
-//.indicator-no-data {
-  //font-size: 12px;
-  //color: #999;
-//}
-
-//@media screen and (max-width: 800px) {
-  ////.container {
-    ////padding: 0 20px;
-  ////}
-//}

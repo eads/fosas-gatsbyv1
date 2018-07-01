@@ -1,8 +1,67 @@
 import React from 'react';
-import ContainerDimensions from 'react-container-dimensions'
-
+import { FaPlay, FaPause, FaRepeat } from 'react-icons/lib/fa';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+
+class SliderControlButton extends React.Component {
+  state = {
+    playing: false,
+    timer: null,
+  }
+
+  togglePlaying = () => {
+    const { onYearChange, minYear, maxYear } = this.props;
+    let timer = null;
+
+    if (!this.state.playing) {
+      this.setState({ playing: true }, () => {
+        if (this.props.selectedYear == maxYear) {
+          onYearChange(minYear);
+        } else {
+          onYearChange(this.props.selectedYear + 1);
+        }
+        timer = setInterval( () => {
+          if (this.props.selectedYear == maxYear) {
+            this.setState({ playing: false }, () => {
+              clearInterval(timer);
+            });
+          } else {
+            onYearChange(this.props.selectedYear + 1);
+          }
+        }, 700);
+      });
+    } else {
+      this.setState({ playing: false }, () => {
+        console.log('got here', timer);
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      });
+    }
+  }
+
+  render() {
+    const { togglePlaying } = this;
+    const { playing } = this.state;
+    const { selectedYear, maxYear } = this.props;
+
+    return (
+      <button onClick={togglePlaying}>
+        {playing && (
+          <FaPause />
+        )}
+        {(!playing && selectedYear != maxYear) && (
+          <FaPlay />
+        )}
+        {(!playing && selectedYear == maxYear) && (
+          <FaRepeat />
+        )}
+      </button>
+    )
+  }
+}
+
 
 class StateMapSlider extends React.Component {
 
@@ -11,82 +70,26 @@ class StateMapSlider extends React.Component {
 
     return (
       <div className="slider-container">
-        <div className="chart-wrapper">
-          <h1>CHART TK</h1>
-
-        </div>
+        <SliderControlButton
+          selectedYear={selectedYear}
+          onYearChange={onYearChange}
+          minYear={minYear}
+          maxYear={maxYear}
+        />
 
         <Slider
           min={minYear}
           max={maxYear}
           value={selectedYear}
           onChange={onYearChange}
+          marks ={{
+            2005: 'Total',
+            2016: '2016',
+          }}
         />
       </div>
     )
   }
 }
 
-
 export default StateMapSlider;
-
-
-/*
- * <div className="slider-container">
-        <div className="chart-wrapper">
-          <ContainerDimensions>
-          { ({ height }) =>
-            <div className="chart">
-              <div
-                key={"yearrowtotal"}
-                className="bar-container year-total"
-              >
-                <span
-                  className="year-label"
-                  style={{
-                    color: "#fff",
-                    fontSize: 11,
-                    padding: 2,
-                    fontWeight: "bold",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Total
-                </span>
-              </div>
-              {this.state.stateData.yearlyFosasData.map( (yearRow, i) => (
-                <div
-                key={"yearrow"+i}
-                className={"bar-container year-" + yearRow.year}
-                onClick={this.onSlideChange.bind(this, yearRow.year)}
-                >
-                  {(yearRow['num_' + this.state.selectedVar] < 0) ?
-                    <span className="indicator-no-data">No data</span> :
-                    <span className="indicator-label">{yearRow['num_' + this.state.selectedVar]}</span>
-                  }
-                  <div
-                    className="bar"
-                    style={{
-                      height: (yearRow['num_' + this.state.selectedVar] / this.state.stateData['all_max']) * (height - 50),
-                      backgroundColor: yearColor(yearRow.year)
-                    }}
-                  />
-                  <span
-                    className="year-label"
-                    style={{
-                      color: '#fff',
-                      borderTop: "2px solid #111",
-                      fontSize: 11,
-                      padding: 2,
-                      backgroundColor: yearColor(yearRow.year)
-                    }}
-                  >
-                    {yearRow.year}
-                  </span>
-                </div>
-              ))}
-            </div>
-          }
-          </ContainerDimensions>
-          </div>
-*/
