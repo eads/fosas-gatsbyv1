@@ -28,17 +28,17 @@ class StateMapChart extends React.Component {
                   <div
                     className="bar"
                     style={{
-                      height: (yearRow['num_' + selectedVar] / selectedStateData['all_max']) * (height - 50),
+                      height: (yearRow['num_' + selectedVar] / selectedStateData['all_max']) * (height - 38),
                       backgroundColor: yearColorScale(yearRow.year)
                     }}
                   />
                   <span
                     className="year-label"
                     style={{
-                      color: yearColorScale(yearRow.year)
+                      backgroundColor: yearColorScale(yearRow.year)
                     }}
                   >
-                    {yearRow.year}
+                    '{yearRow.year.toString().slice(2)}
                   </span>
                 </div>
               ))}

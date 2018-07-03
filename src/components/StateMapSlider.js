@@ -14,29 +14,29 @@ class SliderControlButton extends React.Component {
     let timer = null;
 
     if (!this.state.playing) {
-      this.setState({ playing: true }, () => {
-        if (this.props.selectedYear == maxYear) {
-          onYearChange(minYear);
-        } else {
-          onYearChange(this.props.selectedYear + 1);
-        }
-        timer = setInterval( () => {
+      if (this.props.selectedYear == maxYear) {
+        onYearChange(minYear + 1);
+      } else {
+        onYearChange(this.props.selectedYear + 1);
+      }
+      this.setState({
+        playing: true,
+        timer: setInterval( () => {
           if (this.props.selectedYear == maxYear) {
-            this.setState({ playing: false }, () => {
-              clearInterval(timer);
-            });
+            this.setState({ playing: false });
+            clearInterval(timer);
           } else {
             onYearChange(this.props.selectedYear + 1);
           }
-        }, 700);
+        }, 700)
       });
     } else {
-      this.setState({ playing: false }, () => {
-        console.log('got here', timer);
-        if (timer) {
-          clearInterval(timer);
-          timer = null;
-        }
+      if (this.state.timer) {
+        clearInterval(this.state.timer);
+      }
+      this.setState({
+        playing: false,
+        timer: null,
       });
     }
   }

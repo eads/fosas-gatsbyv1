@@ -11,8 +11,8 @@ html, body {
 }
 
 /* Dead Simple Grid (c) 2015 Vladimir Agafonkin */
-.row .row { margin:  0 -2.5em; }
-.col      { padding: 0  2.5em; }
+.row .row { margin:  0 -1.5em; }
+.col      { padding: 0  1.5em; }
 
 .row:after {
     content: "";
@@ -140,7 +140,8 @@ html, body {
 }
 .chart .year-label {
   font-size: 10px;
-  border-top: 1px solid #999;
+  margin: 0 4px;
+  border-top: 2px solid #333;
 }
 
 .indicator-block {
@@ -149,7 +150,7 @@ html, body {
 }
 .indicator-label {
   margin-top: auto;
-  font-size: 14px;
+  font-size: 12px;
   padding-bottom: 4px;
 }
 .year-total .indicator-label {

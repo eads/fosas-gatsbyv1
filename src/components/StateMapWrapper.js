@@ -24,9 +24,8 @@ class StateMapWrapper extends React.Component {
     selectedYear: MINYEAR,
     minYear: MINYEAR,
     maxYear: MAXYEAR,
-    //yearColorScale: d3Scale.scaleSequential(d3ScaleChromatic.interpolateViridis)
-    //.domain([MINYEAR + 1, MAXYEAR]), // Colors only apply to year after fake "total" year
-    yearColorScale: () => ('#aaa'),
+    yearColorScale: d3Scale.scaleSequential(d3Scale.interpolateViridis)
+      .domain([MINYEAR + 1, MAXYEAR + 1]), // Colors only apply to year after fake "total" year
   }
 
   constructor(props) {
@@ -54,6 +53,7 @@ class StateMapWrapper extends React.Component {
 
   render() {
     const { selectedState } = this.state;
+
     return (
       <div className="state-details">
         <div className="row">

@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl";
 import range from 'lodash/range';
+import max from 'lodash/max';
 import cloneDeep from 'lodash/cloneDeep';
+import flatten from 'lodash/flatten';
+import * as d3Scale from 'd3-scale';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+const DEFAULT_MAP_PADDING = 15;
 
 class StateMap extends React.Component {
 
@@ -19,12 +24,8 @@ class StateMap extends React.Component {
     const bounds = [props.selectedState.bounds.slice(0, 2), props.selectedState.bounds.slice(2)];
     this.state = {
       fitBounds: bounds,
+      circleSteps: null,
     }
-  }
-
-  componentDidMount() {
-    const selectedState = this.props.selectedState;
-    const bounds = [selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)];
   }
 
   _getSourceFeatures(map, source) {
@@ -36,8 +37,16 @@ class StateMap extends React.Component {
     return features;
   }
 
+
+  onStyleLoad = (map, style) => {
+    const selectedState = this.props.selectedState;
+    const bounds = [selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)];
+    map.fitBounds(bounds, { padding: DEFAULT_MAP_PADDING });
+  }
+
   onSourceData = (map, source) => {
     const { selectedStateData, onDataChange } = this.props;
+    const { circleSteps } = this.state;
 
     // Only trigger when selectedStateData is still null
     if (source.sourceId == 'estatales' && !selectedStateData) {
@@ -51,20 +60,23 @@ class StateMap extends React.Component {
       }
     }
 
-    //if (data.sourceId == 'centroids') {
-      //const features = map.querySourceFeatures("centroids", {
-        //sourceLayer: "municipalescentroids",
-        //filter: ["==", "CVE_ENT", this.state.stateCode],
-      //})
-      //if (features.length && this.state.maxFosas == null && this.state.maxCuerpos == null) {
-        //const maxFosas = _.max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)))
-        //const maxCuerpos = _.max(features.map( (feature) => (feature.properties.num_cuerpos_cumulative_2016)))
-        //this.setState({
-          //maxFosas: maxFosas,
-          //maxCuerpos: maxCuerpos,
-        //})
-      //}
-    //}
+    if (source.sourceId == 'municipalescentroids') {
+      const features = this._getSourceFeatures(map, source);
+
+      if (features.length && !circleSteps) {
+        const circleSteps = {...circleSteps}
+
+        const maxFosas = max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)));
+        const fosasScale = d3Scale.scaleSqrt().domain([0, maxFosas]).range([0, 20]);
+        circleSteps.fosas = flatten(range(0, maxFosas).map( (value, i) => ( [value, fosasScale(value)] ) ));
+
+        const maxCuerpos = max(features.map( (feature) => (feature.properties.num_cuerpos_cumulative_2016)));
+        const cuerposScale = d3Scale.scaleSqrt().domain([0, maxCuerpos]).range([0, 20]);
+        circleSteps.cuerpos = flatten(range(0, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
+
+        this.setState({circleSteps});
+      }
+    }
 
   }
 
@@ -72,7 +84,7 @@ class StateMap extends React.Component {
     const { Map } = this;
     const { beforeLayer, selectedState, selectedStateData, selectedVar,
               selectedYear, minYear, maxYear, yearColorScale } = this.props;
-    const { fitBounds } = this.state;
+    const { fitBounds, circleSteps } = this.state;
 
     return (
       <div className="municipio-map-wrapper">
@@ -84,8 +96,9 @@ class StateMap extends React.Component {
               width: "100%"
             }}
             fitBounds={fitBounds}
-            fitBoundsOptions={{padding: 15}}
+            fitBoundsOptions={{padding: DEFAULT_MAP_PADDING}}
             onSourceData={this.onSourceData}
+            onStyleLoad={this.onStyleLoad}
             ref={(mapbox) => { this.mapbox = mapbox; }}
           >
 
@@ -93,7 +106,7 @@ class StateMap extends React.Component {
               id="municipalescentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.5rgtszcw'
+                'url': 'mapbox://davideads.30q52zlr'
               }}
             />
 
@@ -101,7 +114,7 @@ class StateMap extends React.Component {
               id="municipalesshapes"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.aekfu8a3'
+                'url': 'mapbox://davideads.aeiezxnw'
               }}
             />
 
@@ -109,7 +122,7 @@ class StateMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.7vp1dlm9'
+                'url': 'mapbox://davideads.2lwa8js4'
               }}
             />
 
@@ -157,7 +170,7 @@ class StateMap extends React.Component {
               }}
             />
 
-            {range(minYear, maxYear + 1).map( (year, i) => (
+            {range(minYear + 1, maxYear + 1).map( (year, i) => (
               <Layer
                 id={"centroidLayer"+year}
                 sourceId="municipalescentroids"
@@ -172,16 +185,20 @@ class StateMap extends React.Component {
                   visibility: (selectedYear == 2005 || selectedYear == year) ? 'visible' : 'none',
                 }}
                 paint={{
-                  'circle-radius': 5,
+                  'circle-radius': (circleSteps != null) ? [
+                    'step',
+                    ['get', 'num_' + selectedVar + ((selectedYear == 2005) ? '_cumulative_' : '_') + year],
+                    0
+                  ].concat(circleSteps[selectedVar]) : 0,
                   'circle-color': yearColorScale(year),
                   'circle-opacity': (selectedYear == 2005) ? 1 : .9,
                   'circle-stroke-width': 0,
                   'circle-stroke-color': '#fff',
                   'circle-stroke-opacity': 0.3,
                 }}
-              ></Layer>
+              >
+              </Layer>
             ))}
-
             <ZoomControl />
           </Map>
         </div>
