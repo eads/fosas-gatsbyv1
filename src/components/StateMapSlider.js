@@ -9,55 +9,58 @@ class SliderControlButton extends React.Component {
     timer: null,
   }
 
-  togglePlaying = () => {
+  startPlaying = () => {
     const { onYearChange, minYear, maxYear } = this.props;
-    let timer = null;
 
-    if (!this.state.playing) {
+    if (this.props.selectedYear == maxYear) {
+      onYearChange(minYear + 1);
+    } else {
+      onYearChange(this.props.selectedYear + 1);
+    }
+    var timer = setInterval( () => {
       if (this.props.selectedYear == maxYear) {
-        onYearChange(minYear + 1);
+        onYearChange(minYear);
+        this.setState({
+          timer: clearInterval(this.state.timer),
+        });
       } else {
         onYearChange(this.props.selectedYear + 1);
       }
-      this.setState({
-        playing: true,
-        timer: setInterval( () => {
-          if (this.props.selectedYear == maxYear) {
-            this.setState({ playing: false });
-            clearInterval(timer);
-          } else {
-            onYearChange(this.props.selectedYear + 1);
-          }
-        }, 700)
-      });
-    } else {
-      if (this.state.timer) {
-        clearInterval(this.state.timer);
-      }
-      this.setState({
-        playing: false,
-        timer: null,
-      });
-    }
+    }, 1000)
+
+    this.setState({
+      timer: timer,
+    });
+  }
+
+  stopPlaying = () => {
+    this.setState({
+      timer: clearInterval(this.state.timer),
+    });
+  }
+
+  restartPlaying = () => {
+    const { onYearChange, minYear } = this.props;
+    onYearChange(minYear);
   }
 
   render() {
-    const { togglePlaying } = this;
-    const { playing } = this.state;
+    const { startPlaying, stopPlaying, restartPlaying } = this;
+    const { timer } = this.state;
     const { selectedYear, maxYear } = this.props;
 
     return (
-      <button onClick={togglePlaying}>
-        {playing && (
-          <FaPause />
+      <div className="control-button">
+        {timer && (
+          <FaPause onClick={stopPlaying} />
         )}
-        {(!playing && selectedYear != maxYear) && (
-          <FaPlay />
+        {(!timer && selectedYear != maxYear) && (
+          <FaPlay onClick={startPlaying} />
         )}
-        {(!playing && selectedYear == maxYear) && (
-          <FaRepeat />
+        {(!timer && selectedYear == maxYear) && (
+          <FaRepeat onClick={restartPlaying} />
         )}
-      </button>
+      </div>
     )
   }
 }
@@ -77,16 +80,18 @@ class StateMapSlider extends React.Component {
           maxYear={maxYear}
         />
 
-        <Slider
-          min={minYear}
-          max={maxYear}
-          value={selectedYear}
-          onChange={onYearChange}
-          marks ={{
-            2005: 'Total',
-            2016: '2016',
-          }}
-        />
+        <div className="slider">
+          <Slider
+            min={minYear}
+            max={maxYear}
+            value={selectedYear}
+            onChange={onYearChange}
+            marks ={{
+              2005: 'Total',
+              2016: '2016',
+            }}
+          />
+        </div>
       </div>
     )
   }

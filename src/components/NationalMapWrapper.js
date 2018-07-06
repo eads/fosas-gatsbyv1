@@ -16,7 +16,7 @@ const VARS = ['fosas', 'cuerpos'];
 const MINYEAR = 2005;
 const MAXYEAR = 2016;
 
-class StateMapWrapper extends React.Component {
+class NationalMapWrapper extends React.Component {
   state = {
     selectedState: {},
     selectedStateData: null,
@@ -25,7 +25,6 @@ class StateMapWrapper extends React.Component {
     minYear: MINYEAR,
     maxYear: MAXYEAR,
     mapFilter: null,
-    circleSteps: null,
     yearColorScale: d3Scale.scaleSequential(d3Scale.interpolateViridis)
       .domain([MINYEAR + 1, MAXYEAR + 1]), // Colors only apply to year after fake "total" year
   }
@@ -33,7 +32,8 @@ class StateMapWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state.selectedState = props.selectedState;
-    this.state.mapFilter = (props.mapFilter) || ["==", "CVE_ENT", props.selectedState.state_code];
+    this.state.mapFilter = (props.mapFilter === undefined) ? ["==", "CVE_ENT", props.selectedState.state_code] : props.mapFilter;
+    this.state.circleSteps = props.circleSteps || null;
   }
 
   setYear = (selectedYear) => {
@@ -58,32 +58,30 @@ class StateMapWrapper extends React.Component {
     const { selectedState } = this.state;
 
     return (
-      <div className="state-details">
+      <div className="state-details national">
         <div className="row">
           <div className="col">
             <h1>{selectedState.state_name}</h1>
           </div>
         </div>
         <div className="row">
-          <div className="col controls">
-            <StateMapButtons
-              {...this.state}
-              vars={VARS}
-              onVarChange={this.setVar}
-            />
-            <StateMapSlider
-              {...this.state}
-              onYearChange={this.setYear}
-            />
-            <StateMapChart
-              {...this.state}
-              onYearChange={this.setYear}
-            />
-          </div>
-          <div className="col map">
+          <div className="col">
+            <div className="controls">
+              <StateMapButtons
+                {...this.state}
+                vars={VARS}
+                onVarChange={this.setVar}
+                hideValues={true}
+              />
+              <StateMapSlider
+                {...this.state}
+                onYearChange={this.setYear}
+              />
+            </div>
             <StateMap
               {...this.state}
-              beforeLayer="terrain"
+              hideMunicipales={true}
+              beforeLayer="state labels"
               onDataChange={this.setSelectedStateData}
             />
           </div>
@@ -93,4 +91,5 @@ class StateMapWrapper extends React.Component {
   }
 }
 
-export default StateMapWrapper;
+export default NationalMapWrapper;
+

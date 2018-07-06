@@ -8,7 +8,7 @@ class StateMapButtons extends React.Component {
   }
 
   render() {
-    const { vars, selectedVar } = this.props;
+    const { vars, selectedVar, selectedStateData, hideValues } = this.props;
     const { onVarChange } = this;
 
     return (
@@ -20,7 +20,7 @@ class StateMapButtons extends React.Component {
             onClick={onVarChange}
             className={(selectedVar == varName) ? 'active': null}
           >
-            {varName} XX
+            {varName} {!hideValues && selectedStateData && selectedStateData['num_' + varName + '_total']}
           </button>
         ))}
       </div>

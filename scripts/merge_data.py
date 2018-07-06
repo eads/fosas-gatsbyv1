@@ -60,7 +60,11 @@ def merge_municipality_data():
                 cumulative_dict = {'year': year}
 
                 for prop in PROPS:
-                    if mun_data and mun_data.get(year) and mun_data[year].get(prop, 0) > 1:
+                    # if year == 2011 and mun_code == 4 and mun_data and mun_data.get(year) and state_code == 23:
+                        # print(year)
+                        # print(mun_data[year].get(prop, 0))
+                        # import ipdb; ipdb.set_trace();
+                    if mun_data and mun_data.get(year) and mun_data[year].get(prop, 0) > 0:
                         feature['properties'][prop + '_' + str(year)] = int(mun_data[year].get(prop))
                         totals[prop] += int(mun_data[year].get(prop))
                     # elif mun_data and mun_data.get(year) and mun_data[year].get(prop) == 0:
@@ -76,6 +80,10 @@ def merge_municipality_data():
                         feature['properties'][prop + '_cumulative_' + str(year)] = feature['properties'][prop + '_' + str(year)]
 
                 cumulative_fosas_data.append(cumulative_dict)
+
+            if state_code == 23:
+                from pprint import pprint
+                pprint(feature['properties'])
 
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = totals[prop]
@@ -97,7 +105,6 @@ def merge_municipality_data():
                     centers['features'].append(center_feature)
             except:
                 print('encountered feature w/o centroid pls fix')
-
 
             # Just adding to the ugliness. Only centroids have data...
             feature['properties'] = {'CVE_ENT': feature['properties']['CVE_ENT']}

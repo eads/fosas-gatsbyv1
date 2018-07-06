@@ -15,24 +15,25 @@ class StateMap extends React.Component {
   constructor(props) {
     super(props);
 
+    if (typeof window == 'undefined') { return null; }
+
     this.Map = ReactMapboxGl({
       accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
-      minZoom: 3.5,
+      minZoom: 2.8,
       maxZoom: 8,
     });
-
     const bounds = [props.selectedState.bounds.slice(0, 2), props.selectedState.bounds.slice(2)];
     this.state = {
       fitBounds: bounds,
-      circleSteps: null,
+      circleSteps: props.circleSteps,
     }
   }
 
   _getSourceFeatures(map, source) {
-    const { selectedState } = this.props;
+    const { selectedState, mapFilter } = this.props;
     const features = map.querySourceFeatures(source.sourceId, {
       sourceLayer: source.sourceId,
-      filter: ["==", "CVE_ENT", selectedState.state_code],
+      filter: mapFilter,
     })
     return features;
   }
@@ -60,10 +61,10 @@ class StateMap extends React.Component {
       }
     }
 
-    if (source.sourceId == 'municipalescentroids') {
+    if (source.sourceId == 'municipalescentroids' && !this.props.circleSteps) {
       const features = this._getSourceFeatures(map, source);
 
-      if (features.length && !circleSteps) {
+      if (features.length) {
         const circleSteps = {...circleSteps}
 
         const maxFosas = max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)));
@@ -81,11 +82,11 @@ class StateMap extends React.Component {
   }
 
   render() {
+    if (typeof window == 'undefined') { return null; }
     const { Map } = this;
     const { beforeLayer, selectedState, selectedStateData, selectedVar,
-              selectedYear, minYear, maxYear, yearColorScale } = this.props;
+              selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales } = this.props;
     const { fitBounds, circleSteps } = this.state;
-
     return (
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
@@ -106,7 +107,7 @@ class StateMap extends React.Component {
               id="municipalescentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.30q52zlr'
+                'url': 'mapbox://davideads.cobwfktp'
               }}
             />
 
@@ -132,7 +133,7 @@ class StateMap extends React.Component {
               sourceLayer="estatales"
               before={beforeLayer}
 
-              filter={["==", "CVE_ENT", selectedState.state_code]}
+              filter={mapFilter}
 
               type='fill'
               paint={{
@@ -146,11 +147,12 @@ class StateMap extends React.Component {
               sourceId="estatales"
               sourceLayer="estatales"
               before={beforeLayer}
-              filter={["==", "CVE_ENT", selectedState.state_code]}
+              filter={mapFilter}
               type='line'
               paint={{
                 'line-color': '#888',
                 'line-width': 1,
+                'line-opacity': 0.2,
               }}
             />
 
@@ -161,12 +163,12 @@ class StateMap extends React.Component {
               before={beforeLayer}
               minZoom={1}
               maxZoom={11}
-              filter={["==", "CVE_ENT", selectedState.state_code]}
+              filter={mapFilter}
               type='line'
               paint={{
                 'line-color': '#666',
                 'line-width': 0.5,
-                'line-opacity': 0.3
+                'line-opacity': (hideMunicipales) ? 0 : 0.3,
               }}
             />
 
@@ -177,7 +179,7 @@ class StateMap extends React.Component {
                 sourceLayer="municipalescentroids"
                 before={(i === 0) ? beforeLayer : "centroidLayer"+ (year-1)}
                 key={'cumulative'+year}
-                filter={["==", "CVE_ENT", selectedState.state_code]}
+                filter={mapFilter}
                 minZoom={1}
                 maxZoom={11}
                 type='circle'

@@ -39,10 +39,21 @@ html, body {
 .state-details {
   max-width: 1280px;
   margin: 0 auto;
+  padding-bottom: 1.25rem;
+}
+
+.state-details.national {
+  max-width: 800px;
 }
 
 .state-details > div {
   margin-bottom: 30px;
+}
+
+.state-details.national .controls {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 /* Toogle buttons */
@@ -53,7 +64,7 @@ html, body {
   color: #eee;
   border: 1px solid #777;
   background-color: #333;
-  padding: 10px 30px;
+  padding: 10px 10px;
   text-transform: uppercase;
   outline: none;
   transition: background-color 0.4s ease;
@@ -96,18 +107,33 @@ html, body {
   display: flex;
   margin: 2.5rem 0;
 }
-.slider-container button {
-  padding: 4px 7px;
+.slider-container svg {
+  padding: 7px 10px;
   background-color: #000;
   color: #ccc;
   border: 1px solid #999;
   border-radius: 3px;
   font-size: 20px;
   line-height: 1;
+  position: relative;
+  z-index: 10;
 }
-.slider-container .rc-slider {
-  width: calc(100% - 60px) !important;
+.slider-container .slider {
+  width: calc(100% - 80px) !important;
   margin-left: auto;
+  overflow: hidden;
+  padding: 0 15px;
+}
+
+.slider-container .rc-slider-mark .rc-slider-mark-text {
+  display: none;
+}
+
+.slider-container .rc-slider-mark .rc-slider-mark-text:first-child,
+.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(2),
+.slider-container .rc-slider-mark .rc-slider-mark-text:last-child,
+.slider-container .rc-slider-mark .rc-slider-mark-text-active:last-child {
+  display: block;
 }
 
 /* Chart */
@@ -115,6 +141,7 @@ html, body {
   height: 0;
   position: relative;
   padding-top: 40%;
+  margin: 1.5em 0;
 }
 
 .chart {
