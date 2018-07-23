@@ -20,7 +20,7 @@ def analyze_national_per_year():
 
         for year in range(2007, 2017):
             for prop in PROPS:
-                per_year[year][prop + '_change'] = (per_year[year][prop] - per_year[year - 1][prop]) / float(per_year[year - 1][prop])
+                per_year[year][prop + '_change'] = (per_year[year][prop] - per_year[year - 1][prop]) / float(per_year[year - 1][prop]) * 100
 
     with open('data/analysis/national-per-year.csv', 'w') as f:
         writer = csv.DictWriter(f, fieldnames=['year', 'num_fosas', 'num_fosas_change', 'num_cuerpos', 'num_cuerpos_change'])
