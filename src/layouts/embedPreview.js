@@ -7,9 +7,9 @@ import "../styles/preview.scss"
 const TemplateWrapper = ({ children }) => (
   <div>
     <Helmet>
-      <title>Mapas de Fosas @TK</title>
-      <meta name="description" content="@TK" />
-      <meta name="keywords" content="@TK" />
+      <title>Mapas de Fosas</title>
+      <meta name="description" content="DO NOT SHARE" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="shortcut icon" href="/favicon.png" />
     </Helmet>
     <div>

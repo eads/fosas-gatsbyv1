@@ -16,7 +16,7 @@ class EmbedPage extends React.Component {
 
     this.state = {
       embedWidth: 800,
-      iframeSrc: './zacatecas',
+      iframeSrc: './zacatecas/index.html',
     }
 
     this.lipsum = {
@@ -39,14 +39,21 @@ class EmbedPage extends React.Component {
   onClickWidgetLink(event) {
     event.preventDefault();
     this.setState({
-      iframeSrc: event.target.href
+      iframeSrc: event.target.href,
+    }, () => {
+      setTimeout(pym.autoInit, 100)
     });
   }
 
-  render() {
+  componentDidMount() {
     if (typeof window != 'undefined') {
-      setTimeout(pym.autoInit, 0)
+      setTimeout(pym.autoInit, 100)
     }
+  }
+
+  render() {
+    const relativeSrc = this.state.iframeSrc.replace("http://localhost:8000/", "").replace("https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/", "").replace("./", "");
+
     return (
       <div className="embed-preview">
 
@@ -60,7 +67,7 @@ class EmbedPage extends React.Component {
           <h1>FOSAS</h1>
 
           <p>Copy this embed code and paste it into your website:</p>
-          <textarea value={`<p data-pym-src="TK">Loading...</p>\n<script type="text/javascript" src="https://pym.nprapps.org/pym-loader.v1.min.js"></script>`} readOnly />
+          <textarea value={`[pym-src="https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/${relativeSrc}"]`} readOnly />
 
           <h2>Embed size <small>({this.state.embedWidth}px)</small></h2>
           <Slider
@@ -92,14 +99,15 @@ class EmbedPage extends React.Component {
             <h2>Pages</h2>
             <ul>
               {this.props.data.allSitePage.edges.map((page, i) => (
-                (page.node.path != '/404/' && !page.node.path.startsWith('/dev-')) && <li key={'page_' + i}>
+                (page.node.path != '/404.html' && <li key={'page_' + i}>
                   <Link
-                    to={(page.node.path.endsWith('/')) ? page.node.path + 'index.html' : page.node.path}
+                    to={page.node.path + 'index.html'}
                     onClick={this.onClickWidgetLink}
                   >
                     {(page.node.path == '/') ? 'index.html' : page.node.path}
                   </Link>
                 </li>
+                )
               ))}
             </ul>
           </div>
@@ -113,7 +121,7 @@ class EmbedPage extends React.Component {
                 <h1 className="hooha">{this.lipsum.hed}</h1>
                 <p className="hooha">{this.lipsum.graf}</p>
                 <div
-                  dangerouslySetInnerHTML={this.createEmbed(this.state.iframeSrc)}
+                  dangerouslySetInnerHTML={this.createEmbed(relativeSrc)}
                 />
                 <p className="hooha">{this.lipsum.graf}</p>
                 <p className="hooha">{this.lipsum.graf}</p>

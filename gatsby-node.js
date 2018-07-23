@@ -51,7 +51,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
       result.data.allMxstatesJson.edges.map(({ node }) => {
         var slug = slugify(node.state_name, {lower: true})
         createPage({
-          path: slug,
+          path: slug + '/',
           component: path.resolve(`./src/templates/map.js`),
           context: {
             // Data passed to context available in page queries as GraphQL variables.

@@ -2,6 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
   },
+  pathPrefix: '/graphics.adondevanlosdesparicidos.org',
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sass`,
