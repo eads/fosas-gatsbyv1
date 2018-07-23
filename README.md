@@ -18,3 +18,15 @@ gatsby new gatsby-example-site
 cat scripts/mx.json | jq '[.objects.states.geometries[] | .properties]' > src/data/mxstates.json
 cat scripts/mx.json | jq '[.objects.municipalities.geometries[] | .properties]' > src/data/mxmunicipalities.json
 ```
+
+## Notes
+
+- Per year
+- Number of fosas nationally
+- % change
+- Cuerpos nationally
+- % change
+
+- Sum of fosas for all years, per municipality
+
+
