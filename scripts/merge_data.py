@@ -52,18 +52,12 @@ def merge_municipality_data():
             mun_code = int(feature['properties']['CVE_MUN'])
             mun_data = lookup[state_code].get(mun_code)
 
-            # feature['properties']['yearlyFosasData'] = mun_data
-
             cumulative_fosas_data = []
 
             for year in range(2006, 2017):
                 cumulative_dict = {'year': year}
 
                 for prop in PROPS:
-                    # if year == 2011 and mun_code == 4 and mun_data and mun_data.get(year) and state_code == 23:
-                        # print(year)
-                        # print(mun_data[year].get(prop, 0))
-                        # import ipdb; ipdb.set_trace();
                     if mun_data and mun_data.get(year) and mun_data[year].get(prop, 0) > 0:
                         feature['properties'][prop + '_' + str(year)] = int(mun_data[year].get(prop))
                         totals[prop] += int(mun_data[year].get(prop))
@@ -80,10 +74,6 @@ def merge_municipality_data():
                         feature['properties'][prop + '_cumulative_' + str(year)] = feature['properties'][prop + '_' + str(year)]
 
                 cumulative_fosas_data.append(cumulative_dict)
-
-            if state_code == 23:
-                from pprint import pprint
-                pprint(feature['properties'])
 
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = totals[prop]
