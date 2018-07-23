@@ -1,0 +1,292 @@
+state_code,state_name,municipality_code,municipality_name,num_fosas_total,num_cuerpos_total
+12,Guerrero,001,Acapulco de Juárez,107,87
+25,Sinaloa,001,Ahome,65,70
+12,Guerrero,055,Taxco de Alarcón,28,90
+25,Sinaloa,010,El Fuerte,25,24
+26,Sonora,043,Nogales,25,44
+32,Zacatecas,010,Fresnillo,22,25
+32,Zacatecas,005,Calera,21,9
+05,Coahuila de Zaragoza,035,Torreón,19,22
+24,San Luis Potosí,028,San Luis Potosí,18,4
+30,Veracruz de Ignacio de la Llave,133,Pueblo Viejo,17,22
+19,Nuevo León,031,Juárez,16,80
+30,Veracruz de Ignacio de la Llave,204,Agua Dulce,15,15
+16,Michoacán de Ocampo,052,Lázaro Cárdenas,14,20
+32,Zacatecas,039,Río Grande,14,7
+03,Baja California Sur,003,La Paz,13,21
+16,Michoacán de Ocampo,034,Hidalgo,13,16
+10,Durango,005,Durango,12,357
+14,Jalisco,097,Tlajomulco de Zúñiga,12,20
+19,Nuevo León,018,García,12,10
+25,Sinaloa,012,Mazatlán,12,31
+30,Veracruz de Ignacio de la Llave,207,Tres Valles,12,33
+12,Guerrero,028,Chilapa de Álvarez,11,28
+12,Guerrero,075,Eduardo Neri,11,14
+12,Guerrero,036,Igualapa,11,0
+30,Veracruz de Ignacio de la Llave,003,Acayucan,11,12
+32,Zacatecas,035,Noria de Ángeles,11,0
+32,Zacatecas,016,General Pánfilo Natera,11,2
+14,Jalisco,080,San Sebastián del Oeste,10,13
+14,Jalisco,017,Ayutla,10,11
+19,Nuevo León,009,Cadereyta Jiménez,10,2
+30,Veracruz de Ignacio de la Llave,097,Lerdo de Tejada,10,5
+12,Guerrero,029,Chilpancingo de los Bravo,9,11
+19,Nuevo León,045,Salinas Victoria,9,0
+26,Sonora,029,Guaymas,9,5
+14,Jalisco,034,Ejutla,8,13
+19,Nuevo León,033,Linares,8,4
+24,San Luis Potosí,024,Rioverde,8,6
+25,Sinaloa,006,Culiacán,8,13
+26,Sonora,030,Hermosillo,8,7
+12,Guerrero,068,La Unión de Isidoro Montes de Oca,7,3
+14,Jalisco,098,San Pedro Tlaquepaque,7,13
+14,Jalisco,067,Puerto Vallarta,7,6
+16,Michoacán de Ocampo,102,Uruapan,7,24
+18,Nayarit,017,Tepic,7,26
+25,Sinaloa,018,Navolato,7,10
+26,Sonora,018,Cajeme,7,7
+30,Veracruz de Ignacio de la Llave,039,Coatzacoalcos,7,15
+04,Campeche,003,Carmen,6,7
+05,Coahuila de Zaragoza,030,Saltillo,6,6
+10,Durango,026,San Dimas,6,0
+12,Guerrero,058,Teloloapan,6,12
+12,Guerrero,034,Huitzuco de los Figueroa,6,5
+18,Nayarit,008,Xalisco,6,12
+19,Nuevo León,048,Santa Catarina,6,4
+19,Nuevo León,044,Sabinas Hidalgo,6,0
+30,Veracruz de Ignacio de la Llave,048,Cosoleacaque,6,7
+30,Veracruz de Ignacio de la Llave,045,Cosamaloapan de Carpio,6,9
+32,Zacatecas,037,Pánuco,6,7
+32,Zacatecas,057,Trancoso,6,10
+14,Jalisco,065,Pihuamo,5,5
+14,Jalisco,033,Degollado,5,9
+14,Jalisco,030,Chapala,5,6
+14,Jalisco,022,Cihuatlán,5,9
+16,Michoacán de Ocampo,002,Aguililla,5,3
+16,Michoacán de Ocampo,046,Juárez,5,6
+24,San Luis Potosí,021,Mexquitic de Carmona,5,0
+25,Sinaloa,011,Guasave,5,8
+26,Sonora,025,Empalme,5,8
+26,Sonora,019,Cananea,5,7
+30,Veracruz de Ignacio de la Llave,054,Chacaltianguis,5,7
+30,Veracruz de Ignacio de la Llave,089,Jáltipan,5,6
+32,Zacatecas,020,Jerez,5,4
+15,México,103,Tlalmanalco,5,8
+12,Guerrero,074,Zitlala,4,50
+14,Jalisco,049,Jilotlán de los Dolores,4,6
+14,Jalisco,044,Ixtlahuacán de los Membrillos,4,7
+14,Jalisco,120,Zapopan,4,21
+19,Nuevo León,011,Cerralvo,4,1
+19,Nuevo León,039,Monterrey,4,1
+24,San Luis Potosí,035,Soledad de Graciano Sánchez,4,1
+24,San Luis Potosí,011,Ciudad Fernández,4,2
+24,San Luis Potosí,055,Zaragoza,4,0
+26,Sonora,002,Agua Prieta,4,3
+26,Sonora,058,Santa Ana,4,3
+30,Veracruz de Ignacio de la Llave,061,Las Choapas,4,6
+30,Veracruz de Ignacio de la Llave,124,Papantla,4,4
+30,Veracruz de Ignacio de la Llave,128,Perote,4,6
+30,Veracruz de Ignacio de la Llave,011,Alvarado,4,10
+32,Zacatecas,029,Miguel Auza,4,0
+32,Zacatecas,054,Villa Hidalgo,4,0
+32,Zacatecas,049,Valparaíso,4,1
+32,Zacatecas,038,Pinos,4,0
+32,Zacatecas,017,Guadalupe,4,3
+05,Coahuila de Zaragoza,031,San Buenaventura,3,5
+12,Guerrero,056,Tecoanapa,3,4
+14,Jalisco,076,San Martín de Bolaños,3,4
+14,Jalisco,012,Atenguillo,3,3
+14,Jalisco,091,Teocaltiche,3,4
+14,Jalisco,053,Lagos de Moreno,3,5
+14,Jalisco,008,Arandas,3,8
+14,Jalisco,085,Tamazula de Gordiano,3,6
+14,Jalisco,043,La Huerta,3,5
+16,Michoacán de Ocampo,038,Huetamo,3,0
+16,Michoacán de Ocampo,047,Jungapeo,3,1
+16,Michoacán de Ocampo,112,Zitácuaro,3,6
+16,Michoacán de Ocampo,110,Zinapécuaro,3,3
+16,Michoacán de Ocampo,006,Apatzingán,3,15
+16,Michoacán de Ocampo,050,Maravatío,3,1
+19,Nuevo León,038,Montemorelos,3,1
+19,Nuevo León,050,Vallecillo,3,0
+19,Nuevo León,005,Anáhuac,3,5
+19,Nuevo León,016,Doctor González,3,0
+19,Nuevo León,034,Marín,3,0
+19,Nuevo León,037,Mina,3,4
+19,Nuevo León,010,El Carmen,3,2
+19,Nuevo León,017,Galeana,3,0
+20,Oaxaca,310,San Pedro Ixtlahuaca,3,4
+23,Quintana Roo,004,Othón P. Blanco,3,6
+24,San Luis Potosí,008,Cerritos,3,0
+25,Sinaloa,017,Sinaloa,3,3
+25,Sinaloa,008,Elota,3,4
+25,Sinaloa,016,San Ignacio,3,4
+26,Sonora,017,Caborca,3,1
+26,Sonora,042,Navojoa,3,0
+30,Veracruz de Ignacio de la Llave,059,Chinameca,3,3
+30,Veracruz de Ignacio de la Llave,208,Carlos A. Carrillo,3,5
+30,Veracruz de Ignacio de la Llave,155,Tantoyuca,3,3
+30,Veracruz de Ignacio de la Llave,094,Juan Rodríguez Clara,3,3
+30,Veracruz de Ignacio de la Llave,108,Minatitlán,3,6
+30,Veracruz de Ignacio de la Llave,024,Tlaltetela,3,3
+30,Veracruz de Ignacio de la Llave,164,Teocelo,3,3
+32,Zacatecas,053,Villa González Ortega,3,1
+03,Baja California Sur,002,Mulegé,2,2
+05,Coahuila de Zaragoza,028,Sabinas,2,2
+05,Coahuila de Zaragoza,018,Monclova,2,3
+10,Durango,018,El Oro,2,0
+10,Durango,012,Lerdo,2,15
+10,Durango,004,Cuencamé,2,3
+12,Guerrero,012,Ayutla de los Libres,2,5
+12,Guerrero,011,Atoyac de Álvarez,2,4
+14,Jalisco,078,San Miguel el Alto,2,3
+14,Jalisco,050,Jocotepec,2,2
+14,Jalisco,061,Mezquitic,2,2
+14,Jalisco,019,Bolaños,2,2
+14,Jalisco,096,Tizapán el Alto,2,2
+14,Jalisco,003,Ahualulco de Mercado,2,6
+14,Jalisco,039,Guadalajara,2,6
+16,Michoacán de Ocampo,096,Tumbiscatío,2,1
+16,Michoacán de Ocampo,007,Aporo,2,2
+16,Michoacán de Ocampo,008,Aquila,2,1
+18,Nayarit,016,Tecuala,2,2
+18,Nayarit,007,Jala,2,5
+19,Nuevo León,003,Los Aldamas,2,1
+19,Nuevo León,013,China,2,0
+19,Nuevo León,014,Doctor Arroyo,2,0
+20,Oaxaca,390,Santa Lucía del Camino,2,2
+24,San Luis Potosí,032,Santa María del Río,2,0
+24,San Luis Potosí,009,Cerro de San Pedro,2,1
+24,San Luis Potosí,004,Armadillo de los Infante,2,0
+24,San Luis Potosí,007,Cedral,2,0
+24,San Luis Potosí,012,Tancanhuitz,2,0
+24,San Luis Potosí,050,Villa de Reyes,2,1
+25,Sinaloa,004,Concordia,2,1
+25,Sinaloa,007,Choix,2,0
+25,Sinaloa,002,Angostura,2,4
+26,Sonora,036,Magdalena,2,2
+26,Sonora,033,Huatabampo,2,0
+27,Tabasco,004,Centro,2,3
+29,Tlaxcala,025,San Pablo del Monte,2,2
+30,Veracruz de Ignacio de la Llave,152,Tampico Alto,2,4
+30,Veracruz de Ignacio de la Llave,111,Moloacán,2,3
+30,Veracruz de Ignacio de la Llave,197,Yecuatla,2,3
+30,Veracruz de Ignacio de la Llave,084,Ixmatlahuacan,2,2
+32,Zacatecas,056,Zacatecas,2,2
+32,Zacatecas,042,Sombrerete,2,0
+32,Zacatecas,050,Vetagrande,2,1
+32,Zacatecas,055,Villanueva,2,2
+15,México,025,Chalco,2,2
+01,Aguascalientes,005,Jesús María,1,2
+01,Aguascalientes,001,Aguascalientes,1,1
+04,Campeche,011,Candelaria,1,1
+05,Coahuila de Zaragoza,020,Múzquiz,1,1
+05,Coahuila de Zaragoza,033,San Pedro,1,0
+05,Coahuila de Zaragoza,011,General Cepeda,1,0
+05,Coahuila de Zaragoza,004,Arteaga,1,0
+10,Durango,023,Pueblo Nuevo,1,9
+10,Durango,028,San Juan del Río,1,9
+12,Guerrero,021,Coyuca de Benítez,1,3
+12,Guerrero,017,Cocula,1,0
+12,Guerrero,016,Coahuayutla de José María Izazaga,1,0
+12,Guerrero,010,Atlixtac,1,2
+12,Guerrero,061,Tixtla de Guerrero,1,2
+12,Guerrero,039,Juan R. Escudero,1,1
+12,Guerrero,044,Mochitlán,1,2
+14,Jalisco,035,Encarnación de Díaz,1,1
+14,Jalisco,069,Quitupan,1,1
+14,Jalisco,109,Unión de San Antonio,1,2
+14,Jalisco,015,Autlán de Navarro,1,1
+14,Jalisco,111,Valle de Guadalupe,1,1
+14,Jalisco,025,Colotlán,1,1
+14,Jalisco,020,Cabo Corrientes,1,1
+14,Jalisco,115,Villa Guerrero,1,1
+14,Jalisco,047,Jamay,1,1
+14,Jalisco,123,Zapotlán del Rey,1,0
+14,Jalisco,087,Tecalitlán,1,1
+14,Jalisco,084,Talpa de Allende,1,2
+14,Jalisco,018,La Barca,1,1
+14,Jalisco,005,Amatitán,1,1
+14,Jalisco,072,San Diego de Alejandría,1,1
+14,Jalisco,101,Tonalá,1,1
+16,Michoacán de Ocampo,027,Chucándiro,1,1
+16,Michoacán de Ocampo,082,Tacámbaro,1,3
+16,Michoacán de Ocampo,010,Arteaga,1,9
+16,Michoacán de Ocampo,057,Nocupétaro,1,1
+16,Michoacán de Ocampo,061,Ocampo,1,0
+16,Michoacán de Ocampo,058,Nuevo Parangaricutiro,1,3
+16,Michoacán de Ocampo,103,Venustiano Carranza,1,8
+16,Michoacán de Ocampo,090,Tingambato,1,8
+18,Nayarit,010,Rosamorada,1,3
+18,Nayarit,020,Bahía de Banderas,1,5
+18,Nayarit,018,Tuxpan,1,1
+18,Nayarit,012,San Blas,1,6
+18,Nayarit,004,Compostela,1,1
+19,Nuevo León,032,Lampazos de Naranjo,1,0
+19,Nuevo León,022,General Terán,1,0
+19,Nuevo León,021,General Escobedo,1,0
+19,Nuevo León,025,General Zuazua,1,3
+19,Nuevo León,036,Mier y Noriega,1,0
+19,Nuevo León,004,Allende,1,1
+19,Nuevo León,020,General Bravo,1,0
+19,Nuevo León,006,Apodaca,1,0
+19,Nuevo León,026,Guadalupe,1,0
+20,Oaxaca,067,Oaxaca de Juárez,1,1
+20,Oaxaca,399,Santa María Atzompa,1,1
+20,Oaxaca,190,San Juan Cotzocón,1,2
+20,Oaxaca,565,Villa de Zaachila,1,1
+20,Oaxaca,338,Villa de Etla,1,2
+20,Oaxaca,295,San Pablo Huixtepec,1,1
+20,Oaxaca,057,Matías Romero Avendaño,1,2
+20,Oaxaca,042,Ixtlán de Juárez,1,4
+24,San Luis Potosí,057,Matlapa,1,1
+24,San Luis Potosí,046,Villa de Arriaga,1,1
+24,San Luis Potosí,022,Moctezuma,1,0
+24,San Luis Potosí,056,Villa de Arista,1,0
+24,San Luis Potosí,039,Tampamolón Corona,1,0
+24,San Luis Potosí,051,Villa Hidalgo,1,0
+24,San Luis Potosí,043,Tierra Nueva,1,0
+25,Sinaloa,014,Rosario,1,2
+25,Sinaloa,015,Salvador Alvarado,1,2
+26,Sonora,004,Altar,1,2
+26,Sonora,064,Trincheras,1,0
+26,Sonora,061,Soyopa,1,1
+26,Sonora,026,Etchojoa,1,1
+26,Sonora,051,Rosario,1,0
+26,Sonora,003,Alamos,1,0
+26,Sonora,065,Tubutama,1,1
+26,Sonora,068,Villa Pesqueira,1,0
+27,Tabasco,014,Paraíso,1,1
+27,Tabasco,005,Comalcalco,1,1
+27,Tabasco,001,Balancán,1,1
+27,Tabasco,002,Cárdenas,1,1
+29,Tlaxcala,033,Tlaxcala,1,1
+30,Veracruz de Ignacio de la Llave,144,Sayula de Alemán,1,1
+30,Veracruz de Ignacio de la Llave,120,Oteapan,1,1
+30,Veracruz de Ignacio de la Llave,190,Tuxtilla,1,1
+30,Veracruz de Ignacio de la Llave,116,Oluta,1,2
+30,Veracruz de Ignacio de la Llave,175,Tihuatlán,1,1
+30,Veracruz de Ignacio de la Llave,079,Ixhuacán de los Reyes,1,4
+30,Veracruz de Ignacio de la Llave,178,Tlacotalpan,1,1
+30,Veracruz de Ignacio de la Llave,038,Coatepec,1,1
+30,Veracruz de Ignacio de la Llave,172,Texistepec,1,1
+30,Veracruz de Ignacio de la Llave,157,Castillo de Teayo,1,1
+30,Veracruz de Ignacio de la Llave,209,Tatahuicapan de Juárez,1,2
+30,Veracruz de Ignacio de la Llave,160,Álamo Temapache,1,1
+30,Veracruz de Ignacio de la Llave,206,Nanchital de Lázaro Cárdenas del Río,1,1
+30,Veracruz de Ignacio de la Llave,065,Emiliano Zapata,1,2
+30,Veracruz de Ignacio de la Llave,044,Córdoba,1,3
+30,Veracruz de Ignacio de la Llave,009,Alto Lucero de Gutiérrez Barrios,1,2
+30,Veracruz de Ignacio de la Llave,131,Poza Rica de Hidalgo,1,3
+30,Veracruz de Ignacio de la Llave,085,Ixtaczoquitlán,1,0
+32,Zacatecas,022,Juan Aldama,1,1
+32,Zacatecas,043,Susticacán,1,1
+32,Zacatecas,051,Villa de Cos,1,1
+32,Zacatecas,013,General Enrique Estrada,1,0
+32,Zacatecas,036,Ojocaliente,1,0
+32,Zacatecas,040,Sain Alto,1,0
+32,Zacatecas,015,El Plateado de Joaquín Amaro,1,1
+32,Zacatecas,047,Teúl de González Ortega,1,2
+32,Zacatecas,026,Mazapil,1,0
+32,Zacatecas,046,Tepetongo,1,2
+32,Zacatecas,019,Jalpa,1,1
