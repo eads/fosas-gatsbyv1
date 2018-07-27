@@ -180,6 +180,7 @@ def merge_state_data():
     with open('src/data/mxstates.json', 'w') as f:
         json.dump(state_meta, f)
 
+
 if __name__ == '__main__':
     merge_municipality_data()
     merge_state_data()

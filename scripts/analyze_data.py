@@ -64,6 +64,7 @@ def analyze_per_municipality():
             writer.writeheader()
             writer.writerows(municipalities)
 
+
 if __name__ == '__main__':
     analyze_national_per_year()
     analyze_per_municipality()
