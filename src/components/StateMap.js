@@ -20,7 +20,7 @@ class StateMap extends React.Component {
     this.Map = ReactMapboxGl({
       accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
       minZoom: 2.8,
-      maxZoom: 8,
+      maxZoom: 9,
     });
     const bounds = [props.selectedState.bounds.slice(0, 2), props.selectedState.bounds.slice(2)];
     this.state = {
