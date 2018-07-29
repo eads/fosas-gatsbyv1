@@ -5,8 +5,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-size: 17px;
-  background-color: #1E282C;
-  color: #f8f8f8;
+  background-color: #fff;
+  color: #444;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
@@ -30,8 +30,8 @@ html, body {
 
 /* Page grid */
 @media only screen and (min-width: 760px) {
-	.map { width: 60%; }
-	.controls { width: 40%; }
+	.map { width: 66.6%; }
+	.controls { width: 33.3%; }
 }
 
 
@@ -59,12 +59,12 @@ html, body {
 /* Toogle buttons */
 .toggle-buttons button {
   width: 50%;
-  font-size: 16px;
+  font-size: 13px;
   border-radius: 0;
-  color: #eee;
-  border: 1px solid #777;
-  background-color: #333;
-  padding: 10px 10px;
+  color: #555;
+  border: 1px solid #999;
+  background-color: #aaa;
+  padding: 8px;
   text-transform: uppercase;
   outline: none;
   transition: background-color 0.4s ease;
@@ -79,8 +79,9 @@ html, body {
     border-bottom-right-radius: 5px;
   }
   &.active {
-    background-color: #000;
-    border-color: #ddd;
+    background-color: #fff;
+    border-color: #000;
+    color: #333;
     z-index: 1;
   }
 }
@@ -162,22 +163,24 @@ html, body {
 }
 .chart .bar {
   transition: height .4s ease;
-  width: calc(100% - 8px);
+  width: calc(100% - 2px);
   margin: 0 auto;
 }
 .chart .year-label {
   font-size: 10px;
-  margin: 0 4px;
-  border-top: 2px solid #333;
+  margin: 0 1px;
+  border-top: 1px solid #fff;
+  color: #fff;
 }
 
 .indicator-block {
   width: 50%;
   text-align: center;
 }
+
 .indicator-label {
   margin-top: auto;
-  font-size: 12px;
+  font-size: 10px;
   padding-bottom: 4px;
 }
 .year-total .indicator-label {

@@ -91,7 +91,7 @@ class StateMap extends React.Component {
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjirt87zo2kuw2rp7da7jmizf/"
+            style="mapbox://styles/davideads/cjk3b13bs2t362srohj2fqshs/"
             containerStyle={{
               height: "100%",
               width: "100%"
@@ -137,7 +137,7 @@ class StateMap extends React.Component {
 
               type='fill'
               paint={{
-                'fill-color': '#181818',
+                'fill-color': '#fff',
                 'fill-opacity': 1,
               }}
             />
@@ -150,9 +150,9 @@ class StateMap extends React.Component {
               filter={mapFilter}
               type='line'
               paint={{
-                'line-color': '#888',
-                'line-width': 1,
-                'line-opacity': 0.2,
+                'line-color': '#999',
+                'line-width': 1.5,
+                'line-opacity': 1,
               }}
             />
 
@@ -166,7 +166,7 @@ class StateMap extends React.Component {
               filter={mapFilter}
               type='line'
               paint={{
-                'line-color': '#666',
+                'line-color': '#ccc',
                 'line-width': 0.5,
                 'line-opacity': (hideMunicipales) ? 0 : 0.3,
               }}

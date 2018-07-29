@@ -27,7 +27,7 @@ class StateMapWrapper extends React.Component {
     mapFilter: null,
     circleSteps: null,
     yearColorScale: d3Scale.scaleSequential(d3Scale.interpolateViridis)
-      .domain([MINYEAR + 1, MAXYEAR + 1]), // Colors only apply to year after fake "total" year
+      .domain([MAXYEAR + 1, MINYEAR - 1]), // Colors only apply to year after fake "total" year
   }
 
   constructor(props) {
@@ -83,7 +83,7 @@ class StateMapWrapper extends React.Component {
           <div className="col map">
             <StateMap
               {...this.state}
-              beforeLayer="terrain"
+              beforeLayer="state-label-sm"
               onDataChange={this.setSelectedStateData}
             />
           </div>
