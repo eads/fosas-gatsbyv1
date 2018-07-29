@@ -17,10 +17,10 @@ data/processed-geojson/municipales.json data/processed-geojson/municipales-centr
 	python scripts/merge_data.py
 
 data/mbtiles/%.mbtiles : data/processed-geojson/%.json
-	tippecanoe -o $@ -Z 1 -z 11 -b0 -r1 -pk -pf $<
+	tippecanoe -o $@ -Z 1 -z 11 $<
 
 data/mbtiles/%-centroids.mbtiles : data/processed-geojson/%-centroids.json
-	tippecanoe -o $@ -Z 1 -z 11 -b0 -r1 -pk -pf $<
+	tippecanoe -o $@ -Z 1 -z 11 $<
 
 static/tiles/%/ : data/mbtiles/%.mbtiles
 	mb-util --image_format=pbf data/mbtiles/$*.mbtiles static/tiles/$*/
