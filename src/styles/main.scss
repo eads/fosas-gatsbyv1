@@ -11,8 +11,8 @@ html, body {
 }
 
 /* Dead Simple Grid (c) 2015 Vladimir Agafonkin */
-.row .row { margin:  0 -1.5em; }
-.col      { padding: 0  1.5em; }
+//.row .row { margin:  0 -1.5em; }
+//.col      { padding: 0  1.5em; }
 
 .row:after {
     content: "";
@@ -30,8 +30,8 @@ html, body {
 
 /* Page grid */
 @media only screen and (min-width: 760px) {
-	.map { width: 66.6%; }
-	.controls { width: 33.3%; }
+	.map { width: 62%; }
+	.controls { width: 38%; padding-right: 2em; }
 }
 
 
@@ -103,31 +103,33 @@ html, body {
   height: 100%;
 }
 
-/* Slider */
+/* Slider/play controls */
 .slider-container {
   display: flex;
   margin: 2.5rem 0;
 }
 .slider-container svg {
-  padding: 7px 10px;
-  background-color: #000;
-  color: #ccc;
-  border: 1px solid #999;
+  padding: 4px;
+  background-color: #fff;
+  color: #aaa;
+  border: 1px solid #aaa;
   border-radius: 3px;
-  font-size: 20px;
+  font-size: 16px;
+  margin-top: 2px;
   line-height: 1;
   position: relative;
   z-index: 10;
 }
 .slider-container .slider {
-  width: calc(100% - 80px) !important;
+  width: calc(100% - 70px) !important;
   margin-left: auto;
-  overflow: hidden;
+  //overflow: hidden;
   padding: 0 15px;
 }
 
-.slider-container .rc-slider-mark .rc-slider-mark-text {
-  display: none;
+.slider-container .rc-slider-mark {
+  font-size: 10px;
+  //display: none;
 }
 
 .slider-container .rc-slider-mark .rc-slider-mark-text:first-child,

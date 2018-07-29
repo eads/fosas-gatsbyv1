@@ -18,7 +18,7 @@ class StateMapChart extends React.Component {
                   className={"bar-container year-" + yearRow.year}
                   style={{
                     height: height,
-                    backgroundColor: (yearRow.year == selectedYear) ? '#000' : 'transparent',
+                    backgroundColor: (yearRow.year == selectedYear) ? '#f1f1f1' : 'transparent',
                   }}
                 >
                   {(yearRow['num_' + selectedVar] < 0) ?
@@ -28,7 +28,7 @@ class StateMapChart extends React.Component {
                   <div
                     className="bar"
                     style={{
-                      height: (yearRow['num_' + selectedVar] / selectedStateData['all_max']) * (height - 38),
+                      height: (yearRow['num_' + selectedVar] / selectedStateData['num_' + selectedVar + '_max']) * (height - 38),
                       backgroundColor: yearColorScale(yearRow.year)
                     }}
                   />

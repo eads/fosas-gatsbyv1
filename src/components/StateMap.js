@@ -115,7 +115,7 @@ class StateMap extends React.Component {
               id="municipalesshapes"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.aeiezxnw'
+                'url': 'mapbox://davideads.28dcnc6c'
               }}
             />
 
@@ -123,7 +123,7 @@ class StateMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.2lwa8js4'
+                'url': 'mapbox://davideads.50xzy4eb'
               }}
             />
 
@@ -131,7 +131,7 @@ class StateMap extends React.Component {
               id="stateFillLayer"
               sourceId="estatales"
               sourceLayer="estatales"
-              before={beforeLayer}
+              before={'water'}
 
               filter={mapFilter}
 
@@ -151,8 +151,8 @@ class StateMap extends React.Component {
               type='line'
               paint={{
                 'line-color': '#999',
-                'line-width': 1.5,
-                'line-opacity': 1,
+                'line-width': 1,
+                'line-opacity': 0.7,
               }}
             />
 
