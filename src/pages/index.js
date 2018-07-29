@@ -64,8 +64,6 @@ class EmbedPage extends React.Component {
         />
 
         <div className="embed-preview-meta">
-          <h1>FOSAS</h1>
-
           <p>Copy this embed code and paste it into your website:</p>
           <textarea value={`[pym-src="https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/${relativeSrc}"]`} readOnly />
 
@@ -118,6 +116,7 @@ class EmbedPage extends React.Component {
           <div className={this.state.embedClass}>
             <div className="content-preview">
               <div style={{width: this.state.embedWidth + 'px'}}>
+                <h2>FOSAS : /{relativeSrc}</h2>
                 <h1 className="hooha">{this.lipsum.hed}</h1>
                 <p className="hooha">{this.lipsum.graf}</p>
                 <div
