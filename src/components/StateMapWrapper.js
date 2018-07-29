@@ -60,11 +60,6 @@ class StateMapWrapper extends React.Component {
     return (
       <div className="state-details">
         <div className="row">
-          <div className="col">
-            <h1>{selectedState.state_name}</h1>
-          </div>
-        </div>
-        <div className="row">
           <div className="col controls">
             <StateMapButtons
               {...this.state}
