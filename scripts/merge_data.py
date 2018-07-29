@@ -1,8 +1,8 @@
-# import geojson
-import json
-import pandas as pd
-import numpy as np
 import codecs
+import json
+import numpy as np
+import pandas as pd
+import sys
 
 from shapely.geometry import mapping, shape
 from copy import deepcopy
@@ -21,7 +21,12 @@ def merge_municipality_data():
         dfs = pd.read_excel(f, sheet_name=None)
 
     for sheetname, df in dfs.items():
-        state_code = int(sheetname.split(' ')[0])
+        try:
+            state_code = int(sheetname.split(' ')[0])
+        except ValueError:
+            print("%s is not a valid sheet name" % sheetname, file=sys.stderr)
+            continue
+
         pivot = pd.pivot_table(df, index=["municipio_code", "year"], fill_value=0, aggfunc=np.sum, values=PROPS)
         pivot_dict = pivot.reset_index().to_dict("records")
 
@@ -113,7 +118,11 @@ def merge_state_data():
         dfs = pd.read_excel(f, sheet_name=None)
 
     for sheetname, df in dfs.items():
-        sheet_state_code = int(sheetname.split(' ')[0])
+        try:
+            sheet_state_code = int(sheetname.split(' ')[0])
+        except ValueError:
+            print("%s is not a valid sheet name" % sheetname, file=sys.stderr)
+            continue
         pivot = pd.pivot_table(df, index=["state_code", "year"], fill_value=0, aggfunc=np.sum, values=PROPS)
         pivot_dict = pivot.reset_index().to_dict("records")
         final_data = [dict([k, int(v)]  for k,v in row.items()) for row in pivot_dict]
