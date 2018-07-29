@@ -81,7 +81,7 @@ class NationalMapWrapper extends React.Component {
             <StateMap
               {...this.state}
               hideMunicipales={true}
-              beforeLayer="state labels"
+              beforeLayer="ne-10m-admin-0-countries-9a6s71"
               onDataChange={this.setSelectedStateData}
             />
           </div>
