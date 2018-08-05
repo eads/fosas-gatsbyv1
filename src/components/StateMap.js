@@ -103,11 +103,13 @@ class StateMap extends React.Component {
             ref={(mapbox) => { this.mapbox = mapbox; }}
           >
 
+
+
             <Source
               id="municipalescentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.cobwfktp'
+                'url': 'mapbox://davideads.4u5rslvh'
               }}
             />
 
