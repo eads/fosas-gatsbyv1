@@ -191,12 +191,19 @@ class StateMap extends React.Component {
                     'step',
                     ['get', 'num_' + selectedVar + ((selectedYear == 2005) ? '_cumulative_' : '_') + year],
                     0
-                  ].concat(circleSteps[selectedVar]) : 0,
+                  ].concat(circleSteps[selectedVar].map((step, j) => {
+                    if (j % 2 != 0 && this.mapbox) {
+                      let currZoom = this.mapbox.state.map.getZoom();
+                      return step * ( (currZoom * currZoom) / 20);
+                    } else {
+                      return step;
+                    }
+                  })) : 0,
                   'circle-color': yearColorScale(year),
-                  'circle-opacity': (selectedYear == 2005) ? 1 : .9,
+                  'circle-opacity': 1,
                   'circle-stroke-width': 0,
-                  'circle-stroke-color': '#fff',
-                  'circle-stroke-opacity': 0.3,
+                  'circle-stroke-color': '#eee',
+                  'circle-stroke-opacity': 0.5,
                 }}
               >
               </Layer>
