@@ -19,6 +19,7 @@ class StateMapChart extends React.Component {
                   style={{
                     height: height,
                     backgroundColor: (yearRow.year == selectedYear) ? '#f1f1f1' : 'transparent',
+                    paddingBottom: (yearRow.year == selectedYear) ? '22px' : 0,
                   }}
                 >
                   {(yearRow['num_' + selectedVar] < 0) ?
