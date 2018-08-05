@@ -182,8 +182,6 @@ class StateMap extends React.Component {
                 before={(i === 0) ? beforeLayer : "centroidLayer"+ (year-1)}
                 key={'cumulative'+year}
                 filter={mapFilter}
-                minZoom={1}
-                maxZoom={11}
                 type='circle'
                 layout={{
                   visibility: (selectedYear == 2005 || selectedYear == year) ? 'visible' : 'none',
