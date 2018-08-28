@@ -138,7 +138,7 @@ class StateMap extends React.Component {
               id="stateFillLayer"
               sourceId="estatales"
               sourceLayer="estatales"
-              before={'water'}
+              before={beforeLayer}
 
               filter={mapFilter}
 

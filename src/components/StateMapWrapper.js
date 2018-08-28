@@ -97,7 +97,7 @@ class StateMapWrapper extends React.Component {
           <div className="col map">
             <StateMap
               {...this.state}
-              beforeLayer="state-label-sm"
+              beforeLayer="ne-10m-admin-0-countries-9a6s71"
               onDataChange={this.setSelectedStateData}
             />
           </div>
