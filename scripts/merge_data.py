@@ -172,6 +172,10 @@ def merge_state_data():
             center_feature['geometry'] = representative_point
             centers['features'].append(center_feature)
 
+            # Colima has islands
+            if state_code == 6:
+                bounds = [-104.8,18.6,-103.4,19.6]
+
             state_meta.append({
                 'state_code': feature['properties']['CVE_ENT'],
                 'state_name': feature['properties']['NOM_ENT'],
