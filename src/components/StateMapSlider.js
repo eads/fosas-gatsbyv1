@@ -63,6 +63,9 @@ class SliderControlButton extends React.Component {
           <FaRepeat onClick={restartPlaying} />
           <span onClick={restartPlaying}>Restart</span>
         </span>)}
+        <span className="selected-year">
+          {selectedYear > 2005 && selectedYear}
+        </span>
       </div>
     )
   }
@@ -82,7 +85,6 @@ class StateMapSlider extends React.Component {
           minYear={minYear}
           maxYear={maxYear}
         />
-
         <div className="slider">
           <Slider
             min={minYear}
@@ -90,7 +92,7 @@ class StateMapSlider extends React.Component {
             value={selectedYear}
             onChange={onYearChange}
             marks ={{
-              2005: 'Total',
+              2005: <strong>TOT</strong>,
               2006: "'06",
               2007: "'07",
               2008: "'08",

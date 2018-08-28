@@ -29,7 +29,7 @@ html, body {
 }
 
 /* Page grid */
-@media only screen and (min-width: 760px) {
+@media only screen and (min-width: 560px) {
 	.map { width: 62%; }
 	.controls { width: 38%; padding-right: 2em; }
 }
@@ -57,14 +57,22 @@ html, body {
 }
 
 /* Toogle buttons */
+.toggle-buttons {
+  position: absolute;
+  top: 6px;
+  left: 39%;
+  width: 240px;
+  z-index: 100;
+}
+
 .toggle-buttons button {
-  width: 50%;
-  font-size: 13px;
+  width: 120px;
+  font-size: 11px;
   border-radius: 0;
   color: #555;
   border: 1px solid #999;
-  background-color: #aaa;
-  padding: 8px;
+  background-color: rgba(210, 210, 210, 0.6);
+  padding: 5px;
   text-transform: uppercase;
   outline: none;
   transition: background-color 0.4s ease;
@@ -79,7 +87,7 @@ html, body {
     border-bottom-right-radius: 5px;
   }
   &.active {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.8);
     border-color: #000;
     color: #333;
     z-index: 1;
@@ -104,47 +112,83 @@ html, body {
 }
 
 /* Slider/play controls */
-.slider-container {
+.slider-container .control-button {
   display: flex;
-  margin: 2.5rem 0;
+  align-items: center;
+  margin-bottom: .9em;
 }
-.slider-container svg {
-  padding: 4px;
+.slider-container .control-button > * {
+  display: flex;
+  align-items: center;
+}
+.slider-container .control-button svg {
+  padding: 3px;
   background-color: #fff;
-  color: #aaa;
-  border: 1px solid #aaa;
+  color: #666;
+  border: 1px solid #666;
   border-radius: 3px;
-  font-size: 16px;
-  margin-top: 2px;
-  line-height: 1;
+  font-size: 13px;
+  margin-right: 4px;
+  width: 14px;
+}
+.slider-container .control-button span {
+  font-size: 13px;
+  text-transform: uppercase;
+  color: #555;
+  font-weight: bold;
+}
+.slider-container .control-button .selected-year {
+  font-size: 13px;
+  color: #666;
+  flex: 1;
+  text-align: right;
+  display: block;
+}
+
+.slider-container .slider {
+  padding: 0 4.345%;
   position: relative;
   z-index: 10;
-}
-.slider-container .slider {
-  width: calc(100% - 70px) !important;
-  margin-left: auto;
-  //overflow: hidden;
-  padding: 0 15px;
 }
 
 .slider-container .rc-slider-mark {
   font-size: 10px;
-  //display: none;
+}
+.rc-slider-mark-text {
+  height: 50vh;
 }
 
-.slider-container .rc-slider-mark .rc-slider-mark-text:first-child,
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(2),
-.slider-container .rc-slider-mark .rc-slider-mark-text:last-child,
-.slider-container .rc-slider-mark .rc-slider-mark-text-active:last-child {
-  display: block;
-}
+//.slider-container .rc-slider-mark .rc-slider-mark-text:first-child,
+//.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(2),
+//.slider-container .rc-slider-mark .rc-slider-mark-text:last-child,
+//.slider-container .rc-slider-mark .rc-slider-mark-text-active:last-child {
+  //display: block;
+//}
 
 /* Chart */
 .chart-wrapper {
   height: 0;
   position: relative;
-  padding-top: 40%;
-  margin: 1.5em 0;
+  padding-top: 30%;
+  margin: 22px 0 .25em 0;
+}
+
+.chart-wrapper h2 {
+  text-transform: uppercase;
+  font-size: 14px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 1;
+  z-index: 10;
+  padding: 2px 0;
+  background-color: #fff;
+}
+.chart-wrapper h2 .number {
+  display: block;
+  font-weight: normal;
+  font-size: 12px;
+  margin-top: 3px;
 }
 
 .chart {
@@ -167,12 +211,16 @@ html, body {
   transition: height .4s ease;
   width: calc(100% - 2px);
   margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }
 .chart .year-label {
   font-size: 10px;
   margin: 0 1px;
   border-top: 1px solid #fff;
   color: #fff;
+  position: relative;
+  z-index: 10;
 }
 
 .indicator-block {
@@ -182,8 +230,9 @@ html, body {
 
 .indicator-label {
   margin-top: auto;
-  font-size: 10px;
+  font-size: 9px;
   padding-bottom: 4px;
+  color: #aaa;
 }
 .year-total .indicator-label {
   font-weight: bold;
@@ -193,5 +242,4 @@ html, body {
   font-size: 9px;
   color: #999;
 }
-
 

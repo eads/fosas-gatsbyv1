@@ -5,13 +5,47 @@ class StateMapChart extends React.Component {
 
   render() {
     const { onYearChange, selectedYear, yearColorScale, selectedStateData, selectedVar } = this.props;
+    let total = '';
+    if (selectedStateData) {
+      total = (selectedYear == 2005) ? selectedStateData['num_' + selectedVar + '_total'] : selectedStateData.yearlyFosasData[selectedYear - 2006]['num_' + selectedVar];
+      total = (total === -1) ? 'No data' : total;
+    }
 
     return (
       <div className="chart-wrapper">
+        <h2>
+          {selectedVar} 
+          <span className="number">
+            {(selectedStateData &&
+              (total)
+            )}
+          </span>
+        </h2>
+
         {selectedStateData && (
         <ContainerDimensions>
           { ({ height }) =>
             <div className="chart">
+              <div
+                className={"bar-container year-tot"}
+                style={{
+                  height: height,
+                  backgroundColor: (selectedYear == 2005) ? '#f1f1f1' : 'transparent',
+                  paddingTop: (selectedYear == 2005) ? '38px' : 0,
+                  marginTop: (selectedYear == 2005) ? '-38px' : 0,
+                }}
+              >
+                <span className="indicator-label" />
+                <span
+                  className="year-label"
+                  style={{
+                    backgroundColor: '#999'
+                  }}
+                >
+                  TOT
+                </span>
+              </div>
+
               {selectedStateData.yearlyFosasData.map( (yearRow, i) => (
                 <div
                   key={"yearrow"+i}
@@ -19,7 +53,8 @@ class StateMapChart extends React.Component {
                   style={{
                     height: height,
                     backgroundColor: (yearRow.year == selectedYear) ? '#f1f1f1' : 'transparent',
-                    paddingBottom: (yearRow.year == selectedYear) ? '22px' : 0,
+                    paddingTop: (yearRow.year == selectedYear) ? '38px' : 0,
+                    marginTop: (yearRow.year == selectedYear) ? '-38px' : 0,
                   }}
                 >
                   {(yearRow['num_' + selectedVar] < 0) ?

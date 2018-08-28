@@ -8,7 +8,7 @@ import * as d3Scale from 'd3-scale';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const DEFAULT_MAP_PADDING = 15;
+const DEFAULT_MAP_PADDING = 45;
 
 class StateMap extends React.Component {
 
@@ -43,6 +43,13 @@ class StateMap extends React.Component {
     const selectedState = this.props.selectedState;
     const bounds = [selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)];
     map.fitBounds(bounds, { padding: DEFAULT_MAP_PADDING });
+
+    console.log(bounds);
+    setTimeout(() => {
+      const paddedBounds = map.getBounds();
+      console.log(paddedBounds);
+      map.setMaxBounds(paddedBounds);
+    }, 2000);
   }
 
   onSourceData = (map, source) => {
@@ -102,8 +109,6 @@ class StateMap extends React.Component {
             onStyleLoad={this.onStyleLoad}
             ref={(mapbox) => { this.mapbox = mapbox; }}
           >
-
-
 
             <Source
               id="municipalescentroids"
@@ -191,14 +196,7 @@ class StateMap extends React.Component {
                     'step',
                     ['get', 'num_' + selectedVar + ((selectedYear == 2005) ? '_cumulative_' : '_') + year],
                     0
-                  ].concat(circleSteps[selectedVar].map((step, j) => {
-                    if (j % 2 != 0 && this.mapbox) {
-                      let currZoom = this.mapbox.state.map.getZoom();
-                      return step * ( (currZoom * currZoom) / 20);
-                    } else {
-                      return step;
-                    }
-                  })) : 0,
+                  ].concat(circleSteps[selectedVar]) : 0,
                   'circle-color': yearColorScale(year),
                   'circle-opacity': 1,
                   'circle-stroke-width': 0,

@@ -26,8 +26,21 @@ class StateMapWrapper extends React.Component {
     maxYear: MAXYEAR,
     mapFilter: null,
     circleSteps: null,
-    yearColorScale: d3Scale.scaleSequential(d3Scale.interpolateViridis)
-      .domain([MAXYEAR + 1, MINYEAR - 1]), // Colors only apply to year after fake "total" year
+    yearColorScale: d3Scale.scaleOrdinal(
+      [
+       '#453581',
+       '#481c6e',
+       '#98d83e',
+       '#67cc5c',
+       '#40bd72',
+       '#25ac82',
+       '#1f998a',
+       '#24878e',
+       '#2b748e',
+       '#34618d',
+       '#3d4d8a'
+      ])
+      .domain([MINYEAR, MAXYEAR]), // Colors only apply to year after fake "total" year
   }
 
   constructor(props) {
@@ -59,13 +72,13 @@ class StateMapWrapper extends React.Component {
 
     return (
       <div className="state-details">
+        <StateMapButtons
+          {...this.state}
+          vars={VARS}
+          onVarChange={this.setVar}
+        />
         <div className="row">
           <div className="col controls">
-            <StateMapButtons
-              {...this.state}
-              vars={VARS}
-              onVarChange={this.setVar}
-            />
             <StateMapSlider
               {...this.state}
               onYearChange={this.setYear}
@@ -73,6 +86,12 @@ class StateMapWrapper extends React.Component {
             <StateMapChart
               {...this.state}
               onYearChange={this.setYear}
+              selectedVar='fosas'
+            />
+            <StateMapChart
+              {...this.state}
+              onYearChange={this.setYear}
+              selectedVar='cuerpos'
             />
           </div>
           <div className="col map">
