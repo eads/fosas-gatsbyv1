@@ -98,7 +98,7 @@ class StateMap extends React.Component {
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjk3b13bs2t362srohj2fqshs/"
+            style="mapbox://styles/davideads/cjk3b13bs2t362srohj2fqshs/?fresh=true"
             containerStyle={{
               height: "100%",
               width: "100%"
