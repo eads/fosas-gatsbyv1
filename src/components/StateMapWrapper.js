@@ -4,6 +4,7 @@ import StateMap from './StateMap';
 import StateMapSlider from './StateMapSlider';
 import StateMapButtons from './StateMapButtons';
 import StateMapChart from './StateMapChart';
+import MunicipioRank from './MunicipioRank';
 
 import * as d3Scale from 'd3-scale';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
@@ -20,6 +21,7 @@ class StateMapWrapper extends React.Component {
   state = {
     selectedState: {},
     selectedStateData: null,
+    municipioData: null,
     selectedVar: 'fosas',
     selectedYear: MINYEAR,
     minYear: MINYEAR,
@@ -67,9 +69,14 @@ class StateMapWrapper extends React.Component {
     });
   }
 
+  setMunicipioData = (municipioData) => {
+    this.setState({
+      municipioData
+    });
+  }
+
   render() {
     const { selectedState } = this.state;
-
     return (
       <div className="state-details">
         <StateMapButtons
@@ -93,12 +100,16 @@ class StateMapWrapper extends React.Component {
               onYearChange={this.setYear}
               selectedVar='cuerpos'
             />
+            <MunicipioRank
+              {...this.state}
+            />
           </div>
           <div className="col map">
             <StateMap
               {...this.state}
               beforeLayer="ne-10m-admin-0-countries-9a6s71"
               onDataChange={this.setSelectedStateData}
+              onMunicipioLoad={this.setMunicipioData}
             />
           </div>
         </div>

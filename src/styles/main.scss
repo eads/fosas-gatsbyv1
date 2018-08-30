@@ -3,9 +3,9 @@
 /* Body */
 html, body {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 6px;
   font-size: 17px;
-  background-color: #fff;
+  background-color: #f6f6f4;
   color: #444;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
@@ -29,9 +29,9 @@ html, body {
 }
 
 /* Page grid */
-@media only screen and (min-width: 560px) {
-	.map { width: 62%; }
-	.controls { width: 38%; padding-right: 2em; }
+@media only screen and (min-width: 700px) {
+	.map { width: 65%; }
+	.controls { width: 35%; padding-right: 2em; }
 }
 
 
@@ -39,15 +39,10 @@ html, body {
 .state-details {
   max-width: 1280px;
   margin: 0 auto;
-  padding-bottom: 1.25rem;
 }
 
 .state-details.national {
   max-width: 800px;
-}
-
-.state-details > div {
-  margin-bottom: 30px;
 }
 
 .state-details.national .controls {
@@ -59,8 +54,8 @@ html, body {
 /* Toogle buttons */
 .toggle-buttons {
   position: absolute;
-  top: 6px;
-  left: 39%;
+  top: 14px;
+  left: 37%;
   width: 240px;
   z-index: 100;
 }
@@ -100,7 +95,7 @@ html, body {
   overflow: hidden;
   width: 100%;
   margin: 0 auto;
-  padding-top: 80%;
+  padding-top: 100%;
   position: relative;
 }
 .municipio-map {
@@ -112,6 +107,9 @@ html, body {
 }
 
 /* Slider/play controls */
+.slider-container {
+  margin-top: 10px;
+}
 .slider-container .control-button {
   display: flex;
   align-items: center;
@@ -182,7 +180,7 @@ html, body {
   line-height: 1;
   z-index: 10;
   padding: 2px 0;
-  background-color: #fff;
+  background-color: #f6f6f4;
 }
 .chart-wrapper h2 .number {
   font-weight: normal;
@@ -242,3 +240,16 @@ html, body {
   color: #999;
 }
 
+// Table
+table {
+  font-size: 12px;
+  width: 100%;
+  margin-top: 1em;
+}
+table .municipio-name {
+  width: 50%;
+}
+table .number {
+  text-align: right;
+  width: 25%;
+}

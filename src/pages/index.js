@@ -15,7 +15,7 @@ class EmbedPage extends React.Component {
     super(props)
 
     this.state = {
-      embedWidth: 800,
+      embedWidth: 900,
       iframeSrc: './zacatecas/index.html',
     }
 
@@ -58,7 +58,7 @@ class EmbedPage extends React.Component {
       <div className="embed-preview">
 
         <Persist
-          name="FosasMap"
+          name="FosasMapPreview"
           data={this.state}
           onMount={data => this.setState(data)}
         />

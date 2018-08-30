@@ -30,7 +30,7 @@ class StateMapChart extends React.Component {
                 className={"bar-container year-tot"}
                 style={{
                   height: height,
-                  backgroundColor: (selectedYear == 2005) ? '#f1f1f1' : 'transparent',
+                  backgroundColor: (selectedYear == 2005) ? '#ffffff' : 'transparent',
                   paddingTop: (selectedYear == 2005) ? '38px' : 0,
                   marginTop: (selectedYear == 2005) ? '-38px' : 0,
                 }}
@@ -52,7 +52,7 @@ class StateMapChart extends React.Component {
                   className={"bar-container year-" + yearRow.year}
                   style={{
                     height: height,
-                    backgroundColor: (yearRow.year == selectedYear) ? '#f1f1f1' : 'transparent',
+                    backgroundColor: (yearRow.year == selectedYear) ? '#ffffff' : 'transparent',
                     paddingTop: (yearRow.year == selectedYear) ? '38px' : 0,
                     marginTop: (yearRow.year == selectedYear) ? '-38px' : 0,
                   }}

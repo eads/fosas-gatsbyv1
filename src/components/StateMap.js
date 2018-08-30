@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMapboxGl, { Source, Layer, ZoomControl }  from "react-mapbox-gl";
+import ReactMapboxGl, { Source, Layer }  from "react-mapbox-gl";
 import range from 'lodash/range';
 import max from 'lodash/max';
 import cloneDeep from 'lodash/cloneDeep';
@@ -43,17 +43,14 @@ class StateMap extends React.Component {
     const selectedState = this.props.selectedState;
     const bounds = [selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)];
     map.fitBounds(bounds, { padding: DEFAULT_MAP_PADDING });
-
-    console.log(bounds);
     setTimeout(() => {
       const paddedBounds = map.getBounds();
-      console.log(paddedBounds);
       map.setMaxBounds(paddedBounds);
-    }, 2000);
+    }, 1000);
   }
 
   onSourceData = (map, source) => {
-    const { selectedStateData, onDataChange } = this.props;
+    const { selectedStateData, onDataChange, onMunicipioLoad } = this.props;
     const { circleSteps } = this.state;
 
     // Only trigger when selectedStateData is still null
@@ -83,6 +80,7 @@ class StateMap extends React.Component {
         circleSteps.cuerpos = flatten(range(0, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
         this.setState({circleSteps});
+        onMunicipioLoad(features);
       }
     }
 
@@ -98,7 +96,7 @@ class StateMap extends React.Component {
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjk3b13bs2t362srohj2fqshs/?fresh=true"
+            style="mapbox://styles/davideads/cjk3b13bs2t362srohj2fqshs/"
             containerStyle={{
               height: "100%",
               width: "100%"
@@ -206,7 +204,6 @@ class StateMap extends React.Component {
               >
               </Layer>
             ))}
-            <ZoomControl />
           </Map>
         </div>
       </div>
@@ -216,68 +213,3 @@ class StateMap extends React.Component {
 
 
 export default StateMap;
-
-/* 
- *             <Layer
-              id="stateOutlineLayer"
-              sourceId="estatales"
-              sourceLayer="estatales"
-              before={BEFORELAYER}
-
-              filter={["==", "CVE_ENT", this.state.stateCode]}
-
-              type='line'
-              paint={{
-                'line-color': '#888',
-                'line-width': 1,
-              }}
-            />
-
-            <Layer
-              id="municipioOutlineLayer"
-              sourceId="municipales"
-              sourceLayer="municipales"
-              before={BEFORELAYER}
-              minZoom={1}
-              maxZoom={11}
-              filter={["==", "CVE_ENT", this.state.stateCode]}
-
-              type='line'
-              paint={{
-                'line-color': '#666',
-                'line-width': 0.5,
-                'line-opacity': 0.3
-              }}
-              />
-
-            {YEARS.map( (theYear, i) => (
-              <Layer
-                id={"centroidLayer"+theYear}
-                sourceId="centroids"
-                sourceLayer="municipalescentroids"
-                before={(i === 0) ? BEFORELAYER : "centroidLayer"+ (theYear-1)}
-                key={'cumulative'+theYear}
-                filter={["==", "CVE_ENT", this.state.stateCode]}
-                minZoom={1}
-                maxZoom={11}
-
-                type='circle'
-                layout={{
-                  visibility: (this.state.selectedYear == 2005 || this.state.selectedYear == theYear) ? 'visible' : 'none',
-                }}
-                paint={{
-                  'circle-radius': [
-                      'step',
-                      ['get', 'num_' + this.state.selectedVar + ((this.state.selectedYear == 2005) ? '_cumulative_' : '_') + theYear],
-                      0,
-                      ...circleSteps
-                  ],
-                  'circle-color': yearColor(theYear),
-                  'circle-opacity': (this.state.selectedYear == 2005) ? 1 : .9,
-                  'circle-stroke-width': 0,
-                  'circle-stroke-color': '#fff',
-                  'circle-stroke-opacity': 0.3,
-                }}
-              />
-              ))}
-              */

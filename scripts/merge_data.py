@@ -102,7 +102,7 @@ def merge_municipality_data():
                 print('encountered feature w/o centroid pls fix')
 
             # Just adding to the ugliness. Only centroids have data...
-            feature['properties'] = {'CVE_ENT': feature['properties']['CVE_ENT']}
+            feature['properties'] = {'CVE_ENT': int(feature['properties']['CVE_ENT'])}
 
     with open('data/processed-geojson/municipales.json', 'w') as f:
         json.dump(data, f)
