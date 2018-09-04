@@ -107,6 +107,7 @@ class StateMapWrapper extends React.Component {
           <div className="col map">
             <StateMap
               {...this.state}
+              bounds={[selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)]}
               beforeLayer="ne-10m-admin-0-countries-9a6s71"
               onDataChange={this.setSelectedStateData}
               onMunicipioLoad={this.setMunicipioData}
