@@ -19,10 +19,12 @@ class StateMap extends React.Component {
 
     this.Map = ReactMapboxGl({
       accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
-      minZoom: 1,
-      maxZoom: 11,
+      minZoom: 2.8,
+      maxZoom: 9,
     });
+    const bounds = [props.selectedState.bounds.slice(0, 2), props.selectedState.bounds.slice(2)];
     this.state = {
+      fitBounds: bounds,
       circleSteps: props.circleSteps,
     }
   }
@@ -88,7 +90,7 @@ class StateMap extends React.Component {
     if (typeof window == 'undefined') { return null; }
     const { Map } = this;
     const { beforeLayer, selectedState, selectedStateData, selectedVar,
-              selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales, bounds } = this.props;
+              selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales } = this.props;
     const { fitBounds, circleSteps } = this.state;
     return (
       <div className="municipio-map-wrapper">
@@ -99,7 +101,7 @@ class StateMap extends React.Component {
               height: "100%",
               width: "100%"
             }}
-            fitBounds={bounds}
+            fitBounds={fitBounds}
             fitBoundsOptions={{padding: DEFAULT_MAP_PADDING}}
             onSourceData={this.onSourceData}
             onStyleLoad={this.onStyleLoad}
@@ -164,6 +166,8 @@ class StateMap extends React.Component {
               sourceId="municipalesshapes"
               sourceLayer="municipales"
               before={beforeLayer}
+              minZoom={1}
+              maxZoom={11}
               filter={mapFilter}
               type='line'
               paint={{
