@@ -59,33 +59,20 @@ class NationalMapWrapper extends React.Component {
 
     return (
       <div className="state-details national">
-        <div className="row">
-          <div className="col">
-            <h1>{selectedState.state_name}</h1>
-          </div>
+        <div className="controls">
+          <StateMapSlider
+            {...this.state}
+            onYearChange={this.setYear}
+          />
+          <p>Proin a risus libero. Etiam tincidunt tristique leo, ac hendrerit risus aliquet ac. Integer at semper augue. Vivamus ut mollis nulla. Cras vel interdum justo, tincidunt lobortis nibh. Nulla porttitor ex sem, nec sollicitudin sem dictum aliquam. Sed mollis, massa tincidunt bibendum imperdiet, quam erat convallis massa, at lobortis ante lorem sit amet massa. Curabitur porta scelerisque ligula, eget vulputate nulla interdum sed. Curabitur porttitor nisi ultricies enim efficitur rutrum. Aenean in nunc sit amet enim sollicitudin dapibus. Sed vestibulum mollis odio, at dignissim massa consectetur a.</p>
         </div>
-        <div className="row">
-          <div className="col">
-            <div className="controls">
-              <StateMapButtons
-                {...this.state}
-                vars={VARS}
-                onVarChange={this.setVar}
-                hideValues={true}
-              />
-              <StateMapSlider
-                {...this.state}
-                onYearChange={this.setYear}
-              />
-            </div>
-            <StateMap
-              {...this.state}
-              hideMunicipales={true}
-              beforeLayer="ne-10m-admin-0-countries-9a6s71"
-              onDataChange={this.setSelectedStateData}
-            />
-          </div>
-        </div>
+        <StateMap
+        {...this.state}
+          bounds={[selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)]}
+          hideMunicipales={true}
+          beforeLayer="ne-10m-admin-0-countries-9a6s71"
+          onDataChange={this.setSelectedStateData}
+        />
       </div>
     )
   }
