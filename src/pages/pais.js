@@ -15,7 +15,7 @@ class PaisPage extends React.Component {
     return (
       <NationalMapWrapper
         selectedState={{
-          bounds: [-117.12776, 14.5388286402, -86.811982388, 32.72083],
+          bounds: [-117.12776, 14.5388286402, -76.811982388, 32.72083],
         }}
         mapFilter={null}
         circleSteps={{
