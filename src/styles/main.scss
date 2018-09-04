@@ -41,16 +41,6 @@ html, body {
   margin: 0 auto;
 }
 
-.state-details.national {
-  max-width: 800px;
-}
-
-.state-details.national .controls {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
 /* Toogle buttons */
 .toggle-buttons {
   position: absolute;
@@ -252,4 +242,45 @@ table .municipio-name {
 table .number {
   text-align: right;
   width: 25%;
+}
+
+// Nation
+.state-details.national {
+  max-width: auto;
+  width: 100%;
+}
+.state-details.national p {
+  font-family: "Georgia", serif;
+  font-size: 12px;
+  margin-top: 30px;
+  line-height: 1.5;
+  padding: 0 8px;
+  margin-bottom: 0;
+}
+
+.state-details.national .controls {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  background-color: #fff;
+  z-index: 200;
+  padding: 10px 10px 30px 10px;
+  max-width: 400px;
+}
+
+.state-details.national .municipio-map-wrapper {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  padding-top: 0;
+}
+
+.state-details.national .rc-slider-mark-text {
+  height: auto;
+}
+
+.state-details.national .control-button {
+  margin-left: 8px;
 }
