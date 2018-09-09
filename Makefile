@@ -25,8 +25,16 @@ data/mbtiles/%-centroids.mbtiles : data/processed-geojson/%-centroids.json
 static/tiles/%/ : data/mbtiles/%.mbtiles
 	mb-util --image_format=pbf data/mbtiles/$*.mbtiles static/tiles/$*/
 
-clean :
+clean : clean_tiles clean_geojson clean_source clean_source_geojson
+
+clean_tiles :
 	rm -Rf data/mbtiles/*
+
+clean_geojson :
 	rm -Rf data/processed-geojson/*
+
+clean_source :
 	rm -Rf data/source/*
+
+clean_source_geojson :
 	rm -Rf data/source-geojson/*
