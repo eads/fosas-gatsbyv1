@@ -14,6 +14,88 @@ PROPS = ['num_fosas',
          # 'identificados']
 
 
+def merge_pgr_data():
+    with open("data/source/mapas-data-concentrado.xlsx", "rb") as f:
+        dfs = pd.read_excel(f, sheet_name=None)
+
+    df = dfs['PGR']
+    pivot = pd.pivot_table(df, index=["state_code", "municipio_code", "year"], fill_value=0, aggfunc=np.sum, values=PROPS)
+    pivot_dict = pivot.reset_index().to_dict("records")
+    lookup = {}
+    for row in pivot_dict:
+        if not lookup.get(row['state_code']):
+            lookup[row['state_code']] = {}
+
+        if not lookup[row['state_code']].get(row['municipio_code']):
+            lookup[row['state_code']][row['municipio_code']] = {}
+
+        lookup[row['state_code']][row['municipio_code']][int(row['year'])] = dict((prop, int(row.get(prop, 0))) for prop in PROPS)
+
+    centers = {
+        'type': 'FeatureCollection',
+        'name': 'municipalescentroids',
+        'features': [],
+    }
+    with codecs.open('data/source-geojson/municipales.json', encoding='utf-8', errors="replace") as f:
+        data = json.load(f)
+        for feature in data['features']:
+
+            totals = dict((prop, 0) for prop in PROPS)
+            state_code = int(feature['properties']['CVE_ENT'])
+            mun_code = int(feature['properties']['CVE_MUN'])
+            try:
+                mun_data = lookup[state_code].get(mun_code)
+            except KeyError:
+                continue
+
+            cumulative_fosas_data = []
+
+            for year in range(2006, 2017):
+                cumulative_dict = {'year': year}
+
+                for prop in PROPS:
+                    if mun_data and mun_data.get(year) and mun_data[year].get(prop, 0) > 0:
+                        feature['properties'][prop + '_' + str(year)] = int(mun_data[year].get(prop))
+                        totals[prop] += int(mun_data[year].get(prop))
+                    else:
+                        feature['properties'][prop + '_' + str(year)] = 0
+
+                    if len(cumulative_fosas_data):
+                        cumulative_dict[prop] = cumulative_fosas_data[-1].get(prop) + feature['properties'][prop + '_' + str(year)]
+                        feature['properties'][prop + '_cumulative_' + str(year)] = cumulative_fosas_data[-1].get(prop) + feature['properties'][prop + '_' + str(year)]
+                    else:
+                        cumulative_dict[prop] = feature['properties'][prop + '_' + str(year)]
+                        feature['properties'][prop + '_cumulative_' + str(year)] = feature['properties'][prop + '_' + str(year)]
+                cumulative_fosas_data.append(cumulative_dict)
+
+            for prop in PROPS:
+                feature['properties'][prop + '_total'] = totals[prop]
+                # if totals[prop] > maxes[prop]:
+                    # maxes[prop] = totals[prop]
+
+            # try:
+            make_centroid = False
+            for prop in PROPS:
+                if feature['properties'][prop + '_total'] > 0:
+                    make_centroid = True
+                    break
+
+            if make_centroid:
+                shp = shape(feature['geometry'])
+                feature_centroid = mapping(shp.representative_point())
+                center_feature = deepcopy(feature)
+                center_feature['geometry'] = feature_centroid
+                centers['features'].append(center_feature)
+            # except:
+                # print('encountered feature w/o centroid pls fix')
+
+            # Just adding to the ugliness. Only centroids have data...
+            feature['properties'] = {'CVE_ENT': int(feature['properties']['CVE_ENT'])}
+
+    with open('data/processed-geojson/pgr-centroids.json', 'w') as f:
+        json.dump(centers, f)
+
+
 def merge_municipality_data():
     lookup = {}
 
@@ -41,6 +123,8 @@ def merge_municipality_data():
                 print(sheetname)
 
         lookup[state_code] = final_dict
+
+    import ipdb; ipdb.set_trace();
 
     maxes = {prop: 0 for prop in PROPS}
     centers = {
@@ -195,5 +279,6 @@ def merge_state_data():
 
 
 if __name__ == '__main__':
-    merge_municipality_data()
-    merge_state_data()
+    merge_pgr_data()
+    # merge_municipality_data()
+    # merge_state_data()
