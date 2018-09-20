@@ -73,11 +73,13 @@ class StateMap extends React.Component {
 
         const maxFosas = max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)));
         const fosasScale = d3Scale.scaleSqrt().domain([0, maxFosas]).range([0, 20]);
-        circleSteps.fosas = flatten(range(0, maxFosas).map( (value, i) => ( [value, fosasScale(value)] ) ));
+        circleSteps.fosas = flatten(range(0, maxFosas + 1).map( (value, i) => ( [value, fosasScale(value)] ) ));
 
         const maxCuerpos = max(features.map( (feature) => (feature.properties.num_cuerpos_cumulative_2016)));
-        const cuerposScale = d3Scale.scaleSqrt().domain([0, maxCuerpos]).range([0, 20]);
+        const cuerposScale = d3Scale.scaleSqrt().domain([0, maxCuerpos + 1]).range([0, 20]);
         circleSteps.cuerpos = flatten(range(0, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
+
+        console.log(circleSteps);
 
         this.setState({circleSteps});
         onMunicipioLoad(features);
