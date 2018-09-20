@@ -114,7 +114,7 @@ class StateMap extends React.Component {
               id="municipalescentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.4u5rslvh'
+                'url': 'mapbox://davideads.7u0hfaip'
               }}
             />
 
@@ -122,7 +122,7 @@ class StateMap extends React.Component {
               id="municipalesshapes"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.28dcnc6c'
+                'url': 'mapbox://davideads.2g03zdqz'
               }}
             />
 
@@ -130,7 +130,7 @@ class StateMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.50xzy4eb'
+                'url': 'mapbox://davideads.8vvusyey'
               }}
             />
 
