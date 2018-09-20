@@ -8,10 +8,9 @@ from shapely.geometry import mapping, shape
 from copy import deepcopy
 
 PROPS = ['num_fosas',
-         'num_cuerpos']
-         # 'num_cuerpos_identificados',
-         # 'num_restos',
-         # 'identificados']
+         'num_cuerpos',
+         'num_restos',
+        ]
 
 
 def merge_pgr_data():
@@ -123,8 +122,6 @@ def merge_municipality_data():
                 print(sheetname)
 
         lookup[state_code] = final_dict
-
-    import ipdb; ipdb.set_trace();
 
     maxes = {prop: 0 for prop in PROPS}
     centers = {
@@ -280,5 +277,5 @@ def merge_state_data():
 
 if __name__ == '__main__':
     merge_pgr_data()
-    # merge_municipality_data()
-    # merge_state_data()
+    merge_municipality_data()
+    merge_state_data()
