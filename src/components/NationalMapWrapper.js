@@ -25,8 +25,21 @@ class NationalMapWrapper extends React.Component {
     minYear: MINYEAR,
     maxYear: MAXYEAR,
     mapFilter: null,
-    yearColorScale: d3Scale.scaleSequential(d3Scale.interpolateViridis)
-      .domain([MINYEAR + 1, MAXYEAR + 1]), // Colors only apply to year after fake "total" year
+    yearColorScale: d3Scale.scaleOrdinal(
+      [
+       '#453581',
+       '#481c6e',
+       '#98d83e',
+       '#67cc5c',
+       '#40bd72',
+       '#25ac82',
+       '#1f998a',
+       '#24878e',
+       '#2b748e',
+       '#34618d',
+       '#3d4d8a'
+      ])
+      .domain([MINYEAR, MAXYEAR]),
   }
 
   constructor(props) {
@@ -67,7 +80,7 @@ class NationalMapWrapper extends React.Component {
           <p>Proin a risus libero. Etiam tincidunt tristique leo, ac hendrerit risus aliquet ac. Integer at semper augue. Vivamus ut mollis nulla. Cras vel interdum justo, tincidunt lobortis nibh. Nulla porttitor ex sem, nec sollicitudin sem dictum aliquam. Sed mollis, massa tincidunt bibendum imperdiet, quam erat convallis massa, at lobortis ante lorem sit amet massa. Curabitur porta scelerisque ligula, eget vulputate nulla interdum sed. Curabitur porttitor nisi ultricies enim efficitur rutrum. Aenean in nunc sit amet enim sollicitudin dapibus. Sed vestibulum mollis odio, at dignissim massa consectetur a.</p>
         </div>
         <StateMap
-        {...this.state}
+          {...this.state}
           bounds={[selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)]}
           hideMunicipales={true}
           beforeLayer="ne-10m-admin-0-countries-9a6s71"
