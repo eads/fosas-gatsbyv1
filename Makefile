@@ -4,7 +4,7 @@ GEOGRAPHIES = municipales estatales
 all: tiles
 geojson: $(patsubst %, data/source-geojson/%.json, $(GEOGRAPHIES))
 merge: data/processed-geojson/municipales.json data/processed-geojson/municipales-centroids.json data/processed-geojson/estatales.json data/processed-geojson/estatales-centroids.json src/data/mxstates.json
-tiles: $(patsubst %, data/mbtiles/%.mbtiles, $(GEOGRAPHIES)) $(patsubst %, data/mbtiles/%-centroids.mbtiles, $(GEOGRAPHIES))
+tiles: $(patsubst %, data/mbtiles/%.mbtiles, $(GEOGRAPHIES)) $(patsubst %, data/mbtiles/%-centroids.mbtiles, $(GEOGRAPHIES)) data/mbtiles/pgr-centroids.mbtiles
 
 data/source/mapas-data-concentrado.xlsx :
 	curl "https://docs.google.com/spreadsheets/d/e/2PACX-1vRw9i_b3bldB2U8gYmdSCto5PtOmT7J5uXo1hCNczuLzVhyvpGZyvE958BXswOf_1A_KECsC8OH2zHF/pub?output=xlsx" > data/source/mapas-data-concentrado.xlsx
