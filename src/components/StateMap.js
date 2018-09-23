@@ -94,6 +94,7 @@ class StateMap extends React.Component {
     const { beforeLayer, selectedState, selectedStateData, selectedVar,
               selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales } = this.props;
     const { fitBounds, circleSteps } = this.state;
+
     return (
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
@@ -139,9 +140,7 @@ class StateMap extends React.Component {
               sourceId="estatales"
               sourceLayer="estatales"
               before={beforeLayer}
-
               filter={mapFilter}
-
               type='fill'
               paint={{
                 'fill-color': '#fff',
@@ -170,7 +169,6 @@ class StateMap extends React.Component {
               before={beforeLayer}
               minZoom={1}
               maxZoom={11}
-              filter={mapFilter}
               type='line'
               paint={{
                 'line-color': '#ccc',
