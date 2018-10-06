@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMapboxGl, { Source, Layer }  from "react-mapbox-gl";
+import ReactMapboxGl, { Source, Layer, GeoJSONLayer, Popup } from "react-mapbox-gl";
 import range from 'lodash/range';
 import max from 'lodash/max';
 import cloneDeep from 'lodash/cloneDeep';
@@ -7,6 +7,8 @@ import flatten from 'lodash/flatten';
 import * as d3Scale from 'd3-scale';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+const sourceGeojson = require('../../data/processed-geojson/municipales-centroids.json');
 
 const DEFAULT_MAP_PADDING = 45;
 
@@ -22,10 +24,18 @@ class StateMap extends React.Component {
       minZoom: 2.8,
       maxZoom: 9,
     });
+
+    if (props.selectedState.state_code) {
+      const newFeatures = sourceGeojson.features.filter( (f) => f.properties.CVE_ENT == props.selectedState.state_code );
+      sourceGeojson.features = newFeatures;
+    }
+
     const bounds = [props.selectedState.bounds.slice(0, 2), props.selectedState.bounds.slice(2)];
     this.state = {
       fitBounds: bounds,
       circleSteps: props.circleSteps,
+      hoverInfo: null,
+      geojson: sourceGeojson,
     }
   }
 
@@ -65,9 +75,8 @@ class StateMap extends React.Component {
       }
     }
 
-    if (source.sourceId == 'municipalescentroids' && !this.props.circleSteps) {
+    if (source.sourceId.startsWith('geojson') && !this.props.circleSteps) {
       const features = this._getSourceFeatures(map, source);
-
       if (features.length) {
         const circleSteps = {...circleSteps}
 
@@ -79,21 +88,31 @@ class StateMap extends React.Component {
         const cuerposScale = d3Scale.scaleSqrt().domain([0, maxCuerpos + 1]).range([0, 20]);
         circleSteps.cuerpos = flatten(range(0, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
-        console.log(circleSteps);
-
         this.setState({circleSteps});
         onMunicipioLoad(features);
       }
     }
+  }
 
+  onMouseEnter = ({ lngLat, features}) => {
+    const hoverInfo = {
+      lngLat: lngLat,
+      feature: features[0]
+    };
+    this.setState({ hoverInfo });
+  }
+
+  onMouseLeave = () => {
+    const hoverInfo = null;
+    this.setState({ hoverInfo });
   }
 
   render() {
     if (typeof window == 'undefined') { return null; }
     const { Map } = this;
     const { beforeLayer, selectedState, selectedStateData, selectedVar,
-              selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales } = this.props;
-    const { fitBounds, circleSteps } = this.state;
+              selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales, hideStateOutline } = this.props;
+    const { fitBounds, circleSteps, hoverInfo, geojson } = this.state;
 
     return (
       <div className="municipio-map-wrapper">
@@ -112,18 +131,10 @@ class StateMap extends React.Component {
           >
 
             <Source
-              id="municipalescentroids"
-              tileJsonSource={{
-                'type': 'vector',
-                'url': 'mapbox://davideads.7u0hfaip'
-              }}
-            />
-
-            <Source
               id="municipalesshapes"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.2g03zdqz'
+                'url': 'mapbox://davideads.1y2adviu'
               }}
             />
 
@@ -148,62 +159,91 @@ class StateMap extends React.Component {
               }}
             />
 
-            <Layer
-              id="stateOutlineLayer"
-              sourceId="estatales"
-              sourceLayer="estatales"
-              before={beforeLayer}
-              filter={mapFilter}
-              type='line'
-              paint={{
-                'line-color': '#999',
-                'line-width': 1,
-                'line-opacity': 0.7,
-              }}
-            />
-
-            <Layer
-              id="municipioOutlineLayer"
-              sourceId="municipalesshapes"
-              sourceLayer="municipales"
-              before={beforeLayer}
-              minZoom={1}
-              maxZoom={11}
-              type='line'
-              paint={{
-                'line-color': '#ccc',
-                'line-width': 0.5,
-                'line-opacity': (hideMunicipales) ? 0 : 0.3,
-              }}
-            />
-
-            {range(minYear + 1, maxYear + 1).map( (year, i) => (
+            {!hideStateOutline && (
               <Layer
-                id={"centroidLayer"+year}
-                sourceId="municipalescentroids"
-                sourceLayer="municipalescentroids"
-                before={(i === 0) ? beforeLayer : "centroidLayer"+ (year-1)}
-                key={'cumulative'+year}
+                id="stateOutlineLayer"
+                sourceId="estatales"
+                sourceLayer="estatales"
+                before={beforeLayer}
                 filter={mapFilter}
-                type='circle'
-                layout={{
-                  visibility: (selectedYear == 2005 || selectedYear == year) ? 'visible' : 'none',
-                }}
+                type='line'
                 paint={{
-                  'circle-radius': (circleSteps != null) ? [
-                    'step',
-                    ['get', 'num_' + selectedVar + ((selectedYear == 2005) ? '_cumulative_' : '_') + year],
-                    0
-                  ].concat(circleSteps[selectedVar]) : 0,
-                  'circle-color': yearColorScale(year),
-                  'circle-opacity': 1,
-                  'circle-stroke-width': 0,
-                  'circle-stroke-color': '#eee',
-                  'circle-stroke-opacity': 0.5,
+                  'line-color': '#999999',
+                  'line-width': 0.5,
+                  'line-opacity': 1,
                 }}
-              >
-              </Layer>
+              />
+            )}
+
+            {!hideMunicipales && (
+              <Layer
+                id="municipioOutlineLayer"
+                sourceId="municipalesshapes"
+                sourceLayer="municipales"
+                before={beforeLayer}
+                filter={mapFilter}
+                minZoom={1}
+                maxZoom={11}
+                type='line'
+                paint={{
+                  'line-color': '#ccc',
+                  'line-width': 0.5,
+                  'line-opacity': 0.3,
+                }}
+              />
+            )}
+
+            {range(minYear + 1, maxYear + 1).reverse().map( (year, i) => (
+            <GeoJSONLayer
+              key={'geojson' + i}
+              data={geojson}
+              before={beforeLayer}
+              circleLayout={{
+                visibility: (selectedYear == 2005 || selectedYear >= year) ? 'visible' : 'none',
+              }}
+              circlePaint={{
+                'circle-color': yearColorScale(year),
+                'circle-opacity': 1,
+                'circle-stroke-width': 0,
+                'circle-radius': (circleSteps != null) ? [
+                  'step',
+                  ['get', 'num_' + selectedVar + '_cumulative_' + year],
+                  0
+                ].concat(circleSteps[selectedVar]) : 0
+              }}
+            />
             ))}
+
+            <GeoJSONLayer
+              data={geojson}
+              before={beforeLayer}
+              circleLayout={{
+                visibility: 'visible',
+              }}
+              circlePaint={{
+                'circle-color': 'white',
+                'circle-opacity': 0.1,
+                'circle-stroke-width': 0,
+                'circle-radius': (circleSteps != null) ? [
+                  'step',
+                  ['get', 'num_' + selectedVar + '_cumulative_' + 2016],
+                  0
+                ].concat(circleSteps[selectedVar]) : 0
+              }}
+              circleOnMouseEnter={this.onMouseEnter}
+              circleOnMouseLeave={this.onMouseLeave}
+            />
+
+
+            { hoverInfo && (
+              <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
+                <h3>{hoverInfo.feature.properties.NOM_MUN}</h3>
+                <p>Fosas: {hoverInfo.feature.properties.num_fosas_total}</p>
+                <p>Cuerpos: {hoverInfo.feature.properties.num_cuerpos_total}</p>
+                <p>Restos: {hoverInfo.feature.properties.num_restos_total}</p>
+              </Popup>
+            )}
+
           </Map>
         </div>
       </div>

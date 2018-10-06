@@ -7,7 +7,6 @@ import StateMapChart from './StateMapChart';
 import MunicipioRank from './MunicipioRank';
 
 import * as d3Scale from 'd3-scale';
-import * as d3ScaleChromatic from 'd3-scale-chromatic';
 
 const VARS = ['fosas', 'cuerpos'];
 
@@ -107,7 +106,7 @@ class StateMapWrapper extends React.Component {
           <div className="col map">
             <StateMap
               {...this.state}
-              beforeLayer="ne-10m-admin-0-countries-9a6s71"
+              beforeLayer="water-label"
               onDataChange={this.setSelectedStateData}
               onMunicipioLoad={this.setMunicipioData}
             />

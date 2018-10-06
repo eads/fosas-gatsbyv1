@@ -18,10 +18,6 @@ class PaisPage extends React.Component {
           bounds: [-117.12776, 14.5388286402, -76.811982388, 32.72083],
         }}
         mapFilter={null}
-        circleSteps={{
-          fosas: [0, 0, 1, 4],
-          cuerpos: [0, 0, 1, 4],
-        }}
       />
     )
   }

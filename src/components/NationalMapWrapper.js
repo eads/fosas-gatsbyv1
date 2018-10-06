@@ -82,9 +82,10 @@ class NationalMapWrapper extends React.Component {
         <StateMap
           {...this.state}
           bounds={[selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)]}
-          hideMunicipales={true}
-          beforeLayer="ne-10m-admin-0-countries-9a6s71"
+          hideStateOutline={true}
+          beforeLayer="water-label"
           onDataChange={this.setSelectedStateData}
+          onMunicipioLoad={() => {}}
         />
       </div>
     )
