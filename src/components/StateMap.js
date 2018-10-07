@@ -6,6 +6,7 @@ import max from 'lodash/max';
 import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
 import * as d3Scale from 'd3-scale';
+import slugify from 'slugify';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -25,6 +26,10 @@ class StateMap extends React.Component {
       accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
       minZoom: 2.8,
       maxZoom: 9,
+      scrollZoom: false,
+      doubleClickZoom: false,
+      dragPan: false,
+      touchZoomRotate: false,
     });
 
     if (props.selectedState.state_code) {
@@ -119,6 +124,14 @@ class StateMap extends React.Component {
   onMouseLeave = () => {
     const hoverInfo = null;
     this.setState({ hoverInfo });
+  }
+
+  onCircleClick = ({ features }) => {
+    if (window.location.pathname === '/') {
+      const feature = features[0];
+      const slug = slugify(feature.properties.state_name.toLowerCase());
+      window.location = `https://adondevanlosdesaparecidos.org/data/${slug}/`;
+    }
   }
 
   render() {
@@ -246,6 +259,7 @@ class StateMap extends React.Component {
               }}
               circleOnMouseEnter={this.onMouseEnter}
               circleOnMouseLeave={this.onMouseLeave}
+              circleOnClick={this.onCircleClick}
             />
 
 

@@ -147,11 +147,11 @@ html, body {
   font-size: 10px;
 }
 .slider-container .rc-slider-dot, .slider-container .rc-slider-handle {
-  border-color: #222 !important;
+  border-color: #666 !important;
   box-shadow: none !important;
 }
 .slider-container .rc-slider-track {
-  background-color: #222;
+  background-color: #666;
 }
 .slider-container .rc-slider-rail {
   background-color: #aaa;
@@ -284,6 +284,10 @@ h3 {
 .indicator-no-data {
   font-size: 9px;
   color: #999;
+}
+
+.municipio-map .mapboxgl-popup {
+  z-index: 1999 !important;
 }
 
 .municipio-map .mapboxgl-popup-content {

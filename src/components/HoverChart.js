@@ -9,9 +9,6 @@ class HoverChart extends React.Component {
 
     const height = 45;
 
-    console.log(varMax);
-    console.log(hoverInfo.chartData);
-
     return (
       <div className="hoverchart-wrapper">
         {hoverInfo.chartData.map( (d, i) => {
