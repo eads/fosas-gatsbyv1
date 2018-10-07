@@ -26,20 +26,7 @@ class StateMapChart extends React.Component {
         <ContainerDimensions>
           { ({ height }) =>
             <div className="chart">
-              <div
-                className={"bar-container year-tot"}
-                style={{
-                  height: height,
-                  backgroundColor: (selectedYear == 2005) ? '#ffffff' : 'transparent',
-                }}
-              >
-                <span className="indicator-label" />
-                <span
-                  className="year-label"
-                >
-                  TOT
-                </span>
-              </div>
+
 
               {selectedStateData.yearlyFosasData.map( (yearRow, i) => (
                 <div
