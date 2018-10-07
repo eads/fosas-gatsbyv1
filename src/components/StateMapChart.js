@@ -38,9 +38,6 @@ class StateMapChart extends React.Component {
                 <span className="indicator-label" />
                 <span
                   className="year-label"
-                  style={{
-                    backgroundColor: '#999'
-                  }}
                 >
                   TOT
                 </span>
@@ -70,9 +67,6 @@ class StateMapChart extends React.Component {
                   />
                   <span
                     className="year-label"
-                    style={{
-                      backgroundColor: yearColorScale(yearRow.year)
-                    }}
                   >
                     '{yearRow.year.toString().slice(2)}
                   </span>

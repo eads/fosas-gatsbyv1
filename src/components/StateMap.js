@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMapboxGl, { Source, Layer, GeoJSONLayer, Popup } from "react-mapbox-gl";
+import HoverChart from './HoverChart';
 import range from 'lodash/range';
 import max from 'lodash/max';
 import cloneDeep from 'lodash/cloneDeep';
@@ -10,7 +11,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const sourceGeojson = require('../../data/processed-geojson/municipales-centroids.json');
 
-const DEFAULT_MAP_PADDING = 45;
+
+const DEFAULT_MAP_PADDING = 15;
 
 class StateMap extends React.Component {
 
@@ -95,9 +97,21 @@ class StateMap extends React.Component {
   }
 
   onMouseEnter = ({ lngLat, features}) => {
+    const feature = features[0];
+
+    const { minYear, maxYear } = this.props;
+    const chartData = range(minYear + 1, maxYear + 1).map( (year, i) => {
+      return {
+        year: year,
+        fosas: feature.properties['num_fosas_' + year] || 0,
+        cuerpos: feature.properties['num_cuerpos_' + year] || 0,
+      };
+    });
+
     const hoverInfo = {
       lngLat: lngLat,
-      feature: features[0]
+      feature: feature,
+      chartData: chartData,
     };
     this.setState({ hoverInfo });
   }
@@ -238,9 +252,18 @@ class StateMap extends React.Component {
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
                 <h3>{hoverInfo.feature.properties.NOM_MUN}</h3>
-                <p>Fosas: {hoverInfo.feature.properties.num_fosas_total}</p>
-                <p>Cuerpos: {hoverInfo.feature.properties.num_cuerpos_total}</p>
-                <p>Restos: {hoverInfo.feature.properties.num_restos_total}</p>
+                <p><strong>Fosas</strong> {hoverInfo.feature.properties.num_fosas_total}</p>
+                <HoverChart
+                  hoverInfo={hoverInfo}
+                  yearColorScale={yearColorScale}
+                  selectedVar='fosas'
+                />
+                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.num_cuerpos_total}</p>
+                <HoverChart
+                  hoverInfo={hoverInfo}
+                  yearColorScale={yearColorScale}
+                  selectedVar='cuerpos'
+                />
               </Popup>
             )}
 

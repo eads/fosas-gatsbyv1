@@ -20,7 +20,7 @@ class StateMapButtons extends React.Component {
             onClick={onVarChange}
             className={(selectedVar == varName) ? 'active': null}
           >
-            {varName} ({selectedStateData && selectedStateData['num_' + varName + '_total']})
+            {varName}
           </button>
         ))}
       </div>

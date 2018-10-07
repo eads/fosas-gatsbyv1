@@ -78,13 +78,14 @@ class StateMapWrapper extends React.Component {
     const { selectedState } = this.state;
     return (
       <div className="state-details">
-        <StateMapButtons
-          {...this.state}
-          vars={VARS}
-          onVarChange={this.setVar}
-        />
         <div className="row">
           <div className="col controls">
+            <StateMapButtons
+              {...this.state}
+              vars={VARS}
+              onVarChange={this.setVar}
+            />
+
             <StateMapSlider
               {...this.state}
               onYearChange={this.setYear}
@@ -98,9 +99,6 @@ class StateMapWrapper extends React.Component {
               {...this.state}
               onYearChange={this.setYear}
               selectedVar='cuerpos'
-            />
-            <MunicipioRank
-              {...this.state}
             />
           </div>
           <div className="col map">
