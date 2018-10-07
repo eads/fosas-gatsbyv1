@@ -269,6 +269,18 @@ h3 {
 .municipio-map .mapboxgl-popup-content {
   box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
+.municipio-map .mapboxgl-popup-content h3 {
+  border-bottom: 1px solid #eee;
+}
+
+.municipio-map .mapboxgl-popup-content .state-name {
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  margin-left: 0.25em;
+  display: inline-block;
+  float: right;
+}
 
 // Table
 table {

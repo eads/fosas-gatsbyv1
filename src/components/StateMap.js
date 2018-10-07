@@ -251,7 +251,7 @@ class StateMap extends React.Component {
 
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
-                <h3>{hoverInfo.feature.properties.NOM_MUN}</h3>
+                <h3>{hoverInfo.feature.properties.NOM_MUN} <span className="state-name">{hoverInfo.feature.properties.state_name}</span></h3>
                 <p><strong>Fosas</strong> {hoverInfo.feature.properties.num_fosas_total}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}

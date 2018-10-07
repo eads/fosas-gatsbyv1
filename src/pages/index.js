@@ -16,7 +16,7 @@ class EmbedPage extends React.Component {
 
     this.state = {
       embedWidth: 900,
-      iframeSrc: './zacatecas/index.html',
+      iframeSrc: './zacatecas/',
     }
 
     this.lipsum = {
@@ -52,7 +52,7 @@ class EmbedPage extends React.Component {
   }
 
   render() {
-    const relativeSrc = this.state.iframeSrc.replace("http://localhost:8000/", "").replace("https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/", "").replace("./", "");
+    const relativeSrc = this.state.iframeSrc.replace("http://localhost:8000/", "").replace("https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/", "").replace("https://data.adondevanlosdesaparecidos.org/", "").replace("./", "");
 
     return (
       <div className="embed-preview">
@@ -65,7 +65,7 @@ class EmbedPage extends React.Component {
 
         <div className="embed-preview-meta">
           <p>Copy this embed code and paste it into your website:</p>
-          <textarea value={`[pym-src="https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/${relativeSrc}"]`} readOnly />
+          <textarea value={`[pym-src="https://data.adondevanlosdesaparecidos.org/${relativeSrc}"]`} readOnly />
 
           <h2>Embed size <small>({this.state.embedWidth}px)</small></h2>
           <Slider
@@ -99,7 +99,7 @@ class EmbedPage extends React.Component {
               {this.props.data.allSitePage.edges.map((page, i) => (
                 (page.node.path != '/404.html' && <li key={'page_' + i}>
                   <Link
-                    to={page.node.path + 'index.html'}
+                    to={page.node.path}
                     onClick={this.onClickWidgetLink}
                   >
                     {(page.node.path == '/') ? 'index.html' : page.node.path}

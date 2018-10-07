@@ -8,7 +8,7 @@ class StateMapChart extends React.Component {
     let total = '';
     if (selectedStateData) {
       total = (selectedYear == 2005) ? selectedStateData['num_' + selectedVar + '_total'] : selectedStateData.yearlyFosasData[selectedYear - 2006]['num_' + selectedVar];
-      total = (total === -1) ? 'No data' : total;
+      total = (total === -1) ? 'Sin datos' : total;
     }
 
     return (

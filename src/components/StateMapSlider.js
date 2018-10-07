@@ -53,15 +53,15 @@ class SliderControlButton extends React.Component {
       <div className="control-button">
         {timer && (<span>
           <FaPause onClick={stopPlaying} />
-          <span onClick={stopPlaying}>Stop</span>
+          <span onClick={stopPlaying}>Detener</span>
         </span>)}
         {(!timer && selectedYear != maxYear) && (<span>
           <FaPlay onClick={startPlaying} />
-          <span onClick={startPlaying}>Play</span>
+          <span onClick={startPlaying}>Iniciar</span>
         </span>)}
         {(!timer && selectedYear == maxYear) && (<span>
           <FaRedoAlt onClick={restartPlaying} />
-          <span onClick={restartPlaying}>Restart</span>
+          <span onClick={restartPlaying}>Reiniciar</span>
         </span>)}
         <span className="selected-year">
           {selectedYear > 2005 && selectedYear}
