@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPlay, FaPause, FaRepeat } from 'react-icons/lib/fa';
+import { FaPlay, FaPause, FaRedoAlt } from 'react-icons/fa';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
@@ -48,20 +48,20 @@ class SliderControlButton extends React.Component {
     const { startPlaying, stopPlaying, restartPlaying } = this;
     const { timer } = this.state;
     const { selectedYear, maxYear } = this.props;
-
+    //return (<div></div>);
     return (
       <div className="control-button">
         {timer && (<span>
           <FaPause onClick={stopPlaying} />
-          <span onClick={stopPlaying}>Stop</span>
+          <span onClick={stopPlaying}>Detener</span>
         </span>)}
         {(!timer && selectedYear != maxYear) && (<span>
           <FaPlay onClick={startPlaying} />
-          <span onClick={startPlaying}>Play</span>
+          <span onClick={startPlaying}>Iniciar</span>
         </span>)}
         {(!timer && selectedYear == maxYear) && (<span>
-          <FaRepeat onClick={restartPlaying} />
-          <span onClick={restartPlaying}>Restart</span>
+          <FaRedoAlt onClick={restartPlaying} />
+          <span onClick={restartPlaying}>Reiniciar</span>
         </span>)}
         <span className="selected-year">
           {selectedYear > 2005 && selectedYear}

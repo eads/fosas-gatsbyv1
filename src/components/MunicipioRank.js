@@ -12,14 +12,15 @@ class MunicipioRank extends React.Component {
     return (<table>
       <thead>
         <tr>
-          <th></th>
+          <th colSpan={2}></th>
           <th className="number">Fosas</th>
           <th className="number">Cuerpos</th>
         </tr>
       </thead>
       <tbody>
-        {municipios.slice(0, 10).map( (m, i) => (
+        {municipios.slice(0, 5).map( (m, i) => (
           <tr key={"municipio" + i}>
+            <td>{i + 1}.</td>
             <td className="municipio-name">{m.NOM_MUN}</td>
             <td className="number">{m['num_fosas_' + selected]}</td>
             <td className="number">{m['num_cuerpos_' + selected]}</td>

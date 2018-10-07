@@ -52,7 +52,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
         var slug = slugify(node.state_name, {lower: true})
         createPage({
           path: slug + '/',
-          component: path.resolve(`./src/templates/map.js`),
+          component: path.resolve(`./src/components/templates/map.js`),
           context: {
             // Data passed to context available in page queries as GraphQL variables.
             state_code: node.state_code,

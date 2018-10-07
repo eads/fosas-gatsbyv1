@@ -103,7 +103,8 @@ def merge_municipality_data():
 
     for sheetname, df in dfs.items():
         try:
-            state_code = int(sheetname.split(' ')[0])
+            state_code, state_name = sheetname.split(' ', 1)
+            state_code = int(state_code)
         except ValueError:
             print("%s is not a valid sheet name" % sheetname, file=sys.stderr)
             continue
@@ -114,7 +115,7 @@ def merge_municipality_data():
         final_dict = {}
         for row in pivot_dict:
             if not final_dict.get(row['municipio_code']):
-                final_dict[row['municipio_code']] = {}
+                final_dict[row['municipio_code']] = {'state_name': state_name}
 
             try:
                 final_dict[row['municipio_code']][int(row['year'])] = dict((prop, int(row.get(prop, 0))) for prop in PROPS)
@@ -132,7 +133,6 @@ def merge_municipality_data():
     with codecs.open('data/source-geojson/municipales.json', encoding='utf-8', errors="replace") as f:
         data = json.load(f)
         for feature in data['features']:
-
             totals = dict((prop, 0) for prop in PROPS)
             state_code = int(feature['properties']['CVE_ENT'])
             mun_code = int(feature['properties']['CVE_MUN'])
@@ -142,6 +142,9 @@ def merge_municipality_data():
 
             for year in range(2006, 2017):
                 cumulative_dict = {'year': year}
+
+                if mun_data:
+                    feature['properties']['state_name'] = mun_data['state_name']
 
                 for prop in PROPS:
                     if mun_data and mun_data.get(year) and mun_data[year].get(prop, 0) > 0:
@@ -276,6 +279,6 @@ def merge_state_data():
 
 
 if __name__ == '__main__':
-    merge_pgr_data()
+    # merge_pgr_data()
     merge_municipality_data()
-    merge_state_data()
+    # merge_state_data()

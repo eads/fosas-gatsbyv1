@@ -8,7 +8,7 @@ class StateMapChart extends React.Component {
     let total = '';
     if (selectedStateData) {
       total = (selectedYear == 2005) ? selectedStateData['num_' + selectedVar + '_total'] : selectedStateData.yearlyFosasData[selectedYear - 2006]['num_' + selectedVar];
-      total = (total === -1) ? 'No data' : total;
+      total = (total === -1) ? 'Sin datos' : total;
     }
 
     return (
@@ -26,25 +26,7 @@ class StateMapChart extends React.Component {
         <ContainerDimensions>
           { ({ height }) =>
             <div className="chart">
-              <div
-                className={"bar-container year-tot"}
-                style={{
-                  height: height,
-                  backgroundColor: (selectedYear == 2005) ? '#ffffff' : 'transparent',
-                  paddingTop: (selectedYear == 2005) ? '38px' : 0,
-                  marginTop: (selectedYear == 2005) ? '-38px' : 0,
-                }}
-              >
-                <span className="indicator-label" />
-                <span
-                  className="year-label"
-                  style={{
-                    backgroundColor: '#999'
-                  }}
-                >
-                  TOT
-                </span>
-              </div>
+
 
               {selectedStateData.yearlyFosasData.map( (yearRow, i) => (
                 <div
@@ -53,8 +35,6 @@ class StateMapChart extends React.Component {
                   style={{
                     height: height,
                     backgroundColor: (yearRow.year == selectedYear) ? '#ffffff' : 'transparent',
-                    paddingTop: (yearRow.year == selectedYear) ? '38px' : 0,
-                    marginTop: (yearRow.year == selectedYear) ? '-38px' : 0,
                   }}
                 >
                   {(yearRow['num_' + selectedVar] < 0) ?
@@ -70,9 +50,6 @@ class StateMapChart extends React.Component {
                   />
                   <span
                     className="year-label"
-                    style={{
-                      backgroundColor: yearColorScale(yearRow.year)
-                    }}
                   >
                     '{yearRow.year.toString().slice(2)}
                   </span>
