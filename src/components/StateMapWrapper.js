@@ -80,25 +80,29 @@ class StateMapWrapper extends React.Component {
       <div className="state-details">
         <div className="row">
           <div className="col controls">
+            <StateMapSlider
+              {...this.state}
+              onYearChange={this.setYear}
+            />
+            <div className="row charts">
+              <StateMapChart
+                {...this.state}
+                onYearChange={this.setYear}
+                selectedVar='fosas'
+              />
+              <StateMapChart
+                {...this.state}
+                onYearChange={this.setYear}
+                selectedVar='cuerpos'
+              />
+            </div>
             <StateMapButtons
               {...this.state}
               vars={VARS}
               onVarChange={this.setVar}
             />
-
-            <StateMapSlider
+            <MunicipioRank
               {...this.state}
-              onYearChange={this.setYear}
-            />
-            <StateMapChart
-              {...this.state}
-              onYearChange={this.setYear}
-              selectedVar='fosas'
-            />
-            <StateMapChart
-              {...this.state}
-              onYearChange={this.setYear}
-              selectedVar='cuerpos'
             />
           </div>
           <div className="col map">

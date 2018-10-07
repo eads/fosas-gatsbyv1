@@ -31,8 +31,6 @@ class StateMapChart extends React.Component {
                 style={{
                   height: height,
                   backgroundColor: (selectedYear == 2005) ? '#ffffff' : 'transparent',
-                  paddingTop: (selectedYear == 2005) ? '38px' : 0,
-                  marginTop: (selectedYear == 2005) ? '-38px' : 0,
                 }}
               >
                 <span className="indicator-label" />
@@ -50,8 +48,6 @@ class StateMapChart extends React.Component {
                   style={{
                     height: height,
                     backgroundColor: (yearRow.year == selectedYear) ? '#ffffff' : 'transparent',
-                    paddingTop: (yearRow.year == selectedYear) ? '38px' : 0,
-                    marginTop: (yearRow.year == selectedYear) ? '-38px' : 0,
                   }}
                 >
                   {(yearRow['num_' + selectedVar] < 0) ?

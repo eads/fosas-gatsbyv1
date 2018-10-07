@@ -5,8 +5,8 @@ html, body {
   margin: 0;
   padding: 0 0 0 6px;
   font-size: 17px;
-  background-color: #f6f6f4;
-  color: #444;
+  background-color: #ebebeb;
+  color: #222;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
@@ -31,7 +31,7 @@ html, body {
 /* Page grid */
 @media only screen and (min-width: 700px) {
 	.map { width: 62%; }
-	.controls { width: calc(38% - 10px); padding-right: 10px; }
+	.controls { width: calc(38% - 30px); padding-right: 30px; }
 }
 
 
@@ -135,14 +135,25 @@ html, body {
   padding: 0 4.345%;
   position: relative;
   z-index: 10;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .slider-container .rc-slider-mark {
   font-size: 10px;
 }
-.rc-slider-mark-text {
-  height: 50vh;
+.slider-container .rc-slider-rail {
+  background-color: #fff;
 }
+.slider-container .rc-slider-dot:not(.rc-slider-dot-active) {
+  border-color: #fff;
+}
+//.rc-slider-mark-text {
+  //height: 50vh;
+//}
 
 //.slider-container .rc-slider-mark .rc-slider-mark-text:first-child,
 //.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(2),
@@ -155,8 +166,24 @@ html, body {
 .chart-wrapper {
   height: 0;
   position: relative;
-  padding-top: 37%;
+  padding-top: 32%;
   margin: 22px 0 .25em 0;
+}
+
+.charts {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+@media only screen and (max-width: 700px) {
+  .chart-wrapper { 
+    width: calc(50% - 10px);
+    padding-top: 20%;
+    float: left;
+  }
+  .chart-wrapper:first-child {
+    margin-right: 20px;
+  }
 }
 
 .chart-wrapper h2 {
@@ -167,8 +194,9 @@ html, body {
   left: 0;
   line-height: 1;
   z-index: 10;
-  padding: 2px 0;
-  background-color: #f6f6f4;
+  padding: 0 0 5px 0;
+  margin: 0;
+  background-color: #ebebeb;
 }
 .chart-wrapper h2 .number {
   font-weight: normal;
@@ -213,6 +241,10 @@ html, body {
   display: flex;
 }
 
+h3 {
+  margin-top: 0;
+}
+
 
 .indicator-block {
   width: 50%;
@@ -234,6 +266,10 @@ html, body {
   color: #999;
 }
 
+.municipio-map .mapboxgl-popup-content {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
 // Table
 table {
   font-size: 12px;
@@ -248,12 +284,18 @@ table .number {
   width: 25%;
 }
 
+@media only screen and (max-width: 700px) {
+  table {
+    display: none;
+  }
+}
+
 // Nation
 .state-details.national {
   max-width: auto;
   width: 100%;
 }
-.state-details.national p {
+.state-details.national .controls p {
   font-family: "Georgia", serif;
   font-size: 12px;
   margin-top: 30px;
