@@ -28,6 +28,8 @@ def clean_data(filename):
 
     for name, df in dfs.items():
         state_code, state_name = name.split(' ', 1)
+        if state_code == '00':
+            continue
 
         transposed = pd.pivot_table(df, index=["state_code", "municipio_code", "year"], fill_value=0, aggfunc=np.sum, values=PROPS)
 
