@@ -25,6 +25,7 @@ class NationalMapWrapper extends React.Component {
     minYear: MINYEAR,
     maxYear: MAXYEAR,
     mapFilter: null,
+    negativeFilter: null,
     yearColorScale: d3Scale.scaleOrdinal(
       [
        '#453581',

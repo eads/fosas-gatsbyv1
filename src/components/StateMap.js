@@ -182,7 +182,7 @@ class StateMap extends React.Component {
               filter={negativeFilter}
               type='fill'
               paint={{
-                'fill-color': '#ddd',
+                'fill-color': (negativeFilter) ? '#ddd' : '#fff',
                 'fill-opacity': 1,
               }}
             />
