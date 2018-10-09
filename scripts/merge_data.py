@@ -7,9 +7,12 @@ import sys
 from shapely.geometry import mapping, shape
 from copy import deepcopy
 
-PROPS = ['num_fosas',
-         'num_cuerpos',
-         'num_restos',
+PROPS = ['fosas',
+         'cuerpos',
+         'restos',
+         'cuerpos_identificados',
+         'restos_identificados',
+         # 'craneos',
         ]
 
 
@@ -17,7 +20,7 @@ def merge_pgr_data():
     with open("data/source/mapas-data-concentrado.xlsx", "rb") as f:
         dfs = pd.read_excel(f, sheet_name=None)
 
-    df = dfs['PGR']
+    df = dfs['00 PGR']
     pivot = pd.pivot_table(df, index=["state_code", "municipio_code", "year"], fill_value=0, aggfunc=np.sum, values=PROPS)
     pivot_dict = pivot.reset_index().to_dict("records")
     lookup = {}
@@ -279,6 +282,6 @@ def merge_state_data():
 
 
 if __name__ == '__main__':
-    # merge_pgr_data()
+    merge_pgr_data()
     merge_municipality_data()
-    # merge_state_data()
+    merge_state_data()
