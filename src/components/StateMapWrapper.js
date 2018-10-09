@@ -48,6 +48,7 @@ class StateMapWrapper extends React.Component {
     super(props);
     this.state.selectedState = props.selectedState;
     this.state.mapFilter = (props.mapFilter) || ["==", "CVE_ENT", props.selectedState.state_code];
+    this.state.negativeFilter = (props.mapFilter) || ["!=", "CVE_ENT", props.selectedState.state_code];
   }
 
   setYear = (selectedYear) => {

@@ -7,7 +7,7 @@ class StateMapChart extends React.Component {
     const { onYearChange, selectedYear, yearColorScale, selectedStateData, selectedVar } = this.props;
     let total = '';
     if (selectedStateData) {
-      total = (selectedYear == 2005) ? selectedStateData['num_' + selectedVar + '_total'] : selectedStateData.yearlyFosasData[selectedYear - 2006]['num_' + selectedVar];
+      total = (selectedYear == 2005) ? selectedStateData[selectedVar + '_total'] : selectedStateData.yearlyFosasData[selectedYear - 2006][selectedVar];
       total = (total === -1) ? 'Sin datos' : total;
     }
 
@@ -37,14 +37,14 @@ class StateMapChart extends React.Component {
                     backgroundColor: (yearRow.year == selectedYear) ? '#ffffff' : 'transparent',
                   }}
                 >
-                  {(yearRow['num_' + selectedVar] < 0) ?
+                  {(yearRow[selectedVar] < 0) ?
                     <span className="indicator-label indicator-no-data"></span> :
-                    <span className="indicator-label">{yearRow['num_' + selectedVar]}</span>
+                    <span className="indicator-label">{yearRow[selectedVar]}</span>
                   }
                   <div
                     className="bar"
                     style={{
-                      height: (yearRow['num_' + selectedVar] / selectedStateData['num_' + selectedVar + '_max']) * (height - 58),
+                      height: (yearRow[selectedVar] / selectedStateData[selectedVar + '_max']) * (height - 58),
                       backgroundColor: yearColorScale(yearRow.year)
                     }}
                   />

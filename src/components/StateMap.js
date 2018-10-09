@@ -87,11 +87,11 @@ class StateMap extends React.Component {
       if (features.length) {
         const circleSteps = {...circleSteps}
 
-        const maxFosas = max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)));
+        const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016)));
         const fosasScale = d3Scale.scaleSqrt().domain([0, maxFosas]).range([0, 20]);
         circleSteps.fosas = flatten(range(0, maxFosas + 1).map( (value, i) => ( [value, fosasScale(value)] ) ));
 
-        const maxCuerpos = max(features.map( (feature) => (feature.properties.num_cuerpos_cumulative_2016)));
+        const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016)));
         const cuerposScale = d3Scale.scaleSqrt().domain([0, maxCuerpos + 1]).range([0, 20]);
         circleSteps.cuerpos = flatten(range(0, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
@@ -108,8 +108,8 @@ class StateMap extends React.Component {
     const chartData = range(minYear + 1, maxYear + 1).map( (year, i) => {
       return {
         year: year,
-        fosas: feature.properties['num_fosas_' + year] || 0,
-        cuerpos: feature.properties['num_cuerpos_' + year] || 0,
+        fosas: feature.properties['fosas_' + year] || 0,
+        cuerpos: feature.properties['cuerpos_' + year] || 0,
       };
     });
 
@@ -137,8 +137,9 @@ class StateMap extends React.Component {
   render() {
     if (typeof window == 'undefined') { return null; }
     const { Map } = this;
-    const { beforeLayer, selectedState, selectedStateData, selectedVar,
-              selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales, hideStateOutline } = this.props;
+    const { beforeLayer, selectedState, selectedStateData, selectedVar, selectedYear,
+            minYear, maxYear, yearColorScale, mapFilter, negativeFilter,
+            hideMunicipales, hideStateOutline } = this.props;
     const { fitBounds, circleSteps, hoverInfo, geojson } = this.state;
 
     return (
@@ -169,7 +170,7 @@ class StateMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.8vvusyey'
+                'url': 'mapbox://davideads.2ebn32m1'
               }}
             />
 
@@ -178,10 +179,10 @@ class StateMap extends React.Component {
               sourceId="estatales"
               sourceLayer="estatales"
               before={beforeLayer}
-              filter={mapFilter}
+              filter={negativeFilter}
               type='fill'
               paint={{
-                'fill-color': '#fff',
+                'fill-color': '#ddd',
                 'fill-opacity': 1,
               }}
             />
@@ -208,7 +209,6 @@ class StateMap extends React.Component {
                 sourceId="municipalesshapes"
                 sourceLayer="municipales"
                 before={beforeLayer}
-                filter={mapFilter}
                 minZoom={1}
                 maxZoom={11}
                 type='line'
@@ -234,7 +234,7 @@ class StateMap extends React.Component {
                 'circle-stroke-width': 0,
                 'circle-radius': (circleSteps != null) ? [
                   'step',
-                  ['get', 'num_' + selectedVar + '_cumulative_' + year],
+                  ['get', selectedVar + '_cumulative_' + year],
                   0
                 ].concat(circleSteps[selectedVar]) : 0
               }}
@@ -253,7 +253,7 @@ class StateMap extends React.Component {
                 'circle-stroke-width': 0,
                 'circle-radius': (circleSteps != null) ? [
                   'step',
-                  ['get', 'num_' + selectedVar + '_cumulative_' + 2016],
+                  ['get', selectedVar + '_cumulative_' + 2016],
                   0
                 ].concat(circleSteps[selectedVar]) : 0
               }}
@@ -266,13 +266,13 @@ class StateMap extends React.Component {
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
                 <h3>{hoverInfo.feature.properties.NOM_MUN} <span className="state-name">{hoverInfo.feature.properties.state_name}</span></h3>
-                <p><strong>Fosas</strong> {hoverInfo.feature.properties.num_fosas_total}</p>
+                <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_total}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}
                   selectedVar='fosas'
                 />
-                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.num_cuerpos_total}</p>
+                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_total}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}
