@@ -78,7 +78,15 @@ class NationalMapWrapper extends React.Component {
             {...this.state}
             onYearChange={this.setYear}
           />
-          <p>Proin a risus libero. Etiam tincidunt tristique leo, ac hendrerit risus aliquet ac. Integer at semper augue. Vivamus ut mollis nulla. Cras vel interdum justo, tincidunt lobortis nibh. Nulla porttitor ex sem, nec sollicitudin sem dictum aliquam. Sed mollis, massa tincidunt bibendum imperdiet, quam erat convallis massa, at lobortis ante lorem sit amet massa. Curabitur porta scelerisque ligula, eget vulputate nulla interdum sed. Curabitur porttitor nisi ultricies enim efficitur rutrum. Aenean in nunc sit amet enim sollicitudin dapibus. Sed vestibulum mollis odio, at dignissim massa consectetur a.</p>
+
+          <div className="controls-content">
+            <p>De 2006 a 2016 en México las autoridades estatales encontraron 1978 fosas, la PGR 232.</p>
+            <p>Al menos 2880 cuerpos. Esta información fue obtenida a través de solicitudes de acceso a información pública realizadas a cada uno de los estados del país.</p>
+            <p>24 fiscalías estatales reconocieron que en su territorio encontraron fosas clandestinas: esfuerzos humanos por desaparecer a otras personas enterrándolas, o -en algunos casos- quemándolas con materiales combustibles. Ocho estados -Baja California, Chiapas, Ciudad de México, Guanajuato, Hidalgo, Puebla, Querétaro y Yucatán- no reconocieron la existencia de fosas.</p>
+            <p>En esos 11 años encontraron fosas en 15% de los municipios del país.</p>
+            <p>La explicación detallada de esta información, la evolución histórica estado por estado, municipio por municipio, año por año, y los hallazgos en estas fosas los puedes consultar aquí.</p>
+            <p><a href="https://adondevanlosdesaparecidos.org">https://adondevanlosdesaparecidos.org</a></p>
+          </div>
         </div>
         <StateMap
           {...this.state}
