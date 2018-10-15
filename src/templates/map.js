@@ -1,6 +1,5 @@
 import React from 'react';
-import StateMapWrapper from '../StateMapWrapper';
-import PageLayout from '../layouts/page';
+import StateMapWrapper from '../components/StateMapWrapper';
 import * as pym from 'pym.js';
 
 
@@ -15,11 +14,9 @@ class MapTemplate extends React.Component {
 
   render() {
     return (
-      <PageLayout>
-        <StateMapWrapper
-          selectedState={this.props.data.mxstatesJson}
-        />
-      </PageLayout>
+      <StateMapWrapper
+        selectedState={this.props.data.mxstatesJson}
+      />
     );
   }
 }
