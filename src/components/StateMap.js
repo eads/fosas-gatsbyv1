@@ -135,7 +135,7 @@ class StateMap extends React.Component {
     const { Map } = this;
     const { beforeLayer, selectedState, selectedStateData, selectedVar, selectedYear,
             minYear, maxYear, yearColorScale, mapFilter, negativeFilter,
-            hideMunicipales, hideStateOutline } = this.props;
+            hideMunicipales, hideStateOutline, showPGR } = this.props;
     const { fitBounds, circleSteps, hoverInfo, geojson } = this.state;
 
     return (
@@ -175,6 +175,14 @@ class StateMap extends React.Component {
               tileJsonSource={{
                 'type': 'vector',
                 'url': 'mapbox://davideads.5yjavfyx'
+              }}
+            />
+
+            <Source
+              id="pgrcentroids"
+              tileJsonSource={{
+                'type': 'vector',
+                'url': 'mapbox://davideads.4zwtyicu'
               }}
             />
 
@@ -234,7 +242,7 @@ class StateMap extends React.Component {
               before={beforeLayer}
               filter={mapFilter}
               layout={{
-                visibility: (selectedYear == 2005 || selectedYear >= year) ? 'visible' : 'none',
+                visibility: (!showPGR && (selectedYear == 2005 || selectedYear >= year)) ? 'visible' : 'none',
               }}
               paint={{
                 'circle-color': yearColorScale(year),
@@ -270,6 +278,30 @@ class StateMap extends React.Component {
               circleOnClick={this.onCircleClick}
             />
 
+            {range(minYear + 1, maxYear + 1).reverse().map( (year, i) => (
+            <Layer
+              key={'pgrcentroids' + i}
+              id={'pgrcentroids' + year}
+              sourceId="pgrcentroids"
+              sourceLayer="pgrcentroids"
+              type="circle"
+              before={beforeLayer}
+              filter={mapFilter}
+              layout={{
+                visibility: (showPGR && (selectedYear == 2005 || selectedYear >= year)) ? 'visible' : 'none',
+              }}
+              paint={{
+                'circle-color': yearColorScale(year),
+                'circle-opacity': 1,
+                'circle-stroke-width': 0,
+                'circle-radius': (circleSteps != null) ? [
+                  'step',
+                  ['get', selectedVar + '_cumulative_' + year],
+                  0
+                ].concat(circleSteps[selectedVar]) : 0
+              }}
+            />
+            ))}
 
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
