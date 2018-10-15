@@ -26,10 +26,6 @@ class StateMap extends React.Component {
       accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
       minZoom: 2.8,
       maxZoom: 9,
-      scrollZoom: false,
-      doubleClickZoom: false,
-      dragPan: false,
-      touchZoomRotate: false,
     });
 
     if (props.selectedState.state_code) {
@@ -172,6 +168,14 @@ class StateMap extends React.Component {
                 'type': 'vector',
                 'url': 'mapbox://davideads.2ebn32m1'
               }}
+              />
+
+            <Source
+              id="municipalescentroids"
+              tileJsonSource={{
+                'type': 'vector',
+                'url': 'mapbox://davideads.5yjavfyx'
+              }}
             />
 
             <Layer
@@ -221,14 +225,18 @@ class StateMap extends React.Component {
             )}
 
             {range(minYear + 1, maxYear + 1).reverse().map( (year, i) => (
-            <GeoJSONLayer
-              key={'geojson' + i}
-              data={geojson}
+            <Layer
+              key={'municipalescentroids' + i}
+              id={'municipalescentroids' + year}
+              sourceId="municipalescentroids"
+              sourceLayer="municipalescentroids"
+              type="circle"
               before={beforeLayer}
-              circleLayout={{
+              filter={mapFilter}
+              layout={{
                 visibility: (selectedYear == 2005 || selectedYear >= year) ? 'visible' : 'none',
               }}
-              circlePaint={{
+              paint={{
                 'circle-color': yearColorScale(year),
                 'circle-opacity': 1,
                 'circle-stroke-width': 0,
