@@ -261,7 +261,7 @@ class StateMap extends React.Component {
               data={geojson}
               before={beforeLayer}
               circleLayout={{
-                visibility: 'visible',
+                visibility: (!showPGR) ? 'visible' : 'none',
               }}
               circlePaint={{
                 'circle-color': 'white',
