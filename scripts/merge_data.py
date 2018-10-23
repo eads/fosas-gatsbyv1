@@ -72,10 +72,9 @@ def merge_pgr_data():
 
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = totals[prop]
-                # if totals[prop] > maxes[prop]:
-                    # maxes[prop] = totals[prop]
+                if totals[prop] > maxes[prop]:
+                    maxes[prop] = totals[prop]
 
-            # try:
             make_centroid = False
             for prop in PROPS:
                 if feature['properties'][prop + '_total'] > 0:
@@ -88,8 +87,6 @@ def merge_pgr_data():
                 center_feature = deepcopy(feature)
                 center_feature['geometry'] = feature_centroid
                 centers['features'].append(center_feature)
-            # except:
-                # print('encountered feature w/o centroid pls fix')
 
             # Just adding to the ugliness. Only centroids have data...
             feature['properties'] = {'CVE_ENT': int(feature['properties']['CVE_ENT'])}
@@ -172,21 +169,18 @@ def merge_municipality_data():
                 if totals[prop] > maxes[prop]:
                     maxes[prop] = totals[prop]
 
-            try:
-                make_centroid = False
-                for prop in PROPS:
-                    if feature['properties'][prop + '_total'] > 0:
-                        make_centroid = True
-                        break
+            make_centroid = False
+            for prop in PROPS:
+                if feature['properties'][prop + '_total'] > 0:
+                    make_centroid = True
+                    break
 
-                if make_centroid:
-                    shp = shape(feature['geometry'])
-                    feature_centroid = mapping(shp.representative_point())
-                    center_feature = deepcopy(feature)
-                    center_feature['geometry'] = feature_centroid
-                    centers['features'].append(center_feature)
-            except:
-                print('encountered feature w/o centroid pls fix')
+            if make_centroid:
+                shp = shape(feature['geometry'])
+                feature_centroid = mapping(shp.representative_point())
+                center_feature = deepcopy(feature)
+                center_feature['geometry'] = feature_centroid
+                centers['features'].append(center_feature)
 
             # Just adding to the ugliness. Only centroids have data...
             feature['properties'] = {'CVE_ENT': int(feature['properties']['CVE_ENT'])}
@@ -269,6 +263,7 @@ def merge_state_data():
                 'representative_point': representative_point,
                 'centroid': centroid,
                 'bounds': bounds,
+                **feature['properties']
             })
 
     with open('data/processed-geojson/estatales.json', 'w') as f:
@@ -282,6 +277,6 @@ def merge_state_data():
 
 
 if __name__ == '__main__':
-    merge_pgr_data()
-    merge_municipality_data()
+    # merge_pgr_data()
+    # merge_municipality_data()
     merge_state_data()

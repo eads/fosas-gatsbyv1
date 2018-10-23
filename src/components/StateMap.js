@@ -66,18 +66,6 @@ class StateMap extends React.Component {
     const { selectedStateData, onDataChange, onMunicipioLoad } = this.props;
     const { circleSteps } = this.state;
 
-    // Only trigger when selectedStateData is still null
-    if (source.sourceId == 'estatales' && !selectedStateData) {
-      const features = this._getSourceFeatures(map, source);
-
-      // The initial source loaded calls end up empty
-      if (features.length) {
-        let selectedStateData = cloneDeep(features[0].properties);
-        selectedStateData.yearlyFosasData = JSON.parse(selectedStateData.yearlyFosasData);
-        onDataChange(selectedStateData);
-      }
-    }
-
     if (source.sourceId.startsWith('geojson') && !this.props.circleSteps) {
       const features = this._getSourceFeatures(map, source);
       if (features.length) {
@@ -108,6 +96,9 @@ class StateMap extends React.Component {
         cuerpos: feature.properties['cuerpos_' + year] || 0,
       };
     });
+
+    console.log(feature.properties);
+    console.log(this.props);
 
     const hoverInfo = {
       lngLat: lngLat,

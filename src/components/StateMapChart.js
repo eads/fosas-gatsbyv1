@@ -4,37 +4,35 @@ import ContainerDimensions from 'react-container-dimensions'
 class StateMapChart extends React.Component {
 
   render() {
-    const { onYearChange, selectedYear, yearColorScale, selectedStateData, selectedVar } = this.props;
+    const { onYearChange, selectedYear, yearColorScale, selectedState, selectedVar } = this.props;
     let total = '';
-    if (selectedStateData) {
-      total = (selectedYear == 2005) ? selectedStateData[selectedVar + '_total'] : selectedStateData.yearlyFosasData[selectedYear - 2006][selectedVar];
+    if (selectedState) {
+      total = (selectedYear == 2005) ? selectedState[selectedVar + '_total'] : selectedState.yearlyFosasData[selectedYear - 2006][selectedVar];
       total = (total === -1) ? 'Sin datos' : total;
     }
 
     return (
       <div className="chart-wrapper">
         <h2>
-          {selectedVar} 
+          {selectedVar}
           <span className="number">
-            {(selectedStateData &&
+            {(selectedState &&
               (total)
             )}
           </span>
         </h2>
 
-        {selectedStateData && (
+        {selectedState && (
         <ContainerDimensions>
           { ({ height }) =>
             <div className="chart">
-
-
-              {selectedStateData.yearlyFosasData.map( (yearRow, i) => (
+              {selectedState.yearlyFosasData.map( (yearRow, i) => (
                 <div
                   key={"yearrow"+i}
                   className={"bar-container year-" + yearRow.year}
                   style={{
                     height: height,
-                    backgroundColor: (yearRow.year == selectedYear) ? '#ffffff' : 'transparent',
+                    backgroundColor: (yearRow.year == selectedYear) ? '#f3f3f3' : 'transparent',
                   }}
                 >
                   {(yearRow[selectedVar] < 0) ?
@@ -44,7 +42,7 @@ class StateMapChart extends React.Component {
                   <div
                     className="bar"
                     style={{
-                      height: (yearRow[selectedVar] / selectedStateData[selectedVar + '_max']) * (height - 58),
+                      height: (yearRow[selectedVar] / selectedState[selectedVar + '_max']) * (height - 58),
                       backgroundColor: yearColorScale(yearRow.year)
                     }}
                   />

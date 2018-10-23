@@ -63,12 +63,6 @@ class StateMapWrapper extends React.Component {
     });
   }
 
-  setSelectedStateData = (selectedStateData) => {
-    this.setState({
-      selectedStateData
-    });
-  }
-
   setMunicipioData = (municipioData) => {
     this.setState({
       municipioData
@@ -110,7 +104,6 @@ class StateMapWrapper extends React.Component {
             <StateMap
               {...this.state}
               beforeLayer="water-label"
-              onDataChange={this.setSelectedStateData}
               onMunicipioLoad={this.setMunicipioData}
             />
           </div>

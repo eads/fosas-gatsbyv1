@@ -95,15 +95,11 @@ class NationalMapWrapper extends React.Component {
             <p>La explicación detallada de esta información, la evolución histórica estado por estado, municipio por municipio, año por año, y los hallazgos en estas fosas los puedes consultar aquí.</p>
             <p><a href="https://adondevanlosdesaparecidos.org">https://adondevanlosdesaparecidos.org</a></p>
 
-            <p onClick={this.togglePGR}>
-              {showPGR ? (<span>Hide PGR</span>) : (<span>Show PGR</span>)}
-            </p>
           </div>
         </div>
         <StateMap
           {...this.state}
           bounds={[selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)]}
-          hideStateOutline={true}
           beforeLayer="water-label"
           onDataChange={this.setSelectedStateData}
           showPGR={showPGR}

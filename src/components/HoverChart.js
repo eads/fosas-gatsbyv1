@@ -38,9 +38,4 @@ class HoverChart extends React.Component {
   }
 }
 
-
 export default HoverChart;
-
-/*
-
-*/

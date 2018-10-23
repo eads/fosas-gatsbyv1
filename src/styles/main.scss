@@ -328,8 +328,11 @@ table .number {
 
 // Nation
 .state-details.national {
-  max-width: auto;
   width: 100%;
+}
+.embedded .state-details.national {
+  height: 0;
+  padding-top: 55%;
 }
 .state-details.national .controls .controls-content p {
   font-family: "Georgia", serif;
@@ -346,7 +349,7 @@ table .number {
 .state-details.national .controls {
   position: absolute;
   top: 15px;
-  right: 30px;
+  right: 15px;
   background-color: #fff;
   z-index: 200;
   padding: 10px 10px 30px 10px;

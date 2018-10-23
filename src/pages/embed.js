@@ -16,7 +16,7 @@ class EmbedPage extends React.Component {
 
     this.state = {
       embedWidth: 900,
-      iframeSrc: './zacatecas/',
+      iframeSrc: '/index.html',
     }
 
     this.lipsum = {
@@ -38,8 +38,11 @@ class EmbedPage extends React.Component {
 
   onClickWidgetLink(event) {
     event.preventDefault();
+
+    const relativeSrc = event.target.href.replace("http://localhost:8000/", "/").replace("https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/", "/").replace("https://data.adondevanlosdesaparecidos.org/", "/").replace("./", "/");
+
     this.setState({
-      iframeSrc: event.target.href,
+      iframeSrc: relativeSrc,
     }, () => {
       setTimeout(pym.autoInit, 100)
     });
@@ -52,7 +55,7 @@ class EmbedPage extends React.Component {
   }
 
   render() {
-    const relativeSrc = this.state.iframeSrc.replace("http://localhost:8000/", "").replace("https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/", "").replace("https://data.adondevanlosdesaparecidos.org/", "").replace("./", "");
+    const { iframeSrc } = this.state;
 
     return (
       <div className="embed-preview">
@@ -64,8 +67,11 @@ class EmbedPage extends React.Component {
         />
 
         <div className="embed-preview-meta">
-          <p>Copy this embed code and paste it into your website:</p>
-          <textarea value={`[pym-src="https://data.adondevanlosdesaparecidos.org/${relativeSrc}"]`} readOnly />
+          <p>Standard embed</p>
+          <textarea value={`<div data-pym-src="https://data.adondevanlosdesaparecidos.org${iframeSrc}">Loading...</div>\n<script type="text/javascript" src="https://pym.nprapps.org/pym-loader.v1.min.js"></script>`} readOnly />
+
+          <p>Wordpress embed</p>
+          <textarea value={`[pym-src="https://data.adondevanlosdesaparecidos.org${iframeSrc}"]`} readOnly />
 
           <h2>Embed size <small>({this.state.embedWidth}px)</small></h2>
           <Slider
@@ -116,11 +122,11 @@ class EmbedPage extends React.Component {
           <div className={this.state.embedClass}>
             <div className="content-preview">
               <div style={{width: this.state.embedWidth + 'px'}}>
-                <h2>FOSAS : /{relativeSrc}</h2>
+                <h2>FOSAS : {iframeSrc}</h2>
                 <h1 className="hooha">{this.lipsum.hed}</h1>
                 <p className="hooha">{this.lipsum.graf}</p>
                 <div
-                  dangerouslySetInnerHTML={this.createEmbed(relativeSrc)}
+                  dangerouslySetInnerHTML={this.createEmbed(iframeSrc)}
                 />
                 <p className="hooha">{this.lipsum.graf}</p>
                 <p className="hooha">{this.lipsum.graf}</p>
