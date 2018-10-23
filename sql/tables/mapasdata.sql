@@ -1,8 +1,9 @@
 CREATE TABLE IF NOT EXISTS mapasdata (
-    id character varying(6) primary key,
+    id character varying(8) primary key,
+    munid character varying(8),
     year integer NOT NULL,
-    cve_ent character varying,
-    cve_mun character varying,
+    cve_ent character varying(2),
+    cve_mun character varying(5),
     fosas integer,
     cuerpos integer,
     restos integer,
