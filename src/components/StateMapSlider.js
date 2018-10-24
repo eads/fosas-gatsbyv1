@@ -48,24 +48,17 @@ class SliderControlButton extends React.Component {
     const { startPlaying, stopPlaying, restartPlaying } = this;
     const { timer } = this.state;
     const { selectedYear, maxYear } = this.props;
-    //return (<div></div>);
     return (
       <div className="control-button">
         {timer && (<span>
           <FaPause onClick={stopPlaying} />
-          <span onClick={stopPlaying}>Detener</span>
         </span>)}
         {(!timer && selectedYear != maxYear) && (<span>
           <FaPlay onClick={startPlaying} />
-          <span onClick={startPlaying}>Iniciar</span>
         </span>)}
         {(!timer && selectedYear == maxYear) && (<span>
           <FaRedoAlt onClick={restartPlaying} />
-          <span onClick={restartPlaying}>Reiniciar</span>
         </span>)}
-        <span className="selected-year">
-          {selectedYear > 2005 && selectedYear}
-        </span>
       </div>
     )
   }
@@ -78,34 +71,63 @@ class StateMapSlider extends React.Component {
     const { onYearChange, selectedYear, minYear, maxYear } = this.props;
 
     return (
-      <div className="slider-container">
+      <div className="slider-container row">
         <SliderControlButton
           selectedYear={selectedYear}
           onYearChange={onYearChange}
           minYear={minYear}
           maxYear={maxYear}
         />
-        <div className="slider">
-          <Slider
-            min={minYear}
-            max={maxYear}
-            value={selectedYear}
-            onChange={onYearChange}
-            marks ={{
-              2005: <strong>TOT</strong>,
-              2006: "'06",
-              2007: "'07",
-              2008: "'08",
-              2009: "'09",
-              2010: "'10",
-              2011: "'11",
-              2012: "'12",
-              2013: "'13",
-              2014: "'14",
-              2015: "'15",
-              2016: "'16",
-            }}
-          />
+
+        <div className="slider-row">
+          <p className="selected-year">
+            {(selectedYear == 2005 || selectedYear == 2016) && (
+              <span>2006-2016</span>
+            )}
+            {(selectedYear == 2006) && (
+              <span>2006</span>
+            )}
+            {(selectedYear > 2006 && selectedYear < 2016) && (
+              <span>2006-{selectedYear}</span>
+            )}
+          </p>
+
+          <div className="slider">
+            <Slider
+              min={minYear}
+              max={maxYear}
+              value={selectedYear}
+              onChange={onYearChange}
+              dotStyle={{
+                width: 14,
+                height: 14,
+                bottom: -5,
+                marginLeft: -5,
+              }}
+              handleStyle={{
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                width: 17,
+                height: 17,
+                borderColor: '#000000',
+                bottom: -1,
+                boxShadow: 'none',
+              }}
+              marks ={{
+                2005: '',
+                2006: '',
+                2007: '',
+                2008: '',
+                2009: '',
+                2010: '',
+                2011: '',
+                2012: '',
+                2013: '',
+                2014: '',
+                2015: '',
+                2016: '',
+              }}
+            />
+          </div>
         </div>
       </div>
     )
