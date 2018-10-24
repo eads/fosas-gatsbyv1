@@ -88,12 +88,8 @@ class NationalMapWrapper extends React.Component {
           />
 
           <div className="controls-content">
-            <p>De 2006 a 2016 en México las autoridades estatales encontraron 1978 fosas, la PGR 232.</p>
-            <p>Al menos 2880 cuerpos. Esta información fue obtenida a través de solicitudes de acceso a información pública realizadas a cada uno de los estados del país.</p>
-            <p>24 fiscalías estatales reconocieron que en su territorio encontraron fosas clandestinas: esfuerzos humanos por desaparecer a otras personas enterrándolas, o -en algunos casos- quemándolas con materiales combustibles. Ocho estados -Baja California, Chiapas, Ciudad de México, Guanajuato, Hidalgo, Puebla, Querétaro y Yucatán- no reconocieron la existencia de fosas.</p>
-            <p>En esos 11 años encontraron fosas en 15% de los municipios del país.</p>
-            <p>La explicación detallada de esta información, la evolución histórica estado por estado, municipio por municipio, año por año, y los hallazgos en estas fosas los puedes consultar aquí.</p>
-            <p><a href="https://adondevanlosdesaparecidos.org">https://adondevanlosdesaparecidos.org</a></p>
+            <p>De 2006 a 2016 en México las autoridades estatales reportaron el hallazgo de 1978 fosas, y la PGR 232. Fueron 24 las fiscalías estatales que reconocieron que en su territorio encontraron fosas clandestinas con, al menos, 2884 cuerpos. No es posible saber el tamaño exacto de la barbarie; los datos obtenidos mediantes solicitudes de información nos acercan a entenderlo.</p>
+            <p><a href="https://adondevanlosdesaparecidos.org">Leer reportaje</a> / <a href="https://adondevanlosdesaparecidos.org">Ver información por estado</a> / <a href="https://adondevanlosdesaparecidos.org">Volver a página principal</a></p>
 
             <p onClick={this.togglePGR}>
               {showPGR ? (<span>Hide PGR</span>) : (<span>Show PGR</span>)}
