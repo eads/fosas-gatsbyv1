@@ -89,7 +89,7 @@ class StateMap extends React.Component {
     const feature = features[0];
 
     const { minYear, maxYear } = this.props;
-    const chartData = range(minYear + 1, maxYear + 1).map( (year, i) => {
+    const munData = range(minYear + 1, maxYear + 1).map( (year, i) => {
       return {
         year: year,
         fosas: feature.properties['fosas_' + year] || 0,
@@ -97,13 +97,11 @@ class StateMap extends React.Component {
       };
     });
 
-    console.log(feature.properties);
-    console.log(this.props);
-
     const hoverInfo = {
       lngLat: lngLat,
       feature: feature,
-      chartData: chartData,
+      munData: munData,
+      stateData: this.props.selectedState,
     };
     this.setState({ hoverInfo });
   }
