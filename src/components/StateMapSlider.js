@@ -99,32 +99,33 @@ class StateMapSlider extends React.Component {
               value={selectedYear}
               onChange={onYearChange}
               dotStyle={{
-                width: 14,
-                height: 14,
-                bottom: -5,
-                marginLeft: -5,
+                width: 11,
+                height: 11,
+                bottom: -3,
+                marginLeft: -4,
               }}
               handleStyle={{
                 backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                width: 17,
-                height: 17,
+                width: 16,
+                height: 16,
+                borderWidth: 3,
                 borderColor: '#000000',
                 bottom: -1,
                 boxShadow: 'none',
               }}
               marks ={{
-                2005: '',
-                2006: '',
-                2007: '',
-                2008: '',
-                2009: '',
-                2010: '',
-                2011: '',
-                2012: '',
-                2013: '',
-                2014: '',
-                2015: '',
-                2016: '',
+                2005: 'TOT',
+                2006: "'06",
+                2007: "'07",
+                2008: "'08",
+                2009: "'09",
+                2010: "'10",
+                2011: "'11",
+                2012: "'12",
+                2013: "'13",
+                2014: "'14",
+                2015: "'15",
+                2016: "'16",
               }}
             />
           </div>

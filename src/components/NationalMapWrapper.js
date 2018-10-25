@@ -81,7 +81,24 @@ class NationalMapWrapper extends React.Component {
 
     return (
       <div className="state-details national">
+          <div style={{
+            position: 'absolute',
+            left: 10,
+            bottom: 32,
+            zIndex: 99,
+            opacity: 0.5,
+          }}>
+            <img
+              src="logo-adondevanlosdesaparecidos_520x236.png"
+              style={{
+                width: 'auto',
+                height: 40,
+              }}
+            />
+          </div>
+
         <div className="controls">
+
           <StateMapSlider
             {...this.state}
             onYearChange={this.setYear}

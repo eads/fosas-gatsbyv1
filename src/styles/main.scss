@@ -96,6 +96,9 @@ html, body {
 }
 
 /* Slider/play controls */
+.slider-container {
+  padding-top: 10px;
+}
 .slider-container p {
   font-size: 14px;
   font-weight: bold;
@@ -110,6 +113,7 @@ html, body {
   display: flex;
   align-items: center;
   margin-bottom: .9em;
+  margin-right: 5px;
 }
 .slider-container .control-button > * {
   display: flex;
@@ -125,13 +129,6 @@ html, body {
   margin-right: 4px;
   width: 21px;
 }
-.slider-container .control-button span {
-  font-size: 13px;
-  text-transform: uppercase;
-  color: #555;
-  font-weight: bold;
-}
-
 .slider-container .slider {
   padding: 0 4.345%;
   position: relative;
@@ -146,21 +143,11 @@ html, body {
 .slider-container .rc-slider-mark {
   font-size: 10px;
 }
-.slider-container .rc-slider-dot, .slider-container .rc-slider-handle {
-  //border-color: #666 !important;
-  //box-shadow: none !important;
-}
 .slider-container .rc-slider-track {
-  background-color: #ddd !important;
+  background-color: #999 !important;
 }
 .slider-container .rc-slider-rail {
   background-color: #eee !important;
-}
-//.slider-container .rc-slider-dot:not(.rc-slider-dot-active) {
-  //border-color: #aaa !important;
-//}
-.slider-container .rc-slider-mark .rc-slider-mark-text {
-  color: #ffffff;
 }
 .slider-container .rc-slider-step .rc-slider-dot:nth-child(12) { background-color: #481c6e; border-color: #481c6e !important; }
 .slider-container .rc-slider-step .rc-slider-dot:nth-child(11) { background-color: #98d83e; border-color: #98d83e !important; }
@@ -174,13 +161,6 @@ html, body {
 .slider-container .rc-slider-step .rc-slider-dot:nth-child(3)  { background-color: #3d4d8a; border-color: #3d4d8a !important; }
 .slider-container .rc-slider-step .rc-slider-dot:nth-child(2)  { background-color: #453581; border-color: #453581 !important; }
 .slider-container .rc-slider-step .rc-slider-dot:nth-child(1)  { background-color: #999999; border-color: #999999 !important; }
-
-//.slider-container .rc-slider-mark .rc-slider-mark-text:first-child,
-//.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(2),
-//.slider-container .rc-slider-mark .rc-slider-mark-text:last-child,
-//.slider-container .rc-slider-mark .rc-slider-mark-text-active:last-child {
-  //display: block;
-//}
 
 /* Chart */
 .chart-wrapper {
@@ -350,7 +330,7 @@ table .number {
   margin-bottom: 0;
 }
 .state-details.national .controls .controls-content p:first-child {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .state-details.national .controls {
@@ -374,6 +354,8 @@ table .number {
 
 .state-details.national .rc-slider-mark-text {
   height: auto;
+  font-size: 9px;
+  color: #aaa !important;
 }
 
 .state-details.national .control-button {
