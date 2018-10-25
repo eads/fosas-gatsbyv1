@@ -13,7 +13,6 @@ class PaisPage extends React.Component {
 
   render() {
     const { allMxstatesJson } = this.props.data;
-    console.log(allMxstatesJson);
     return (
       <NationalMapWrapper
         selectedState={{
