@@ -3,8 +3,8 @@ import ReactMapboxGl, { Source, Layer, GeoJSONLayer, Popup } from "react-mapbox-
 import HoverChart from './HoverChart';
 import range from 'lodash/range';
 import max from 'lodash/max';
-import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
+import find from 'lodash/find';
 import * as d3Scale from 'd3-scale';
 import slugify from 'slugify';
 
@@ -97,11 +97,19 @@ class StateMap extends React.Component {
       };
     });
 
+    let selectedStateData;
+
+    if (this.props.allStateData) {
+      selectedStateData = find(this.props.allStateData.edges, (d) => (d.node.state_code == feature.properties.CVE_ENT)).node;
+    } else {
+      selectedStateData = this.props.selectedStateData;
+    }
+
     const hoverInfo = {
       lngLat: lngLat,
       feature: feature,
       munData: munData,
-      stateData: this.props.selectedState,
+      stateData: selectedStateData,
     };
     this.setState({ hoverInfo });
   }

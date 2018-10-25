@@ -19,7 +19,7 @@ const MAXYEAR = 2016;
 class NationalMapWrapper extends React.Component {
   state = {
     selectedState: {},
-    selectedStateData: null,
+    allStateData: null,
     selectedVar: 'fosas',
     selectedYear: MINYEAR,
     minYear: MINYEAR,
@@ -47,6 +47,7 @@ class NationalMapWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state.selectedState = props.selectedState;
+    this.state.allStateData = props.allStateData;
     this.state.mapFilter = (props.mapFilter === undefined) ? ["==", "CVE_ENT", props.selectedState.state_code] : props.mapFilter;
     this.state.circleSteps = props.circleSteps || null;
   }
