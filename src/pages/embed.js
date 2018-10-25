@@ -71,7 +71,7 @@ class EmbedPage extends React.Component {
           <textarea value={`<div data-pym-src="https://data.adondevanlosdesaparecidos.org${iframeSrc}">Loading...</div>\n<script type="text/javascript" src="https://pym.nprapps.org/pym-loader.v1.min.js"></script>`} readOnly />
 
           <p>Wordpress embed</p>
-          <textarea value={`[pym-src="https://data.adondevanlosdesaparecidos.org${iframeSrc}"]`} readOnly />
+          <textarea value={`[pym src="https://data.adondevanlosdesaparecidos.org${iframeSrc}"]`} readOnly />
 
           <h2>Embed size <small>({this.state.embedWidth}px)</small></h2>
           <Slider
