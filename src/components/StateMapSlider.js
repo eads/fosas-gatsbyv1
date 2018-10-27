@@ -106,11 +106,12 @@ class StateMapSlider extends React.Component {
               }}
               handleStyle={{
                 backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                width: 16,
-                height: 16,
-                borderWidth: 3,
-                borderColor: '#000000',
-                bottom: -1,
+                width: 15,
+                height: 15,
+                borderWidth: 4,
+                borderColor: '#333',
+                bottom: 0,
+                marginLeft: -6,
                 boxShadow: 'none',
               }}
               marks ={{
