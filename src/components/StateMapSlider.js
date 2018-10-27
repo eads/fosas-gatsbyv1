@@ -101,6 +101,7 @@ class StateMapSlider extends React.Component {
               dotStyle={{
                 width: 11,
                 height: 11,
+                borderWidth: 1,
                 bottom: -3,
                 marginLeft: -4,
               }}
@@ -108,8 +109,8 @@ class StateMapSlider extends React.Component {
                 backgroundColor: 'rgba(255, 255, 255, 0.2)',
                 width: 15,
                 height: 15,
-                borderWidth: 4,
-                borderColor: '#333',
+                borderWidth: 2,
+                borderColor: '#222',
                 bottom: 0,
                 marginLeft: -6,
                 boxShadow: 'none',
