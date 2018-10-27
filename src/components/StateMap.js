@@ -4,6 +4,7 @@ import HoverChart from './HoverChart';
 import range from 'lodash/range';
 import max from 'lodash/max';
 import flatten from 'lodash/flatten';
+import throttle from 'lodash/throttle';
 import find from 'lodash/find';
 import * as d3Scale from 'd3-scale';
 import slugify from 'slugify';
@@ -125,6 +126,17 @@ class StateMap extends React.Component {
       const slug = slugify(feature.properties.state_name.toLowerCase());
       window.location = `https://adondevanlosdesaparecidos.org/data/${slug}/`;
     }
+  }
+
+  onResize = () => {
+    const map = this.mapbox.state.map;
+    const selectedState = this.props.selectedState;
+    const bounds = [selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)];
+    map.fitBounds(bounds, { padding: DEFAULT_MAP_PADDING })
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", throttle(this.onResize, 500));
   }
 
   render() {
