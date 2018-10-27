@@ -6,7 +6,6 @@ class HoverChart extends React.Component {
   render() {
     const { yearColorScale, hoverInfo, selectedVar } = this.props;
     const stateMax = hoverInfo.stateData[selectedVar + '_max'];
-
     const height = 45;
 
     return (

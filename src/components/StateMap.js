@@ -102,7 +102,7 @@ class StateMap extends React.Component {
     if (this.props.allStateData) {
       selectedStateData = find(this.props.allStateData.edges, (d) => (d.node.state_code == feature.properties.CVE_ENT)).node;
     } else {
-      selectedStateData = this.props.selectedStateData;
+      selectedStateData = this.props.selectedState;
     }
 
     const hoverInfo = {
