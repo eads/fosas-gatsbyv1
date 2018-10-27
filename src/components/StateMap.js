@@ -24,7 +24,7 @@ class StateMap extends React.Component {
     if (typeof window == 'undefined') { return null; }
 
     this.Map = ReactMapboxGl({
-      accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
+      accessToken: "pk.eyJ1IjoiYWRvbmRldmFuIiwiYSI6ImNqbm0yc2x3aDA0c2QzcXVteWhjaW5vZTMifQ.9iTMcfENx9TOCQ94oXEevQ",
       minZoom: 2.8,
       maxZoom: 9,
     });
