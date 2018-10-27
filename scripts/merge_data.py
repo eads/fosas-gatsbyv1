@@ -72,8 +72,8 @@ def merge_pgr_data():
 
             for prop in PROPS:
                 feature['properties'][prop + '_total'] = totals[prop]
-                if totals[prop] > maxes[prop]:
-                    maxes[prop] = totals[prop]
+                # if totals[prop] > maxes[prop]:
+                    # maxes[prop] = totals[prop]
 
             make_centroid = False
             for prop in PROPS:
@@ -277,6 +277,6 @@ def merge_state_data():
 
 
 if __name__ == '__main__':
-    # merge_pgr_data()
-    # merge_municipality_data()
+    merge_pgr_data()
+    merge_municipality_data()
     merge_state_data()
