@@ -151,7 +151,7 @@ class StateMap extends React.Component {
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjk3b13bs2t362srohj2fqshs/?fresh=true"
+            style="mapbox://styles/adondevan/cjnrw39nu0z5v2rlmp27xqfx5"
             containerStyle={{
               height: "100%",
               width: "100%"
@@ -167,7 +167,7 @@ class StateMap extends React.Component {
               id="municipalesshapes"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.1y2adviu'
+                'url': 'mapbox://adondevan.8zoa88xx'
               }}
             />
 
@@ -175,7 +175,7 @@ class StateMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.2ebn32m1'
+                'url': 'mapbox://adondevan.2tndx9ck'
               }}
               />
 
@@ -183,7 +183,7 @@ class StateMap extends React.Component {
               id="municipalescentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.5yjavfyx'
+                'url': 'mapbox://adondevan.1fqdak6u'
               }}
             />
 
@@ -191,7 +191,7 @@ class StateMap extends React.Component {
               id="pgrcentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.4zwtyicu'
+                'url': 'mapbox://adondevan.d76ay407'
               }}
             />
 
