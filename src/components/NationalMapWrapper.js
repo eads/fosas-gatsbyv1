@@ -107,7 +107,7 @@ class NationalMapWrapper extends React.Component {
 
           <div className="controls-content">
             <p>De 2006 a 2016 en México las autoridades estatales reportaron el hallazgo de 1978 fosas, y la PGR 232. Fueron 24 las fiscalías estatales que reconocieron que en su territorio encontraron fosas clandestinas con, al menos, 2884 cuerpos. No es posible saber el tamaño exacto de la barbarie; los datos obtenidos mediantes solicitudes de información nos acercan a entenderlo.</p>
-            <p><a href="https://adondevanlosdesaparecidos.org">Leer reportaje</a> / <a href="https://adondevanlosdesaparecidos.org">Ver información por estado</a> / <a href="https://adondevanlosdesaparecidos.org">Volver a página principal</a></p>
+            <p><a href="https://adondevanlosdesaparecidos.org">Leer reportaje</a> / <a href="https://adondevanlosdesaparecidos.org/mapaestados/">Ver información por estado</a> / <a href="https://adondevanlosdesaparecidos.org">Volver a página principal</a></p>
 
           </div>
         </div>
