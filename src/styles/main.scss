@@ -31,9 +31,8 @@ html, body {
 /* Page grid */
 @media only screen and (min-width: 700px) {
 	.map { width: 62%; }
-	.controls { width: calc(38% - 30px); padding-right: 30px; }
+	.controls { width: calc(38%); padding-right: 20px; }
 }
-
 
 /* Content wrapper */
 .state-details {
@@ -83,7 +82,7 @@ html, body {
   overflow: hidden;
   width: 100%;
   margin: 0 auto;
-  padding-top: 100%;
+  padding-top: 104%;
   position: relative;
 }
 .municipio-map {
@@ -106,7 +105,7 @@ html, body {
 }
 .slider-row {
   float: left;
-  width: calc(100% - 100px);
+  width: calc(100% - 56px);
 }
 .slider-container .control-button {
   float: left;
@@ -340,7 +339,6 @@ table .number {
   background-color: #fff;
   z-index: 200;
   padding: 10px 10px 30px 10px;
-  max-width: 400px;
 }
 
 .state-details.national .municipio-map-wrapper {
@@ -361,3 +359,15 @@ table .number {
 .state-details.national .control-button {
   margin-left: 8px;
 }
+
+
+@media only screen and (max-width: 740px) {
+  .state-details.national .controls {
+    position: static;
+  }
+  .state-details.national .municipio-map-wrapper {
+    position: relative;
+    height: 400px;
+  }
+}
+
