@@ -11,6 +11,7 @@
     "gatsby-plugin-react-helmet": "1.x",
     "gatsby-plugin-sass": "1.x",
     "gatsby-source-filesystem": "1.x",
+    "gatsby-source-google-sheets": "^1.1.1",
     "gatsby-transformer-json": "1.x",
     "lodash": "^4.17.11",
     "lorem-ipsum": "^1.0.5",

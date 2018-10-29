@@ -4,6 +4,7 @@ import StateMap from './StateMap';
 import StateMapSlider from './StateMapSlider';
 import StateMapButtons from './StateMapButtons';
 import StateMapChart from './StateMapChart';
+import Microcopy from './Microcopy';
 
 import * as d3Scale from 'd3-scale';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
@@ -78,6 +79,7 @@ class NationalMapWrapper extends React.Component {
   }
 
   render() {
+    const { microcopy } = this.props;
     const { selectedState, showPGR } = this.state;
 
     return (
@@ -106,9 +108,10 @@ class NationalMapWrapper extends React.Component {
           />
 
           <div className="controls-content">
-            <p>De 2006 a 2016 en México las autoridades estatales reportaron el hallazgo de 1978 fosas, y la PGR 232. Fueron 24 las fiscalías estatales que reconocieron que en su territorio encontraron fosas clandestinas con, al menos, 2884 cuerpos. No es posible saber el tamaño exacto de la barbarie; los datos obtenidos mediantes solicitudes de información nos acercan a entenderlo.</p>
-            <p><a href="https://adondevanlosdesaparecidos.org">Leer reportaje</a> / <a href="https://adondevanlosdesaparecidos.org/mapaestados/">Ver información por estado</a> / <a href="https://adondevanlosdesaparecidos.org">Volver a página principal</a></p>
-
+            <Microcopy
+              datakey='national_map_text'
+              microcopy={microcopy}
+            />
           </div>
         </div>
         <StateMap
@@ -118,6 +121,7 @@ class NationalMapWrapper extends React.Component {
           onDataChange={this.setSelectedStateData}
           showPGR={showPGR}
           onMunicipioLoad={() => {}}
+          microcopy={microcopy}
         />
       </div>
     )

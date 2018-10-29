@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMapboxGl, { Source, Layer, GeoJSONLayer, Popup } from "react-mapbox-gl";
+import Microcopy from './Microcopy';
 import HoverChart from './HoverChart';
 import range from 'lodash/range';
 import max from 'lodash/max';
@@ -327,6 +328,12 @@ class StateMap extends React.Component {
                   yearColorScale={yearColorScale}
                   selectedVar='cuerpos'
                 />
+                <p className="hover-footnote">
+                  <Microcopy
+                    datakey='small_value_warning'
+                    microcopy={this.props.microcopy}
+                  />
+                </p>
               </Popup>
             )}
 

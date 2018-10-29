@@ -70,6 +70,7 @@ class StateMapWrapper extends React.Component {
   }
 
   render() {
+    const { microcopy } = this.props;
     const { selectedState } = this.state;
     return (
       <div className="state-details">
@@ -105,6 +106,7 @@ class StateMapWrapper extends React.Component {
               {...this.state}
               beforeLayer="water-label"
               onMunicipioLoad={this.setMunicipioData}
+              microcopy={microcopy}
             />
           </div>
         </div>

@@ -12,7 +12,7 @@ class PaisPage extends React.Component {
   }
 
   render() {
-    const { allMxstatesJson } = this.props.data;
+    const { allMxstatesJson, allGoogleSheetMicrocopyRow } = this.props.data;
 
     var bounds;
     if (typeof window !== 'undefined' && window.innerWidth > 739) {
@@ -28,6 +28,7 @@ class PaisPage extends React.Component {
         }}
         allStateData={allMxstatesJson}
         mapFilter={null}
+        microcopy={allGoogleSheetMicrocopyRow}
       />
     )
   }
@@ -65,6 +66,15 @@ export const pageQuery = graphql`
             cuerpos_identificados
             restos_identificados
           }
+        }
+      }
+    }
+    allGoogleSheetMicrocopyRow {
+      edges {
+        node {
+          key
+          value
+          html
         }
       }
     }

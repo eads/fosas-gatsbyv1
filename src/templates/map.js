@@ -16,6 +16,7 @@ class MapTemplate extends React.Component {
     return (
       <StateMapWrapper
         selectedState={this.props.data.mxstatesJson}
+        microcopy={this.props.data.allGoogleSheetMicrocopyRow}
       />
     );
   }
@@ -25,6 +26,15 @@ export default MapTemplate
 
 export const pageQuery = graphql`
   query StateByCode($state_code: String!) {
+    allGoogleSheetMicrocopyRow {
+      edges {
+        node {
+          key
+          value
+          html
+        }
+      }
+    }
     mxstatesJson(state_code: { eq: $state_code } ) {
       state_code
       state_name
