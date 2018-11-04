@@ -1,12 +1,15 @@
 create or replace view mapasdatacombined as
   select
-    d.*,
-    e.nom_ent,
-    m.nom_mun,
-    m.wkb_geography
+    munid,
+    year,
+    cve_ent,
+    cve_mun,
+    sum(fosas) as fosas,
+    sum(cuerpos) as cuerpos,
+    sum(cuerpos_identificados) as cuerpos_identificados,
+    sum(restos) as restos,
+    sum(restos_identificados) as restos_identificados,
+    sum(craneos) as craneos
   from mapasdata d
-  join areas_geoestadisticas_estatales e
-    on d.cve_ent = e.cve_ent
-  join areas_geoestadisticas_municipales m
-    on d.cve_mun = m.cve_mun and d.cve_ent = m.cve_ent
+    group by munid, year, cve_ent, cve_mun
   ;
