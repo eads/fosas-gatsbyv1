@@ -42,6 +42,7 @@ endef
 db :
 	$(check_database) psql $(FOSAS_DB_ROOT_URL) -c "create database $(FOSAS_DB_NAME);"
 	$(check_database) $(psql) -c "create extension postgis;"
+	$(check_database) $(psql) -c "create extension tablefunc;"
 
 
 drop_db :
