@@ -8,7 +8,10 @@ const TemplateWrapper = ({ children }) => (
   <div>
     <Helmet>
       <title>Mapas de Fosas</title>
-      <link rel="shortcut icon" href="/favicon.png" />
+      <link rel="icon" href="https://i0.wp.com/adondevanlosdesaparecidos.org/wp-content/uploads/2018/06/cropped-logo-adondevanlosdesaparecidos_520x236.png?fit=32%2C32&#038;ssl=1" sizes="32x32" />
+      <link rel="icon" href="https://i0.wp.com/adondevanlosdesaparecidos.org/wp-content/uploads/2018/06/cropped-logo-adondevanlosdesaparecidos_520x236.png?fit=192%2C192&#038;ssl=1" sizes="192x192" />
+      <link rel="apple-touch-icon-precomposed" href="https://i0.wp.com/adondevanlosdesaparecidos.org/wp-content/uploads/2018/06/cropped-logo-adondevanlosdesaparecidos_520x236.png?fit=180%2C180&#038;ssl=1" />
+      <meta name="msapplication-TileImage" content="https://i0.wp.com/adondevanlosdesaparecidos.org/wp-content/uploads/2018/06/cropped-logo-adondevanlosdesaparecidos_520x236.png?fit=270%2C270&#038;ssl=1" />
       <meta name="description" content="DO NOT SHARE" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
     </Helmet>

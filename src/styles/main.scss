@@ -31,9 +31,8 @@ html, body {
 /* Page grid */
 @media only screen and (min-width: 700px) {
 	.map { width: 62%; }
-	.controls { width: calc(38% - 30px); padding-right: 30px; }
+	.controls { width: calc(38%); padding-right: 20px; }
 }
-
 
 /* Content wrapper */
 .state-details {
@@ -83,7 +82,7 @@ html, body {
   overflow: hidden;
   width: 100%;
   margin: 0 auto;
-  padding-top: 100%;
+  padding-top: 104%;
   position: relative;
 }
 .municipio-map {
@@ -97,41 +96,38 @@ html, body {
 
 /* Slider/play controls */
 .slider-container {
-  margin-top: 10px;
+  padding-top: 10px;
+}
+.slider-container p {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 0 6px 8px;
+}
+.slider-row {
+  float: left;
+  width: calc(100% - 56px);
 }
 .slider-container .control-button {
+  float: left;
   display: flex;
   align-items: center;
   margin-bottom: .9em;
+  margin-right: 5px;
 }
 .slider-container .control-button > * {
   display: flex;
   align-items: center;
 }
 .slider-container .control-button svg {
-  padding: 3px;
+  padding: 8px;
   background-color: #fff;
   color: #666;
-  border: 1px solid #666;
-  border-radius: 3px;
-  font-size: 13px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 21px;
   margin-right: 4px;
-  width: 14px;
+  width: 21px;
 }
-.slider-container .control-button span {
-  font-size: 13px;
-  text-transform: uppercase;
-  color: #555;
-  font-weight: bold;
-}
-.slider-container .control-button .selected-year {
-  font-size: 13px;
-  color: #666;
-  flex: 1;
-  text-align: right;
-  display: block;
-}
-
 .slider-container .slider {
   padding: 0 4.345%;
   position: relative;
@@ -146,41 +142,24 @@ html, body {
 .slider-container .rc-slider-mark {
   font-size: 10px;
 }
-.slider-container .rc-slider-dot, .slider-container .rc-slider-handle {
-  border-color: #666 !important;
-  box-shadow: none !important;
-}
 .slider-container .rc-slider-track {
-  background-color: #666;
+  background-color: #777 !important;
 }
 .slider-container .rc-slider-rail {
-  background-color: #aaa;
+  background-color: #ccc !important;
 }
-.slider-container .rc-slider-dot:not(.rc-slider-dot-active) {
-  border-color: #aaa !important;
-}
-.slider-container .rc-slider-mark .rc-slider-mark-text {
-  color: #ffffff;
-}
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(12) { background-color: #453581; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(11) { background-color: #481c6e; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(10) { background-color: #98d83e; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(9) { background-color: #67cc5c; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(8) { background-color: #40bd72; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(7) { background-color: #25ac82; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(6) { background-color: #1f998a; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(5) { background-color: #24878e; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(4) { background-color: #2b748e; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(3) { background-color: #34618d; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(2) { background-color: #3d4d8a; }
-.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(1) { background-color: #999999; }
-
-//.slider-container .rc-slider-mark .rc-slider-mark-text:first-child,
-//.slider-container .rc-slider-mark .rc-slider-mark-text:nth-child(2),
-//.slider-container .rc-slider-mark .rc-slider-mark-text:last-child,
-//.slider-container .rc-slider-mark .rc-slider-mark-text-active:last-child {
-  //display: block;
-//}
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(12) { background-color: #481c6e; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(11) { background-color: #98d83e; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(10) { background-color: #67cc5c; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(9)  { background-color: #40bd72; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(8)  { background-color: #25ac82; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(7)  { background-color: #1f998a; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(6)  { background-color: #24878e; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(5)  { background-color: #2b748e; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(4)  { background-color: #34618d; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(3)  { background-color: #3d4d8a; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(2)  { background-color: #453581; border-color: #222 !important; }
+.slider-container .rc-slider-step .rc-slider-dot:nth-child(1)  { background-color: #999999; border-color: #222 !important; }
 
 /* Chart */
 .chart-wrapper {
@@ -261,6 +240,13 @@ html, body {
   display: flex;
 }
 
+.hoverchart-wrapper .bar-inner {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}
+
 h3 {
   margin-top: 0;
 }
@@ -328,26 +314,31 @@ table .number {
 
 // Nation
 .state-details.national {
-  max-width: auto;
   width: 100%;
 }
-.state-details.national .controls p {
+.embedded .state-details.national {
+  height: 0;
+  padding-top: 55%;
+}
+.state-details.national .controls .controls-content p {
   font-family: "Georgia", serif;
   font-size: 12px;
-  margin-top: 30px;
+  margin-top: 1em;
   line-height: 1.5;
   padding: 0 8px;
   margin-bottom: 0;
+}
+.state-details.national .controls .controls-content p:first-child {
+  margin-top: 10px;
 }
 
 .state-details.national .controls {
   position: absolute;
   top: 15px;
-  right: 30px;
+  right: 15px;
   background-color: #fff;
   z-index: 200;
   padding: 10px 10px 30px 10px;
-  max-width: 400px;
 }
 
 .state-details.national .municipio-map-wrapper {
@@ -361,8 +352,28 @@ table .number {
 
 .state-details.national .rc-slider-mark-text {
   height: auto;
+  font-size: 9px;
+  color: #aaa !important;
 }
 
 .state-details.national .control-button {
   margin-left: 8px;
 }
+
+.hover-footnote {
+  font-style: italic;
+  font-size: 10px;
+  margin-bottom: 0;
+  margin-top: 1.25em;
+}
+
+@media only screen and (max-width: 740px) {
+  .state-details.national .controls {
+    position: static;
+  }
+  .state-details.national .municipio-map-wrapper {
+    position: relative;
+    height: 400px;
+  }
+}
+

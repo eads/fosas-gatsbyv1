@@ -5,13 +5,12 @@ class HoverChart extends React.Component {
 
   render() {
     const { yearColorScale, hoverInfo, selectedVar } = this.props;
-    const varMax = max(hoverInfo.chartData.map( d => d[selectedVar] ));
-
+    const stateMax = hoverInfo.stateData[selectedVar + '_max'];
     const height = 45;
 
     return (
       <div className="hoverchart-wrapper">
-        {hoverInfo.chartData.map( (d, i) => {
+        {hoverInfo.munData.map( (d, i) => {
           const value = d[selectedVar];
 
           return (
@@ -19,12 +18,25 @@ class HoverChart extends React.Component {
               className="bar-container"
               key={'hoverchart' + i}
             >
-              <div className="bar"
+              <div className="bar" 
                 style={{
-                  height: (varMax > 0) ? ((value / varMax) * (height - 20)) : 0,
-                  backgroundColor: yearColorScale(d.year),
+                  height: (stateMax > 0) ? ((hoverInfo.stateData.yearlyFosasData[i][selectedVar] / stateMax) * (height - 20)) : 0,
+                  backgroundColor: '#eeee99',
                 }}
-              />
+              >
+                <div className="bar-inner"
+                  style={{
+                    height: (stateMax > 0) ? ((hoverInfo.stateData.yearlyFosasData[i][selectedVar] / stateMax) * (height - 20)) : 0,
+                    backgroundColor: '#eeeeee',
+                  }}
+                />
+                <div className="bar-inner"
+                  style={{
+                    height: (stateMax > 0) ? ((value / stateMax) * (height - 20)) : 0,
+                    backgroundColor: yearColorScale(d.year),
+                  }}
+                />
+              </div>
               <span
                 className="year-label"
               >
@@ -38,9 +50,4 @@ class HoverChart extends React.Component {
   }
 }
 
-
 export default HoverChart;
-
-/*
-
-*/

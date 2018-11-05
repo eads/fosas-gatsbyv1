@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactMapboxGl, { Source, Layer, GeoJSONLayer, Popup } from "react-mapbox-gl";
+import Microcopy from './Microcopy';
 import HoverChart from './HoverChart';
 import range from 'lodash/range';
 import max from 'lodash/max';
-import cloneDeep from 'lodash/cloneDeep';
 import flatten from 'lodash/flatten';
+import throttle from 'lodash/throttle';
+import find from 'lodash/find';
 import * as d3Scale from 'd3-scale';
 import slugify from 'slugify';
 
@@ -23,13 +25,9 @@ class StateMap extends React.Component {
     if (typeof window == 'undefined') { return null; }
 
     this.Map = ReactMapboxGl({
-      accessToken: "pk.eyJ1IjoiZGF2aWRlYWRzIiwiYSI6ImNpZ3d0azN2YzBzY213N201eTZ3b2E0cDgifQ.ZCHD8ZAk32iAp9Ue3tPVVg",
+      accessToken: "pk.eyJ1IjoiYWRvbmRldmFuIiwiYSI6ImNqbm0yc2x3aDA0c2QzcXVteWhjaW5vZTMifQ.9iTMcfENx9TOCQ94oXEevQ",
       minZoom: 2.8,
       maxZoom: 9,
-      scrollZoom: false,
-      doubleClickZoom: false,
-      dragPan: false,
-      touchZoomRotate: false,
     });
 
     if (props.selectedState.state_code) {
@@ -70,28 +68,16 @@ class StateMap extends React.Component {
     const { selectedStateData, onDataChange, onMunicipioLoad } = this.props;
     const { circleSteps } = this.state;
 
-    // Only trigger when selectedStateData is still null
-    if (source.sourceId == 'estatales' && !selectedStateData) {
-      const features = this._getSourceFeatures(map, source);
-
-      // The initial source loaded calls end up empty
-      if (features.length) {
-        let selectedStateData = cloneDeep(features[0].properties);
-        selectedStateData.yearlyFosasData = JSON.parse(selectedStateData.yearlyFosasData);
-        onDataChange(selectedStateData);
-      }
-    }
-
     if (source.sourceId.startsWith('geojson') && !this.props.circleSteps) {
       const features = this._getSourceFeatures(map, source);
       if (features.length) {
         const circleSteps = {...circleSteps}
 
-        const maxFosas = max(features.map( (feature) => (feature.properties.num_fosas_cumulative_2016)));
+        const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016)));
         const fosasScale = d3Scale.scaleSqrt().domain([0, maxFosas]).range([0, 20]);
         circleSteps.fosas = flatten(range(0, maxFosas + 1).map( (value, i) => ( [value, fosasScale(value)] ) ));
 
-        const maxCuerpos = max(features.map( (feature) => (feature.properties.num_cuerpos_cumulative_2016)));
+        const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016)));
         const cuerposScale = d3Scale.scaleSqrt().domain([0, maxCuerpos + 1]).range([0, 20]);
         circleSteps.cuerpos = flatten(range(0, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
@@ -105,18 +91,27 @@ class StateMap extends React.Component {
     const feature = features[0];
 
     const { minYear, maxYear } = this.props;
-    const chartData = range(minYear + 1, maxYear + 1).map( (year, i) => {
+    const munData = range(minYear + 1, maxYear + 1).map( (year, i) => {
       return {
         year: year,
-        fosas: feature.properties['num_fosas_' + year] || 0,
-        cuerpos: feature.properties['num_cuerpos_' + year] || 0,
+        fosas: feature.properties['fosas_' + year] || 0,
+        cuerpos: feature.properties['cuerpos_' + year] || 0,
       };
     });
+
+    let selectedStateData;
+
+    if (this.props.allStateData) {
+      selectedStateData = find(this.props.allStateData.edges, (d) => (d.node.state_code == feature.properties.CVE_ENT)).node;
+    } else {
+      selectedStateData = this.props.selectedState;
+    }
 
     const hoverInfo = {
       lngLat: lngLat,
       feature: feature,
-      chartData: chartData,
+      munData: munData,
+      stateData: selectedStateData,
     };
     this.setState({ hoverInfo });
   }
@@ -134,18 +129,30 @@ class StateMap extends React.Component {
     }
   }
 
+  onResize = () => {
+    const map = this.mapbox.state.map;
+    const selectedState = this.props.selectedState;
+    const bounds = [selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)];
+    map.fitBounds(bounds, { padding: DEFAULT_MAP_PADDING })
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", throttle(this.onResize, 500));
+  }
+
   render() {
     if (typeof window == 'undefined') { return null; }
     const { Map } = this;
-    const { beforeLayer, selectedState, selectedStateData, selectedVar,
-              selectedYear, minYear, maxYear, yearColorScale, mapFilter, hideMunicipales, hideStateOutline } = this.props;
+    const { beforeLayer, selectedState, selectedStateData, selectedVar, selectedYear,
+            minYear, maxYear, yearColorScale, mapFilter, negativeFilter,
+            hideMunicipales, hideStateOutline, showPGR } = this.props;
     const { fitBounds, circleSteps, hoverInfo, geojson } = this.state;
 
     return (
       <div className="municipio-map-wrapper">
         <div className="municipio-map">
           <Map
-            style="mapbox://styles/davideads/cjk3b13bs2t362srohj2fqshs/?fresh=true"
+            style="mapbox://styles/adondevan/cjnrw39nu0z5v2rlmp27xqfx5"
             containerStyle={{
               height: "100%",
               width: "100%"
@@ -161,7 +168,7 @@ class StateMap extends React.Component {
               id="municipalesshapes"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.1y2adviu'
+                'url': 'mapbox://adondevan.8zoa88xx'
               }}
             />
 
@@ -169,7 +176,23 @@ class StateMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://davideads.8vvusyey'
+                'url': 'mapbox://adondevan.2tndx9ck'
+              }}
+              />
+
+            <Source
+              id="municipalescentroids"
+              tileJsonSource={{
+                'type': 'vector',
+                'url': 'mapbox://adondevan.1fqdak6u'
+              }}
+            />
+
+            <Source
+              id="pgrcentroids"
+              tileJsonSource={{
+                'type': 'vector',
+                'url': 'mapbox://adondevan.d76ay407'
               }}
             />
 
@@ -178,10 +201,10 @@ class StateMap extends React.Component {
               sourceId="estatales"
               sourceLayer="estatales"
               before={beforeLayer}
-              filter={mapFilter}
+              filter={negativeFilter}
               type='fill'
               paint={{
-                'fill-color': '#fff',
+                'fill-color': (negativeFilter) ? '#ddd' : '#fff',
                 'fill-opacity': 1,
               }}
             />
@@ -208,7 +231,6 @@ class StateMap extends React.Component {
                 sourceId="municipalesshapes"
                 sourceLayer="municipales"
                 before={beforeLayer}
-                filter={mapFilter}
                 minZoom={1}
                 maxZoom={11}
                 type='line'
@@ -221,20 +243,24 @@ class StateMap extends React.Component {
             )}
 
             {range(minYear + 1, maxYear + 1).reverse().map( (year, i) => (
-            <GeoJSONLayer
-              key={'geojson' + i}
-              data={geojson}
+            <Layer
+              key={'municipalescentroids' + i}
+              id={'municipalescentroids' + year}
+              sourceId="municipalescentroids"
+              sourceLayer="municipalescentroids"
+              type="circle"
               before={beforeLayer}
-              circleLayout={{
-                visibility: (selectedYear == 2005 || selectedYear >= year) ? 'visible' : 'none',
+              filter={mapFilter}
+              layout={{
+                visibility: (!showPGR && (selectedYear == 2005 || selectedYear >= year)) ? 'visible' : 'none',
               }}
-              circlePaint={{
+              paint={{
                 'circle-color': yearColorScale(year),
                 'circle-opacity': 1,
                 'circle-stroke-width': 0,
                 'circle-radius': (circleSteps != null) ? [
                   'step',
-                  ['get', 'num_' + selectedVar + '_cumulative_' + year],
+                  ['get', selectedVar + '_cumulative_' + year],
                   0
                 ].concat(circleSteps[selectedVar]) : 0
               }}
@@ -245,7 +271,7 @@ class StateMap extends React.Component {
               data={geojson}
               before={beforeLayer}
               circleLayout={{
-                visibility: 'visible',
+                visibility: (!showPGR) ? 'visible' : 'none',
               }}
               circlePaint={{
                 'circle-color': 'white',
@@ -253,7 +279,7 @@ class StateMap extends React.Component {
                 'circle-stroke-width': 0,
                 'circle-radius': (circleSteps != null) ? [
                   'step',
-                  ['get', 'num_' + selectedVar + '_cumulative_' + 2016],
+                  ['get', selectedVar + '_cumulative_' + 2016],
                   0
                 ].concat(circleSteps[selectedVar]) : 0
               }}
@@ -262,22 +288,52 @@ class StateMap extends React.Component {
               circleOnClick={this.onCircleClick}
             />
 
+            {range(minYear + 1, maxYear + 1).reverse().map( (year, i) => (
+            <Layer
+              key={'pgrcentroids' + i}
+              id={'pgrcentroids' + year}
+              sourceId="pgrcentroids"
+              sourceLayer="pgrcentroids"
+              type="circle"
+              before={beforeLayer}
+              filter={mapFilter}
+              layout={{
+                visibility: (showPGR && (selectedYear == 2005 || selectedYear >= year)) ? 'visible' : 'none',
+              }}
+              paint={{
+                'circle-color': yearColorScale(year),
+                'circle-opacity': 1,
+                'circle-stroke-width': 0,
+                'circle-radius': (circleSteps != null) ? [
+                  'step',
+                  ['get', selectedVar + '_cumulative_' + year],
+                  0
+                ].concat(circleSteps[selectedVar]) : 0
+              }}
+            />
+            ))}
 
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
                 <h3>{hoverInfo.feature.properties.NOM_MUN} <span className="state-name">{hoverInfo.feature.properties.state_name}</span></h3>
-                <p><strong>Fosas</strong> {hoverInfo.feature.properties.num_fosas_total}</p>
+                <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_total}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}
                   selectedVar='fosas'
                 />
-                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.num_cuerpos_total}</p>
+                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_total}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}
                   selectedVar='cuerpos'
                 />
+                <p className="hover-footnote">
+                  <Microcopy
+                    datakey='small_value_warning'
+                    microcopy={this.props.microcopy}
+                  />
+                </p>
               </Popup>
             )}
 

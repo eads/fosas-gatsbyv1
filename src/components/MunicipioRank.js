@@ -7,7 +7,7 @@ class MunicipioRank extends React.Component {
   render() {
     const { municipioData, selectedYear, selectedVar } = this.props;
     const selected = (selectedYear == 2005) ? 'total' : selectedYear;
-    const municipios = sortBy(uniqBy(map(municipioData, 'properties'), 'NOM_MUN'), 'num_' + selectedVar + '_' + selected).reverse();
+    const municipios = sortBy(uniqBy(map(municipioData, 'properties'), 'NOM_MUN'), '' + selectedVar + '_' + selected).reverse();
 
     return (<table>
       <thead>
@@ -22,8 +22,8 @@ class MunicipioRank extends React.Component {
           <tr key={"municipio" + i}>
             <td>{i + 1}.</td>
             <td className="municipio-name">{m.NOM_MUN}</td>
-            <td className="number">{m['num_fosas_' + selected]}</td>
-            <td className="number">{m['num_cuerpos_' + selected]}</td>
+            <td className="number">{m['fosas_' + selected]}</td>
+            <td className="number">{m['cuerpos_' + selected]}</td>
           </tr>
         ))}
       </tbody>

@@ -4,47 +4,45 @@ import ContainerDimensions from 'react-container-dimensions'
 class StateMapChart extends React.Component {
 
   render() {
-    const { onYearChange, selectedYear, yearColorScale, selectedStateData, selectedVar } = this.props;
+    const { onYearChange, selectedYear, yearColorScale, selectedState, selectedVar } = this.props;
     let total = '';
-    if (selectedStateData) {
-      total = (selectedYear == 2005) ? selectedStateData['num_' + selectedVar + '_total'] : selectedStateData.yearlyFosasData[selectedYear - 2006]['num_' + selectedVar];
+    if (selectedState) {
+      total = (selectedYear == 2005) ? selectedState[selectedVar + '_total'] : selectedState.yearlyFosasData[selectedYear - 2006][selectedVar];
       total = (total === -1) ? 'Sin datos' : total;
     }
 
     return (
       <div className="chart-wrapper">
         <h2>
-          {selectedVar} 
+          {selectedVar}
           <span className="number">
-            {(selectedStateData &&
+            {(selectedState &&
               (total)
             )}
           </span>
         </h2>
 
-        {selectedStateData && (
+        {selectedState && (
         <ContainerDimensions>
           { ({ height }) =>
             <div className="chart">
-
-
-              {selectedStateData.yearlyFosasData.map( (yearRow, i) => (
+              {selectedState.yearlyFosasData.map( (yearRow, i) => (
                 <div
                   key={"yearrow"+i}
                   className={"bar-container year-" + yearRow.year}
                   style={{
                     height: height,
-                    backgroundColor: (yearRow.year == selectedYear) ? '#ffffff' : 'transparent',
+                    backgroundColor: (yearRow.year == selectedYear) ? '#f3f3f3' : 'transparent',
                   }}
                 >
-                  {(yearRow['num_' + selectedVar] < 0) ?
+                  {(yearRow[selectedVar] < 0) ?
                     <span className="indicator-label indicator-no-data"></span> :
-                    <span className="indicator-label">{yearRow['num_' + selectedVar]}</span>
+                    <span className="indicator-label">{yearRow[selectedVar]}</span>
                   }
                   <div
                     className="bar"
                     style={{
-                      height: (yearRow['num_' + selectedVar] / selectedStateData['num_' + selectedVar + '_max']) * (height - 58),
+                      height: (yearRow[selectedVar] / selectedState[selectedVar + '_max']) * (height - 58),
                       backgroundColor: yearColorScale(yearRow.year)
                     }}
                   />
