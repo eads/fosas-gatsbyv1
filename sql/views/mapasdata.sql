@@ -1,4 +1,4 @@
-create or replace view mapasdatacombined as
+create materialized view mapasdata as
   select
     munid,
     year,
@@ -10,6 +10,6 @@ create or replace view mapasdatacombined as
     sum(restos) as restos,
     sum(restos_identificados) as restos_identificados,
     sum(craneos) as craneos
-  from mapasdata d
+  from src.mapasdata d
     group by munid, year, cve_ent, cve_mun
   ;

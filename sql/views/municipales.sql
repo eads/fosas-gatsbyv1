@@ -1,4 +1,4 @@
-create or replace view areas_geoestadisticas_muncipales_ids as
+create materialized view municipales as
   select
     concat(m.cve_ent, m.cve_mun) as munid,
     m.ogc_fid,
@@ -6,5 +6,5 @@ create or replace view areas_geoestadisticas_muncipales_ids as
     m.cve_mun,
     m.nom_mun,
     m.wkb_geometry
-  from areas_geoestadisticas_municipales m
+  from src.areas_geoestadisticas_municipales m
 ;

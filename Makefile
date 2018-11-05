@@ -12,13 +12,15 @@
 ###############################################################################
 
 GEOGRAPHIES = areas_geoestadisticas_estatales areas_geoestadisticas_municipales
-TABLES = mapasdata
-VIEWS = mapasdatacombined
+TABLES = src.mapasdata
+VIEWS = mapasdata municipales estatales
+GEOVIEWS = municipales_centroids
+GENERATEDVIEWS = mapasdata_flat
 
 .PHONY: all db tables load_data load_geo views
 all : db tables load_data load_geo views
 tables : $(patsubst %, table_%, $(TABLES))
-views : $(patsubst %, view_%, $(VIEWS))
+views : $(patsubst %, view_%, $(VIEWS)) $(patsubst %, generated_view_%, $(GENERATEDVIEWS)) $(patsubst %, view_%, $(GEOVIEWS))
 load_data : $(patsubst %, load_%, $(TABLES))
 load_geo : $(patsubst %, load_shapefile_%, $(GEOGRAPHIES))
 clean: drop_db clean_files
@@ -41,15 +43,16 @@ endef
 
 db :
 	$(check_database) psql $(FOSAS_DB_ROOT_URL) -c "create database $(FOSAS_DB_NAME);"
-	$(check_database) $(psql) -c "create extension postgis;"
-	$(check_database) $(psql) -c "create extension tablefunc;"
+	$(psql) -c "create schema if not exists src;"
+	$(psql) -c "create extension if not exists postgis;"
+	$(psql) -c "create extension if not exists tablefunc;"
 
 
 drop_db :
 	psql $(FOSAS_DB_ROOT_URL) -c "drop database $(FOSAS_DB_NAME);"
 
 
-data/spreadsheets/mapasdata.xlsx :
+data/spreadsheets/src.mapasdata.xlsx :
 	curl "https://docs.google.com/spreadsheets/d/e/2PACX-1vRw9i_b3bldB2U8gYmdSCto5PtOmT7J5uXo1hCNczuLzVhyvpGZyvE958BXswOf_1A_KECsC8OH2zHF/pub?output=xlsx" > $@
 
 
@@ -58,7 +61,13 @@ table_% : sql/tables/%.sql
 
 
 view_% : sql/views/%.sql
+	$(psql) -c "drop materialized view if exists $* cascade;"
 	$(psql) -f $<
+
+
+generated_view_% :
+	$(psql) -c "drop materialized view if exists $* cascade;"
+	python sqlgenerators/$*.py | $(psql)
 
 
 data/spreadsheets/%.csv : data/spreadsheets/%.xlsx
@@ -70,7 +79,19 @@ load_% : data/spreadsheets/%.csv
 
 
 load_shapefile_% : data/shapefiles/%.shp
-	ogr2ogr -overwrite -f "PostgreSQL" PG:'$(FOSAS_GDALSTRING)' $< -nln $* -t_srs "+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0" -nlt PROMOTE_TO_MULTI
+	ogr2ogr -overwrite -f "PostgreSQL" PG:'$(FOSAS_GDALSTRING)' $< -nln src.$* -t_srs "+proj=longlat +ellps=WGS84 +no_defs +towgs84=0,0,0" -nlt PROMOTE_TO_MULTI
+
+
+data/processed-geojson/%.json :
+	ogr2ogr -f GeoJSON $@ PG:$(FOSAS_GDALSTRING) -sql "select * from $*;"
+
+
+data/mbtiles/%.mbtiles : data/processed-geojson/%.json
+	tippecanoe -r1 -ps -o $@ -f $<
+
+
+upload_tiles_% : data/mbtiles/%.mbtiles
+	mapbox upload davideads.adonde_$* $<
 
 
 clean_files :

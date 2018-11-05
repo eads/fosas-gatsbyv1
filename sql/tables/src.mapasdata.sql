@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS mapasdata (
+CREATE TABLE IF NOT EXISTS src.mapasdata (
     id character varying(8) primary key,
     munid character varying(8),
     year integer NOT NULL,
