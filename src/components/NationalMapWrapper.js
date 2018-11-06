@@ -49,7 +49,7 @@ class NationalMapWrapper extends React.Component {
     super(props);
     this.state.selectedState = props.selectedState;
     this.state.allStateData = props.allStateData;
-    this.state.mapFilter = (props.mapFilter === undefined) ? ["==", "CVE_ENT", props.selectedState.state_code] : props.mapFilter;
+    this.state.mapFilter = (props.mapFilter === undefined) ? ["==", "cve_ent", props.selectedState.state_code] : props.mapFilter;
     this.state.circleSteps = props.circleSteps || null;
   }
 

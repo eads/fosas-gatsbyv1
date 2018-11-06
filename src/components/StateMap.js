@@ -12,7 +12,7 @@ import slugify from 'slugify';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const sourceGeojson = require('../../data/processed-geojson/municipales-centroids.json');
+const sourceGeojson = require('../../data/processed-geojson/municipales_centroids.json');
 
 
 const DEFAULT_MAP_PADDING = 15;
@@ -31,7 +31,7 @@ class StateMap extends React.Component {
     });
 
     if (props.selectedState.state_code) {
-      const newFeatures = sourceGeojson.features.filter( (f) => f.properties.CVE_ENT == props.selectedState.state_code );
+      const newFeatures = sourceGeojson.features.filter( (f) => f.properties.cve_ent == props.selectedState.state_code );
       sourceGeojson.features = newFeatures;
     }
 
@@ -68,8 +68,9 @@ class StateMap extends React.Component {
     const { selectedStateData, onDataChange, onMunicipioLoad } = this.props;
     const { circleSteps } = this.state;
 
+
     if (source.sourceId.startsWith('geojson') && !this.props.circleSteps) {
-      const features = this._getSourceFeatures(map, source);
+      const features = source.source.data.features;
       if (features.length) {
         const circleSteps = {...circleSteps}
 
@@ -102,7 +103,7 @@ class StateMap extends React.Component {
     let selectedStateData;
 
     if (this.props.allStateData) {
-      selectedStateData = find(this.props.allStateData.edges, (d) => (d.node.state_code == feature.properties.CVE_ENT)).node;
+      selectedStateData = find(this.props.allStateData.edges, (d) => (d.node.state_code == feature.properties.cve_ent)).node;
     } else {
       selectedStateData = this.props.selectedState;
     }
@@ -124,7 +125,7 @@ class StateMap extends React.Component {
   onCircleClick = ({ features }) => {
     if (window.location.pathname === '/') {
       const feature = features[0];
-      const slug = slugify(feature.properties.state_name.toLowerCase());
+      const slug = slugify(feature.properties.nom_ent.toLowerCase());
       window.location = `https://adondevanlosdesaparecidos.org/data/${slug}/`;
     }
   }
@@ -168,7 +169,7 @@ class StateMap extends React.Component {
               id="municipalesshapes"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://adondevan.8zoa88xx'
+                'url': 'mapbox://adondevan.municipales'
               }}
             />
 
@@ -176,7 +177,7 @@ class StateMap extends React.Component {
               id="estatales"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://adondevan.2tndx9ck'
+                'url': 'mapbox://adondevan.estatales'
               }}
               />
 
@@ -184,7 +185,7 @@ class StateMap extends React.Component {
               id="municipalescentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://adondevan.1fqdak6u'
+                'url': 'mapbox://adondevan.municipales_centroids'
               }}
             />
 
@@ -247,7 +248,7 @@ class StateMap extends React.Component {
               key={'municipalescentroids' + i}
               id={'municipalescentroids' + year}
               sourceId="municipalescentroids"
-              sourceLayer="municipalescentroids"
+              sourceLayer="municipales_centroids"
               type="circle"
               before={beforeLayer}
               filter={mapFilter}
@@ -315,14 +316,14 @@ class StateMap extends React.Component {
 
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
-                <h3>{hoverInfo.feature.properties.NOM_MUN} <span className="state-name">{hoverInfo.feature.properties.state_name}</span></h3>
-                <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_total}</p>
+                <h3>{hoverInfo.feature.properties.nom_mun} <span className="state-name">{hoverInfo.stateData.state_name}</span></h3>
+                <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_cumulative_2016}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}
                   selectedVar='fosas'
                 />
-                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_total}</p>
+                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}

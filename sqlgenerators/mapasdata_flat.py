@@ -19,7 +19,7 @@ drop materialized view mapasdata_flat;
 create materialized view mapasdata_flat as
     select
         {% for field in fields %}
-            {{field}},
+            coalesce({{field}}, 0) as {{field}},
         {% endfor %}
         {{columns[0]}}.munid
 
