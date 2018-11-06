@@ -1,4 +1,4 @@
-create materialized view mapasdata as
+create materialized view if not exists mapasdata as
   select
     munid,
     year,

@@ -1,4 +1,4 @@
-create materialized view estatales as
+create materialized view if not exists estatales as
   select
     e.ogc_fid,
     e.cve_ent,

@@ -1,4 +1,4 @@
-create materialized view municipales_centroids as
+create materialized view if not exists municipales_centroids as
   select
     m.cve_ent,
     m.cve_mun,

@@ -19,9 +19,9 @@ GENERATEDVIEWS = mapasdata_flat
 TILESETS = municipales_centroids estatales municipales
 
 .PHONY: all db tables load_data load_geo views geojson mbtiles mapbox clean
-all : db tables load_data load_geo views mapbox
+all : db tables load_data load_geo views mbtiles
 tables : $(patsubst %, table_%, $(TABLES))
-views : $(patsubst %, view_%, $(VIEWS)) $(patsubst %, generated_view_%, $(GENERATEDVIEWS)) $(patsubst %, view_%, $(GEOVIEWS))
+views : $(patsubst %, view_%, $(VIEWS)) $(patsubst %, generated_view_%, $(GENERATEDVIEWS)) $(patsubst %, postprocess_%, $(GENERATEDVIEWS)) $(patsubst %, generated_view_%, $(GENERATEDVIEWS)) $(patsubst %, view_%, $(GEOVIEWS))
 load_data : $(patsubst %, load_%, $(TABLES))
 load_geo : $(patsubst %, load_shapefile_%, $(GEOGRAPHIES))
 geojson : $(patsubst %, data/processed-geojson/%.json, $(TILESETS))
@@ -65,12 +65,10 @@ table_% : sql/tables/%.sql
 
 
 view_% : sql/views/%.sql
-	$(psql) -c "drop materialized view if exists $* cascade;"
 	$(psql) -f $<
 
 
 generated_view_% :
-	$(psql) -c "drop materialized view if exists $* cascade;"
 	python sqlgenerators/$*.py | $(psql)
 
 
@@ -103,5 +101,9 @@ upload_tiles_% : data/mbtiles/%.mbtiles
 	mapbox upload adondevan.$* $<
 
 
-clean_files :
-	rm data/spreadsheets/*
+postprocess_% : generated_view_%
+	python processors/postprocess_$*.py
+
+
+clean_% :
+	rm -Rf data/$*/*

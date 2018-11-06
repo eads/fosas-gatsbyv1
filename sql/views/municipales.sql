@@ -1,4 +1,4 @@
-create materialized view municipales as
+create materialized view if not exists municipales as
   select
     concat(m.cve_ent, m.cve_mun) as munid,
     m.ogc_fid,
