@@ -75,12 +75,12 @@ class StateMap extends React.Component {
         const circleSteps = {...circleSteps}
 
         const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016)));
-        const fosasScale = d3Scale.scaleSqrt().domain([0, maxFosas]).range([0, 20]);
-        circleSteps.fosas = flatten(range(0, maxFosas + 1).map( (value, i) => ( [value, fosasScale(value)] ) ));
+        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([1.5, 18]);
+        circleSteps.fosas = flatten(range(1, maxFosas + 1, 5).map( (value, i) => ( [value, fosasScale(value)] ) ));
 
         const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016)));
-        const cuerposScale = d3Scale.scaleSqrt().domain([0, maxCuerpos + 1]).range([0, 20]);
-        circleSteps.cuerpos = flatten(range(0, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
+        const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([1.5, 18]);
+        circleSteps.cuerpos = flatten(range(1, maxCuerpos, 5).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
         this.setState({circleSteps});
         onMunicipioLoad(features);
@@ -276,13 +276,13 @@ class StateMap extends React.Component {
               }}
               circlePaint={{
                 'circle-color': 'white',
-                'circle-opacity': 0.1,
+                'circle-opacity': 0.05,
                 'circle-stroke-width': 0,
                 'circle-radius': (circleSteps != null) ? [
                   'step',
                   ['get', selectedVar + '_cumulative_' + 2016],
                   0
-                ].concat(circleSteps[selectedVar]) : 0
+                ].concat(circleSteps[selectedVar].map( (d, i) => (i % 2 ? d + 2 : d) )) : 0
               }}
               circleOnMouseEnter={this.onMouseEnter}
               circleOnMouseLeave={this.onMouseLeave}
