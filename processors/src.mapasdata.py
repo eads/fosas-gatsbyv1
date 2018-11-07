@@ -38,20 +38,24 @@ def clean_data(filename):
                     fieldvalue = int(row.get(field, 0))
                     if math.isnan(fieldvalue):
                         fieldvalue = 0
+                    cleanrow[field] = fieldvalue
                 except ValueError:
-                    pass
-                cleanrow[field] = fieldvalue
+                    cleanrow[field] = 0
 
             cleanrow["state_code"] = state_code
 
-            if (isinstance(row["state_code"], numbers.Number) and math.isnan(row["state_code"])):
+            if not row["year"]:
                 cleanrow["id"] = "{0}{1}{2}".format(cleanrow["state_code"], "000", i)
                 cleanrow["munid"] = "{0}{1}".format(cleanrow["state_code"], "000")
-                cleanrow["municipio_code"] = "total"
+                cleanrow["municipio_code"] = None
+                cleanrow["year"] = 'total'
             else:
                 cleanrow["id"] = "{0}{1:03d}{2}".format(cleanrow["state_code"], int(cleanrow["municipio_code"]), i)
                 cleanrow["munid"] = "{0}{1:03d}".format(cleanrow["state_code"], int(cleanrow["municipio_code"]))
-                cleanrow["municipio_code"] = "{:03d}".format(cleanrow["municipio_code"])
+                if not row["municipio_code"]:
+                    cleanrow["municipio_code"] = None
+                else:
+                    cleanrow["municipio_code"] = "{:03d}".format(cleanrow["municipio_code"])
 
             writer.writerow(cleanrow)
 

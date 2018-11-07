@@ -27,7 +27,7 @@ load_geo : $(patsubst %, load_shapefile_%, $(GEOGRAPHIES))
 geojson : $(patsubst %, data/processed-geojson/%.json, $(TILESETS))
 mbtiles : $(patsubst %, data/mbtiles/%.mbtiles, $(TILESETS))
 mapbox : $(patsubst %, upload_tiles_%, $(TILESETS))
-clean: drop_db clean_files
+clean: drop_db clean_spreadsheets
 
 
 define psql

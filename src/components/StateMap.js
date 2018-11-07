@@ -243,6 +243,28 @@ class StateMap extends React.Component {
               />
             )}
 
+            <Layer
+              id='municipalescentroids-morelos'
+              sourceId="municipalescentroids"
+              sourceLayer="municipales_centroids"
+              type="circle"
+              before={beforeLayer}
+              filter={mapFilter}
+              layout={{
+                visibility: (!showPGR && selectedYear == 2005) ? 'visible' : 'none',
+              }}
+              paint={{
+                'circle-color': '#666666',
+                'circle-opacity': 1,
+                'circle-stroke-width': 0,
+                'circle-radius': (circleSteps != null) ? [
+                  'step',
+                  ['get', selectedVar + '_all_years'],
+                  0
+                ].concat(circleSteps[selectedVar]) : 0
+              }}
+            />
+
             {range(minYear + 1, maxYear + 1).reverse().map( (year, i) => (
             <Layer
               key={'municipalescentroids' + i}
@@ -316,7 +338,7 @@ class StateMap extends React.Component {
 
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
-                <h3>{hoverInfo.feature.properties.nom_mun} <span className="state-name">{hoverInfo.stateData.state_name}</span></h3>
+                <h3>{hoverInfo.feature.properties.nom_mun} <span className="state-name">{hoverInfo.stateData.state_name.startsWith('Veracruz') ? 'Veracruz' : hoverInfo.stateData.state_name }</span></h3>
                 <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_cumulative_2016}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
