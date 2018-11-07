@@ -47,6 +47,7 @@ class StateMapWrapper extends React.Component {
   constructor(props) {
     super(props);
     this.state.selectedState = props.selectedState;
+    this.state.microcopy = props.microcopy;
     this.state.mapFilter = (props.mapFilter) || ["==", "cve_ent", props.selectedState.state_code];
     this.state.negativeFilter = (props.mapFilter) || ["!=", "cve_ent", props.selectedState.state_code];
   }
@@ -70,8 +71,7 @@ class StateMapWrapper extends React.Component {
   }
 
   render() {
-    const { microcopy } = this.props;
-    const { selectedState } = this.state;
+    const { selectedState, microcopy } = this.state;
     return (
       <div className="state-details">
         <div className="row">
@@ -106,7 +106,6 @@ class StateMapWrapper extends React.Component {
               {...this.state}
               beforeLayer="water-label"
               onMunicipioLoad={this.setMunicipioData}
-              microcopy={microcopy}
             />
           </div>
         </div>

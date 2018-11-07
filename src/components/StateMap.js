@@ -74,11 +74,11 @@ class StateMap extends React.Component {
       if (features.length) {
         const circleSteps = {...circleSteps}
 
-        const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016)));
+        const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016 || feature.properties.fosas_all_years)));
         const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([1.5, 18]);
         circleSteps.fosas = flatten(range(1, maxFosas + 1, 5).map( (value, i) => ( [value, fosasScale(value)] ) ));
 
-        const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016)));
+        const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016 || feature.properties.cuerpos_all_years)));
         const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([1.5, 18]);
         circleSteps.cuerpos = flatten(range(1, maxCuerpos, 5).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
@@ -146,7 +146,7 @@ class StateMap extends React.Component {
     const { Map } = this;
     const { beforeLayer, selectedState, selectedStateData, selectedVar, selectedYear,
             minYear, maxYear, yearColorScale, mapFilter, negativeFilter,
-            hideMunicipales, hideStateOutline, showPGR } = this.props;
+            hideMunicipales, hideStateOutline, showPGR, microcopy } = this.props;
     const { fitBounds, circleSteps, hoverInfo, geojson } = this.state;
 
     return (
@@ -302,6 +302,27 @@ class StateMap extends React.Component {
                 'circle-stroke-width': 0,
                 'circle-radius': (circleSteps != null) ? [
                   'step',
+                  ['get', selectedVar + '_all_years'],
+                  0
+                ].concat(circleSteps[selectedVar].map( (d, i) => (i % 2 ? d + 2 : d) )) : 0
+              }}
+              circleOnMouseEnter={this.onMouseEnter}
+              circleOnMouseLeave={this.onMouseLeave}
+              circleOnClick={this.onCircleClick}
+            />
+
+            <GeoJSONLayer
+              data={geojson}
+              before={beforeLayer}
+              circleLayout={{
+                visibility: (!showPGR) ? 'visible' : 'none',
+              }}
+              circlePaint={{
+                'circle-color': 'white',
+                'circle-opacity': 0.05,
+                'circle-stroke-width': 0,
+                'circle-radius': (circleSteps != null) ? [
+                  'step',
                   ['get', selectedVar + '_cumulative_' + 2016],
                   0
                 ].concat(circleSteps[selectedVar].map( (d, i) => (i % 2 ? d + 2 : d) )) : 0
@@ -339,13 +360,30 @@ class StateMap extends React.Component {
             { hoverInfo && (
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
                 <h3>{hoverInfo.feature.properties.nom_mun} <span className="state-name">{hoverInfo.stateData.state_name.startsWith('Veracruz') ? 'Veracruz' : hoverInfo.stateData.state_name }</span></h3>
+                {(hoverInfo.stateData.state_code === '17') && (<div>
+                  <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_all_years}</p>
+                  <div className="hoverchart-wrapper"><p><em><Microcopy
+                    datakey='morelos_no_data_warning'
+                    microcopy={microcopy}
+                  /></em></p></div>
+                </div>)}
+                {(hoverInfo.stateData.state_code !== '17') && (<div>
                 <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_cumulative_2016}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}
                   selectedVar='fosas'
                 />
-                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
+                </div>)}
+                {(hoverInfo.stateData.state_code === '17') && (<div>
+                  <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_all_years}</p>
+                  <div className="hoverchart-wrapper"><p><em><Microcopy
+                    datakey='morelos_no_data_warning'
+                    microcopy={microcopy}
+                  /></em></p></div>
+                </div>)}
+                {(hoverInfo.stateData.state_code !== '17') && (<div>
+                <p><strong>Fosas</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}
@@ -354,9 +392,10 @@ class StateMap extends React.Component {
                 <p className="hover-footnote">
                   <Microcopy
                     datakey='small_value_warning'
-                    microcopy={this.props.microcopy}
+                    microcopy={microcopy}
                   />
                 </p>
+                </div>)}
               </Popup>
             )}
 

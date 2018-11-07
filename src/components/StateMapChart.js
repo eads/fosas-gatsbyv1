@@ -1,10 +1,11 @@
 import React from 'react';
 import ContainerDimensions from 'react-container-dimensions'
+import Microcopy from './Microcopy';
 
 class StateMapChart extends React.Component {
 
   render() {
-    const { onYearChange, selectedYear, yearColorScale, selectedState, selectedVar } = this.props;
+    const { onYearChange, selectedYear, yearColorScale, selectedState, selectedVar, microcopy } = this.props;
     let total = '';
     if (selectedState) {
       total = (selectedYear == 2005) ? selectedState[selectedVar + '_total'] : selectedState.yearlyFosasData[selectedYear - 2006][selectedVar];
@@ -21,8 +22,13 @@ class StateMapChart extends React.Component {
             )}
           </span>
         </h2>
-
-        {selectedState && (
+        {(selectedState && selectedState.state_code === '17') && (
+          <div className="chart"><p><em><Microcopy
+            datakey='morelos_no_data_warning'
+            microcopy={microcopy}
+          /></em></p></div>
+        )}
+        {(selectedState && selectedState.state_code !== '17') && (
         <ContainerDimensions>
           { ({ height }) =>
             <div className="chart">
