@@ -5,6 +5,7 @@ import StateMapSlider from './StateMapSlider';
 import StateMapButtons from './StateMapButtons';
 import StateMapChart from './StateMapChart';
 import Microcopy from './Microcopy';
+import URL from 'url-parse';
 
 import * as d3Scale from 'd3-scale';
 import * as d3ScaleChromatic from 'd3-scale-chromatic';
@@ -79,6 +80,7 @@ class NationalMapWrapper extends React.Component {
   }
 
   render() {
+    const qs = (typeof window != 'undefined') ? new URL(window.location.href, true).query : {};
     const { microcopy } = this.props;
     const { selectedState, showPGR } = this.state;
 
@@ -101,18 +103,19 @@ class NationalMapWrapper extends React.Component {
           </div>
 
         <div className="controls">
-
           <StateMapSlider
             {...this.state}
             onYearChange={this.setYear}
           />
 
-          <div className="controls-content">
-            <Microcopy
-              datakey='national_map_text'
-              microcopy={microcopy}
-            />
-          </div>
+          {!qs.hidetext && (
+            <div className="controls-content">
+              <Microcopy
+                datakey='national_map_text'
+                microcopy={microcopy}
+              />
+            </div>
+          )}
         </div>
         <StateMap
           {...this.state}
