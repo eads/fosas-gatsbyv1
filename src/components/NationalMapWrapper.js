@@ -93,13 +93,15 @@ class NationalMapWrapper extends React.Component {
             zIndex: 99,
             opacity: 0.5,
           }}>
-            <img
-              src="logo-adondevanlosdesaparecidos_520x236.png"
-              style={{
-                width: 'auto',
-                height: 40,
-              }}
-            />
+            <a href="https://adondevanlosdesaparecidos.org/" target="_parent">
+              <img
+                src="logo-adondevanlosdesaparecidos_520x236.png"
+                style={{
+                  width: 'auto',
+                  height: 40,
+                }}
+              />
+            </a>
           </div>
 
         <div className="controls">
