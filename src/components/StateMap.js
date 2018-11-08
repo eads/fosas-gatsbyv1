@@ -150,6 +150,14 @@ class StateMap extends React.Component {
 
     return (
       <div className="municipio-map-wrapper">
+        <div className="adonde-watermark">
+          <a href="https://adondevanlosdesaparecidos.org/" target="_parent">
+            <img
+              src="logo-adondevanlosdesaparecidos_520x236.png"
+            />
+          </a>
+        </div>
+
         <div className="municipio-map">
           <Map
             style="mapbox://styles/adondevan/cjnrw39nu0z5v2rlmp27xqfx5"

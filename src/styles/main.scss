@@ -3,7 +3,7 @@
 /* Body */
 html, body {
   margin: 0;
-  padding: 0 0 0 6px;
+  padding: 0;
   font-size: 17px;
   background-color: #ebebeb;
   color: #222;
@@ -82,7 +82,7 @@ html, body {
   overflow: hidden;
   width: 100%;
   margin: 0 auto;
-  padding-top: 104%;
+  padding-top: 96%;
   position: relative;
 }
 .municipio-map {
@@ -165,25 +165,13 @@ html, body {
 .chart-wrapper {
   height: 0;
   position: relative;
-  padding-top: 32%;
-  margin: 22px 0 .25em 0;
+  padding-top: 26%;
+  margin: 10px 0 25px 0;
+}
+.chart-wrapper:first-child {
+  margin-top: 20px;
 }
 
-.charts {
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-
-@media only screen and (max-width: 700px) {
-  .chart-wrapper { 
-    width: calc(50% - 10px);
-    padding-top: 20%;
-    float: left;
-  }
-  .chart-wrapper:first-child {
-    margin-right: 20px;
-  }
-}
 
 .chart-wrapper h2 {
   text-transform: uppercase;
@@ -231,6 +219,23 @@ html, body {
   margin: 0 1px;
   position: relative;
   z-index: 10;
+}
+@media only screen and (max-width: 700px) {
+  .chart-wrapper { 
+    width: calc(50% - 10px);
+    padding-top: 20%;
+    float: left;
+    margin-top: 20px;
+  }
+  .chart-wrapper h2 {
+    font-size: 11px;
+  }
+  .chart-wrapper h2 .number {
+    font-size: 10px;
+  }
+  .chart-wrapper:first-child {
+    margin-right: 20px;
+  }
 }
 
 .hoverchart-wrapper {
@@ -331,6 +336,9 @@ table .number {
 .state-details.national .controls .controls-content p:first-child {
   margin-top: 10px;
 }
+.controls {
+  padding: 0 10px;
+}
 
 .state-details.national .controls {
   position: absolute;
@@ -367,13 +375,36 @@ table .number {
   margin-top: 1.25em;
 }
 
+.adonde-watermark {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 99;
+  opacity: 0.7;
+}
+
+.state-details.national .adonde-watermark {
+  top: auto;
+  bottom: 34px;
+  left: 10px;
+}
+
+.adonde-watermark img {
+  width: auto;
+  height: 38px;
+}
+
 @media only screen and (max-width: 740px) {
   .state-details.national .controls {
     position: static;
   }
   .state-details.national .municipio-map-wrapper {
     position: relative;
-    height: 400px;
+    height: 300px;
   }
+  .adonde-watermark img {
+    height: 28px;
+  }
+
 }
 
