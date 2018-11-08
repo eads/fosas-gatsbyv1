@@ -15,9 +15,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 const sourceGeojson = require('../../data/processed-geojson/municipales_centroids.json');
 
 
-const DEFAULT_MAP_PADDING = 15;
+const DEFAULT_MAP_PADDING = 10;
 
 class StateMap extends React.Component {
+
 
   constructor(props) {
     super(props);
@@ -37,6 +38,7 @@ class StateMap extends React.Component {
 
     const bounds = [props.selectedState.bounds.slice(0, 2), props.selectedState.bounds.slice(2)];
     this.state = {
+      zoom: [4],
       fitBounds: bounds,
       circleSteps: props.circleSteps,
       hoverInfo: null,
@@ -55,13 +57,10 @@ class StateMap extends React.Component {
 
 
   onStyleLoad = (map, style) => {
-    const selectedState = this.props.selectedState;
-    const bounds = [selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)];
-    map.fitBounds(bounds, { padding: DEFAULT_MAP_PADDING });
     setTimeout(() => {
       const paddedBounds = map.getBounds();
       map.setMaxBounds(paddedBounds);
-    }, 1000);
+    }, 0);
   }
 
   onSourceData = (map, source) => {
@@ -162,6 +161,7 @@ class StateMap extends React.Component {
             fitBoundsOptions={{padding: DEFAULT_MAP_PADDING}}
             onSourceData={this.onSourceData}
             onStyleLoad={this.onStyleLoad}
+            zoom={this.state.zoom}
             ref={(mapbox) => { this.mapbox = mapbox; }}
           >
 
