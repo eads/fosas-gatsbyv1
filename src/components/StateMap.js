@@ -9,11 +9,11 @@ import throttle from 'lodash/throttle';
 import find from 'lodash/find';
 import * as d3Scale from 'd3-scale';
 import slugify from 'slugify';
+import StateMapLegend from './StateMapLegend';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const sourceGeojson = require('../../data/processed-geojson/municipales_centroids.json');
-
 
 const DEFAULT_MAP_PADDING = 10;
 
@@ -74,15 +74,15 @@ class StateMap extends React.Component {
         const circleSteps = {...circleSteps}
 
         const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016 || feature.properties.fosas_all_years)));
-        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([1.5, 18]);
+        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([3.5, 20]);
         circleSteps.fosas = flatten(range(1, maxFosas + 1, 5).map( (value, i) => ( [value, fosasScale(value)] ) ));
 
         const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016 || feature.properties.cuerpos_all_years)));
-        const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([1.5, 18]);
+        const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([3.5, 20]);
         circleSteps.cuerpos = flatten(range(1, maxCuerpos, 5).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
         this.setState({circleSteps});
-        onMunicipioLoad(features);
+        onMunicipioLoad(features, circleSteps);
       }
     }
   }
@@ -153,10 +153,15 @@ class StateMap extends React.Component {
         <div className="adonde-watermark">
           <a href="https://adondevanlosdesaparecidos.org/" target="_parent">
             <img
-              src="logo-adondevanlosdesaparecidos_520x236.png"
+              src="/images/logo-adondevanlosdesaparecidos_520x236.png"
             />
           </a>
         </div>
+
+        <StateMapLegend
+          circleSteps={circleSteps}
+          selectedVar={selectedVar}
+        />
 
         <div className="municipio-map">
           <Map
@@ -391,7 +396,7 @@ class StateMap extends React.Component {
                   /></em></p></div>
                 </div>)}
                 {(hoverInfo.stateData.state_code !== '17') && (<div>
-                <p><strong>Fosas</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
+                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
                 <HoverChart
                   hoverInfo={hoverInfo}
                   yearColorScale={yearColorScale}

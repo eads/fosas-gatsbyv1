@@ -64,14 +64,14 @@ class StateMapWrapper extends React.Component {
     });
   }
 
-  setMunicipioData = (municipioData) => {
+  onMunicipioLoad = (municipioData, circleSteps) => {
     this.setState({
-      municipioData
+      municipioData,
+      circleSteps
     });
   }
 
   render() {
-    const { selectedState, microcopy } = this.state;
     return (
       <div className="state-details">
         <div className="row">
@@ -79,7 +79,10 @@ class StateMapWrapper extends React.Component {
             <StateMapSlider
               {...this.state}
               onYearChange={this.setYear}
+              vars={VARS}
+              onVarChange={this.setVar}
             />
+
             <div className="row charts">
               <StateMapChart
                 {...this.state}
@@ -92,11 +95,6 @@ class StateMapWrapper extends React.Component {
                 selectedVar='cuerpos'
               />
             </div>
-            <StateMapButtons
-              {...this.state}
-              vars={VARS}
-              onVarChange={this.setVar}
-            />
             <MunicipioRank
               {...this.state}
             />
@@ -105,7 +103,7 @@ class StateMapWrapper extends React.Component {
             <StateMap
               {...this.state}
               beforeLayer="water-label"
-              onMunicipioLoad={this.setMunicipioData}
+              onMunicipioLoad={this.onMunicipioLoad}
             />
           </div>
         </div>
