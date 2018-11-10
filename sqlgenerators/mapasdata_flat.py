@@ -7,10 +7,10 @@ from jinja2 import Template
 COLUMNS = [
     'fosas',
     'cuerpos',
-    'cuerpos_identificados',
-    'restos',
-    'restos_identificados',
-    'craneos',
+    # 'cuerpos_identificados',
+    # 'restos',
+    # 'restos_identificados',
+    # 'craneos',
 ]
 YEARS = ['all_years'] + [y for y in range(2006, 2018)]
 

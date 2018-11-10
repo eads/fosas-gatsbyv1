@@ -79,6 +79,42 @@ html, body {
   }
 }
 
+.pgr-toggle {
+  text-align: center;
+  margin-top: 15px;
+}
+.pgr-toggle button {
+  display: inline-block;
+  font-size: 10px;
+  border-radius: 0;
+  border: 1px solid #000;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+  padding: 9px 7px;
+  text-transform: uppercase;
+  outline: none;
+  transition: background-color 0.4s ease;
+  position: relative;
+  z-index: 2;
+  &:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  &:last-child {
+    margin-left: -1px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  &:disabled {
+    background-color: rgba(210, 210, 210, 0.6);
+    color: #555;
+    border: 1px solid #999;
+    z-index: 1;
+  }
+}
+
+
+
 /* Map */
 .municipio-map-wrapper {
   height: 0;
@@ -455,9 +491,9 @@ table .number {
 .gif-layout .legend,
 .gif-layout .slider,
 .gif-layout .controls-content,
-a.mapboxgl-ctrl-logo,
-.mapboxgl-ctrl.mapboxgl-ctrl-attrib,
-.adonde-watermark {
+.gif-layout a.mapboxgl-ctrl-logo,
+.gif-layout .mapboxgl-ctrl.mapboxgl-ctrl-attrib,
+.gif-layout .adonde-watermark {
   display: none !important;
 }
 .gif-layout .controls {

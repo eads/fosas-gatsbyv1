@@ -11,8 +11,8 @@ create materialized view if not exists municipales_centroids as
     end as geom
   from
     mapasdata_flat d
-  left join
+  join
     municipales m on d.munid = m.munid
-  left join
+  join
     estatales e on m.cve_ent = e.cve_ent
 ;

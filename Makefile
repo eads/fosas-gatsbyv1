@@ -16,7 +16,7 @@ TABLES = src.mapasdata
 VIEWS = mapasdata municipales estatales
 GEOVIEWS = municipales_centroids pgr_centroids
 GENERATEDVIEWS = mapasdata_flat
-TILESETS = municipales_centroids estatales municipales
+TILESETS = municipales_centroids pgr_centroids estatales municipales
 
 .PHONY: all db tables load_data load_geo views geojson mbtiles mapbox clean
 all : db tables load_data load_geo views geojson
@@ -26,8 +26,8 @@ load_data : $(patsubst %, load_%, $(TABLES))
 load_geo : $(patsubst %, load_shapefile_%, $(GEOGRAPHIES))
 geojson : $(patsubst %, data/processed-geojson/%.json, $(TILESETS))
 mbtiles : $(patsubst %, data/mbtiles/%.mbtiles, $(TILESETS))
-mapbox : $(patsubst %, upload_tiles_%, $(TILESETS))
-clean: drop_db clean_spreadsheets
+mapbox : mbtiles $(patsubst %, upload_tiles_%, $(TILESETS))
+clean: drop_db clean_spreadsheets clean_mbtiles clean_processed-geojson
 
 
 define psql

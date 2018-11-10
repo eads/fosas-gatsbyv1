@@ -4,10 +4,10 @@ import os
 COLUMNS = [
     'fosas',
     'cuerpos',
-    'cuerpos_identificados',
-    'restos',
-    'restos_identificados',
-    'craneos',
+    # 'cuerpos_identificados',
+    # 'restos',
+    # 'restos_identificados',
+    # 'craneos',
 ]
 YEARS = [y for y in range(2006, 2018)]
 
