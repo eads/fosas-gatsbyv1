@@ -2,7 +2,6 @@ import React from 'react';
 
 import StateMap from './StateMap';
 import StateMapSlider from './StateMapSlider';
-import StateMapButtons from './StateMapButtons';
 import StateMapChart from './StateMapChart';
 import Microcopy from './Microcopy';
 import URL from 'url-parse';
@@ -89,7 +88,10 @@ class NationalMapWrapper extends React.Component {
         <div className="controls">
           <StateMapSlider
             {...this.state}
+            vars={VARS}
+            onVarChange={this.setVar}
             onYearChange={this.setYear}
+            hideButtons={true}
           />
 
           {!qs.hidetext && (
@@ -106,7 +108,7 @@ class NationalMapWrapper extends React.Component {
           bounds={[selectedState.bounds.slice(0, 2), selectedState.bounds.slice(2)]}
           beforeLayer="water-label"
           onDataChange={this.setSelectedStateData}
-          showPGR={showPGR}
+          showPGR={false}
           onMunicipioLoad={() => {}}
           microcopy={microcopy}
         />

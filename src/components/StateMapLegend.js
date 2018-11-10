@@ -4,6 +4,15 @@ class StateMapLegend extends React.Component {
 
   render() {
     const { circleSteps, selectedVar } = this.props;
+
+    let minRadius, minDiameter, maxRadius, maxDiameter;
+    if (circleSteps !== null) {
+       minRadius = Math.floor(circleSteps[selectedVar][1]);
+       minDiameter = minRadius * 2;
+       maxRadius = Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]);
+       maxDiameter = maxRadius * 2;
+    }
+
     return (<div className="legend">
       {(circleSteps !== null) && (<div>
         <div
@@ -12,27 +21,27 @@ class StateMapLegend extends React.Component {
             borderColor: '#666',
             borderWidth: 1,
             borderStyle: 'solid',
-            borderRadius: Math.round(circleSteps[selectedVar][1]),
-            height: Math.floor(circleSteps[selectedVar][1]) * 2,
-            width: Math.floor(circleSteps[selectedVar][1]) * 2,
+            borderRadius: minRadius + 1,
+            height: minDiameter,
+            width: minDiameter,
             position: 'absolute',
-            left: 11 + (Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]) / 2),
-            bottom: 10,
+            left: maxRadius - minRadius,
+            top: maxDiameter - minDiameter,
             zIndex: 225,
           }}
-          />
+        />
         <div
           style={{
             backgroundColor: '#fff',
             borderColor: '#666',
             borderWidth: 1,
             borderStyle: 'solid',
-            borderRadius: Math.round(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]),
-            height: Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]) * 2,
-            width: Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]) * 2,
+            borderRadius: maxRadius,
+            height: maxDiameter,
+            width: maxDiameter,
             position: 'absolute',
-            left: 5,
-            top: 10,
+            left: 0,
+            top: 0,
             zIndex: 200,
           }}
         />
@@ -43,8 +52,8 @@ class StateMapLegend extends React.Component {
             paddingRight: 2,
             paddingLeft: 2,
             position: 'absolute',
-            left: 10 + Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]) * 2,
-            top: 10,
+            left: 5 + maxDiameter,
+            top: 0,
           }}
         >
         {circleSteps[selectedVar][circleSteps[selectedVar].length - 2]} {selectedVar}
@@ -57,8 +66,8 @@ class StateMapLegend extends React.Component {
             paddingRight: 2,
             paddingLeft: 2,
             position: 'absolute',
-            left: 10 + Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]) * 2,
-            top: Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]) * 2,
+            left: 5 + maxDiameter,
+            top: maxDiameter - 9,
           }}
         >
         {circleSteps[selectedVar][0]} {selectedVar.slice(0, -1)}

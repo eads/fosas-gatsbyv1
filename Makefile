@@ -14,12 +14,12 @@
 GEOGRAPHIES = areas_geoestadisticas_estatales areas_geoestadisticas_municipales
 TABLES = src.mapasdata
 VIEWS = mapasdata municipales estatales
-GEOVIEWS = municipales_centroids
+GEOVIEWS = municipales_centroids pgr_centroids
 GENERATEDVIEWS = mapasdata_flat
 TILESETS = municipales_centroids estatales municipales
 
 .PHONY: all db tables load_data load_geo views geojson mbtiles mapbox clean
-all : db tables load_data load_geo views mbtiles
+all : db tables load_data load_geo views geojson
 tables : $(patsubst %, table_%, $(TABLES))
 views : $(patsubst %, view_%, $(VIEWS)) $(patsubst %, generated_view_%, $(GENERATEDVIEWS)) $(patsubst %, postprocess_%, $(GENERATEDVIEWS)) $(patsubst %, generated_view_%, $(GENERATEDVIEWS)) $(patsubst %, view_%, $(GEOVIEWS))
 load_data : $(patsubst %, load_%, $(TABLES))
@@ -90,6 +90,10 @@ data/processed-geojson/%.json :
 
 
 data/mbtiles/municipales_centroids.mbtiles : data/processed-geojson/municipales_centroids.json
+	tippecanoe -r1 -Z2 -z11 -ps -o $@ -f $<
+
+
+data/mbtiles/pgr_centroids.mbtiles : data/processed-geojson/pgr_centroids.json
 	tippecanoe -r1 -Z2 -z11 -ps -o $@ -f $<
 
 

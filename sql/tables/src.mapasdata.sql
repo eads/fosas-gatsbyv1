@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS src.mapasdata (
-    id character varying(8) primary key,
-    munid character varying(8),
+    id character varying(12) primary key,
+    munid character varying(10),
     year integer NOT NULL,
     cve_ent character varying(2),
     cve_mun character varying(5),

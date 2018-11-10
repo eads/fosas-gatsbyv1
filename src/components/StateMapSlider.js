@@ -69,7 +69,7 @@ class SliderControlButton extends React.Component {
 class StateMapSlider extends React.Component {
 
   render() {
-    const { onYearChange, selectedYear, minYear, maxYear } = this.props;
+    const { onYearChange, selectedYear, minYear, maxYear, hideButtons } = this.props;
 
     return (<div className="slider-container">
       <div className="row abs-row">
@@ -91,9 +91,11 @@ class StateMapSlider extends React.Component {
             <span>2006-{selectedYear}</span>
           )}
         </div>
-        <StateMapButtons
-          {...this.props}
-        />
+        {!hideButtons &&
+          <StateMapButtons
+            {...this.props}
+          />
+        }
 
       </div>
       <div className="row">

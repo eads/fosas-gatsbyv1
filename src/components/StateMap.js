@@ -74,12 +74,12 @@ class StateMap extends React.Component {
         const circleSteps = {...circleSteps}
 
         const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016 || feature.properties.fosas_all_years)));
-        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([3.5, 20]);
-        circleSteps.fosas = flatten(range(1, maxFosas + 1, 5).map( (value, i) => ( [value, fosasScale(value)] ) ));
+        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([2.5, 20]);
+        circleSteps.fosas = flatten(range(1, maxFosas).map( (value, i) => ( [value, fosasScale(value)] ) ));
 
         const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016 || feature.properties.cuerpos_all_years)));
-        const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([3.5, 20]);
-        circleSteps.cuerpos = flatten(range(1, maxCuerpos, 5).map( (value, i) => ( [value, cuerposScale(value)] ) ));
+        const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([2.5, 20]);
+        circleSteps.cuerpos = flatten(range(1, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ));
 
         this.setState({circleSteps});
         onMunicipioLoad(features, circleSteps);
@@ -206,7 +206,7 @@ class StateMap extends React.Component {
               id="pgrcentroids"
               tileJsonSource={{
                 'type': 'vector',
-                'url': 'mapbox://adondevan.d76ay407'
+                'url': 'mapbox://adondevan.pgr_centroids'
               }}
             />
 
@@ -328,7 +328,7 @@ class StateMap extends React.Component {
               data={geojson}
               before={beforeLayer}
               circleLayout={{
-                visibility: (!showPGR) ? 'visible' : 'none',
+                visibility: 'visible',
               }}
               circlePaint={{
                 'circle-color': 'white',
@@ -350,7 +350,7 @@ class StateMap extends React.Component {
               key={'pgrcentroids' + i}
               id={'pgrcentroids' + year}
               sourceId="pgrcentroids"
-              sourceLayer="pgrcentroids"
+              sourceLayer="pgr_centroids"
               type="circle"
               before={beforeLayer}
               filter={mapFilter}

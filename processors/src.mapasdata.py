@@ -42,16 +42,14 @@ def clean_data(filename):
                 except ValueError:
                     cleanrow[field] = 0
 
-            cleanrow["state_code"] = state_code
-
             if not row["year"]:
-                cleanrow["id"] = "{0}{1}{2}".format(cleanrow["state_code"], "000", i)
-                cleanrow["munid"] = "{0}{1}".format(cleanrow["state_code"], "000")
+                cleanrow["id"] = "{0}{1:02d}{2}{3}".format(state_code, cleanrow["state_code"], "000", i)
+                cleanrow["munid"] = "{0}{1:02d}{2}".format(state_code, cleanrow["state_code"], "000")
                 cleanrow["municipio_code"] = None
                 cleanrow["year"] = 'total'
             else:
-                cleanrow["id"] = "{0}{1:03d}{2}".format(cleanrow["state_code"], int(cleanrow["municipio_code"]), i)
-                cleanrow["munid"] = "{0}{1:03d}".format(cleanrow["state_code"], int(cleanrow["municipio_code"]))
+                cleanrow["id"] = "{0}{1:02d}{2:03d}{3}".format(state_code, cleanrow["state_code"], int(cleanrow["municipio_code"]), i)
+                cleanrow["munid"] = "{0}{1:02d}{2:03d}".format(state_code, cleanrow["state_code"], int(cleanrow["municipio_code"]))
                 if not row["municipio_code"]:
                     cleanrow["municipio_code"] = None
                 else:

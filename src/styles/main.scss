@@ -31,7 +31,7 @@ html, body {
 /* Page grid */
 @media only screen and (min-width: 700px) {
 	.map { width: 62%; }
-	.controls { width: calc(38%); padding-right: 20px; }
+	.controls { width: calc(30%); padding-right: 20px; }
 }
 
 /* Content wrapper */
@@ -110,6 +110,9 @@ html, body {
   position: absolute;
   left: 50px;
   top: 11px;
+}
+.national .slider-container .selected-year {
+  left: 55px;
 }
 .slider-container .control-button {
   position: absolute;
@@ -289,6 +292,7 @@ h3 {
 
 .municipio-map .mapboxgl-popup {
   z-index: 1999 !important;
+  max-width: 220px;
 }
 
 .municipio-map .mapboxgl-popup-content {
@@ -354,9 +358,10 @@ table .number {
   position: absolute;
   top: 15px;
   right: 15px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.9);
   z-index: 200;
   padding: 10px 10px 30px 10px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .state-details.national .municipio-map-wrapper {
@@ -406,31 +411,42 @@ table .number {
 
 .legend {
   position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px;
+  top: 10px;
+  left: 10px;
   z-index: 150;
-  min-width: 140px;
-  height: 40px;
-  //background-color: #ddd;
+  min-width: 100px;
+  height: 36px;
 }
 .slider-container .abs-row {
   height: 40px;
   margin-bottom: 15px;
 }
-
+.state-details.national .legend {
+  left: auto;
+  right: 20px;
+  top: 30px;
+  z-index: 250;
+}
 
 @media only screen and (max-width: 740px) {
   .state-details.national .controls {
     position: static;
+    width: 100%;
   }
   .state-details.national .municipio-map-wrapper {
     position: relative;
     height: 300px;
   }
+  .embedded .state-details.national {
+    height: auto;
+    padding-top: 0;
+  }
+  .state-details.national .legend {
+    right: 0;
+    top: 10px;
+  }
   .adonde-watermark img {
     height: 28px;
   }
-
 }
 
