@@ -68,18 +68,26 @@ class StateMap extends React.Component {
     const { selectedStateData, onDataChange, onMunicipioLoad } = this.props
     const { circleSteps } = this.state
 
-
     if (source.sourceId.indexOf('geojson') === 0 && !this.props.circleSteps) {
       const features = source.source.data.features
       if (features.length) {
         const circleSteps = {...circleSteps}
 
+        let minRadius, maxRadius;
+        if (window.innerWidth < 500) {
+          minRadius = 1.75
+          maxRadius = 13
+        } else {
+          minRadius = 2.5
+          maxRadius = 20
+        }
+
         const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016 || feature.properties.fosas_all_years)))
-        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([2.5, 20])
+        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([minRadius, maxRadius])
         circleSteps.fosas = flatten(range(1, maxFosas).map( (value, i) => ( [value, fosasScale(value)] ) ))
 
         const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016 || feature.properties.cuerpos_all_years)))
-        const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([2.5, 20])
+        const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([minRadius, maxRadius])
         circleSteps.cuerpos = flatten(range(1, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ))
 
         this.setState({circleSteps})
