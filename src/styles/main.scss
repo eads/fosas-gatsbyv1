@@ -450,3 +450,18 @@ table .number {
   }
 }
 
+
+.gif-layout .selected-year,
+.gif-layout .legend,
+.gif-layout .slider,
+.gif-layout .controls-content,
+a.mapboxgl-ctrl-logo,
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib,
+.adonde-watermark {
+  display: none !important;
+}
+.gif-layout .controls {
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 15px !important;
+}

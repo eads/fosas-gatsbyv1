@@ -84,7 +84,7 @@ class NationalMapWrapper extends React.Component {
     const { selectedState, showPGR } = this.state;
 
     return (
-      <div className="state-details national">
+      <div className={"state-details national" + ((qs.giflayout) ? " gif-layout" : "")}>
         <div className="controls">
           <StateMapSlider
             {...this.state}
