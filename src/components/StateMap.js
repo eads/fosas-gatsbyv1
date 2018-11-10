@@ -321,6 +321,29 @@ class StateMap extends React.Component {
                 'circle-stroke-width': 0,
                 'circle-radius': (circleSteps != null) ? [
                   'step',
+                  ['get', selectedVar + '_all_years'],
+                  0
+                ].concat(circleSteps[selectedVar].map( (d, i) => (i % 2 ? d + 2 : d) )) : 0
+              }}
+              circleOnMouseEnter={this.onMouseEnter}
+              circleOnMouseLeave={this.onMouseLeave}
+              circleOnClick={this.onCircleClick}
+            />
+            )}
+
+            {!showPGR && (
+            <GeoJSONLayer
+              data={geojson}
+              before={beforeLayer}
+              circleLayout={{
+                visibility: (!showPGR) ? 'visible' : 'none',
+              }}
+              circlePaint={{
+                'circle-color': 'white',
+                'circle-opacity': 0.05,
+                'circle-stroke-width': 0,
+                'circle-radius': (circleSteps != null) ? [
+                  'step',
                   ['get', selectedVar + '_cumulative_' + 2016],
                   0
                 ].concat(circleSteps[selectedVar].map( (d, i) => (i % 2 ? d + 2 : d) )) : 0
