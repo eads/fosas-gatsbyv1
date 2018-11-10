@@ -36,7 +36,7 @@ class StateMapLegend extends React.Component {
             borderColor: '#666',
             borderWidth: 1,
             borderStyle: 'solid',
-            borderRadius: maxRadius,
+            borderRadius: maxRadius + 1,
             height: maxDiameter,
             width: maxDiameter,
             position: 'absolute',
