@@ -413,12 +413,14 @@ class StateMap extends React.Component {
                   /></em></p></div>
                 </div>)}
                 {(hoverInfo.stateData.state_code !== '17') && (<div>
-                <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_cumulative_2016}</p>
-                <HoverChart
-                  hoverInfo={hoverInfo}
-                  yearColorScale={yearColorScale}
-                  selectedVar='fosas'
-                />
+                  <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_cumulative_2016}</p>
+                  {!showPGR && (
+                  <HoverChart
+                    hoverInfo={hoverInfo}
+                    yearColorScale={yearColorScale}
+                    selectedVar='fosas'
+                  />
+                )}
                 </div>)}
                 {(hoverInfo.stateData.state_code === '17') && (<div>
                   <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_all_years}</p>
@@ -428,18 +430,20 @@ class StateMap extends React.Component {
                   /></em></p></div>
                 </div>)}
                 {(hoverInfo.stateData.state_code !== '17') && (<div>
-                <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
-                <HoverChart
-                  hoverInfo={hoverInfo}
-                  yearColorScale={yearColorScale}
-                  selectedVar='cuerpos'
-                />
-                <p className="hover-footnote">
-                  <Microcopy
-                    datakey='small_value_warning'
-                    microcopy={microcopy}
+                  <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
+                  {!showPGR && (<div>
+                  <HoverChart
+                    hoverInfo={hoverInfo}
+                    yearColorScale={yearColorScale}
+                    selectedVar='cuerpos'
                   />
-                </p>
+                  <p className="hover-footnote">
+                    <Microcopy
+                      datakey='small_value_warning'
+                      microcopy={microcopy}
+                    />
+                  </p>
+                  </div>)}
                 </div>)}
               </Popup>
             )}
