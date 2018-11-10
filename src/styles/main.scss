@@ -467,7 +467,7 @@ table .number {
 @media only screen and (max-width: 740px) {
   .state-details.national .controls {
     position: static;
-    width: 100%;
+    width: calc(100% - 20px);
   }
   .state-details.national .municipio-map-wrapper {
     position: relative;
