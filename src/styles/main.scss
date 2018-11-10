@@ -328,7 +328,7 @@ h3 {
 
 .municipio-map .mapboxgl-popup {
   z-index: 1999 !important;
-  max-width: 220px;
+  max-width: 80%;
 }
 
 .municipio-map .mapboxgl-popup-content {
@@ -336,6 +336,12 @@ h3 {
 }
 .municipio-map .mapboxgl-popup-content h3 {
   border-bottom: 1px solid #eee;
+}
+.municipio-map .mapboxgl-popup-content div {
+  max-width: 200px;
+}
+.municipio-map .mapboxgl-popup-content .hoverchart-wrapper {
+  margin-top: -12px;
 }
 
 .municipio-map .mapboxgl-popup-content .state-name {
@@ -345,6 +351,14 @@ h3 {
   margin-left: 0.25em;
   display: inline-block;
   float: right;
+}
+
+.hover-footnote {
+  font-style: italic;
+  font-size: 10px;
+  margin-bottom: 0;
+  margin-top: 1.25em;
+  line-height: 1.3;
 }
 
 // Table
@@ -419,13 +433,6 @@ table .number {
   margin-left: 8px;
 }
 
-.hover-footnote {
-  font-style: italic;
-  font-size: 10px;
-  margin-bottom: 0;
-  margin-top: 1.25em;
-}
-
 .adonde-watermark {
   position: absolute;
   right: 10px;
@@ -471,7 +478,10 @@ table .number {
   }
   .state-details.national .municipio-map-wrapper {
     position: relative;
-    height: 300px;
+    height: 50vh;
+  }
+  .hoverchart-wrapper {
+    display: none;
   }
   .embedded .state-details.national {
     height: auto;
