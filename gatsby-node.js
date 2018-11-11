@@ -25,7 +25,7 @@ exports.onCreatePage = async ({ page, boundActionCreators }) => {
   const { createPage } = boundActionCreators;
 
   return new Promise((resolve, reject) => {
-    if (page.path == "/") {
+    if (page.path == "/embed/") {
       page.layout = "embedPreview";
       createPage(page);
     }
