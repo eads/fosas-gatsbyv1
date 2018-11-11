@@ -49,6 +49,18 @@ const TemplateWrapper = ({ children }) => (
 
     </Helmet>
     <div>
+      <h1 style={{
+        backgroundColor: "rgba(225, 0, 0, 0.8)",
+        fontSize: 18,
+        color: "white",
+        padding: 3,
+        margin: 0,
+        textAlign: "center",
+        position: "relative",
+        zIndex: 999,
+      }}>
+        PREVIEW DO NOT SHARE
+      </h1>
       {children()}
     </div>
   </div>

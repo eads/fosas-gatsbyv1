@@ -39,7 +39,7 @@ class EmbedPage extends React.Component {
   onClickWidgetLink(event) {
     event.preventDefault();
 
-    const relativeSrc = event.target.href.replace("http://localhost:8000/", "/").replace("https://s3.amazonaws.com/graphics.adondevanlosdesparicidos.org/", "/").replace("https://data.adondevanlosdesaparecidos.org/", "/").replace("./", "/");
+    const relativeSrc = event.target.href.replace("http://localhost:8000/", "/").replace("http://staging-graphics.adondevanlosdesaparecidos.org.s3-website-us-east-1.amazonaws.com/", "/").replace("https://data.adondevanlosdesaparecidos.org/", "/").replace("./", "/");
 
     this.setState({
       iframeSrc: relativeSrc,
@@ -68,10 +68,10 @@ class EmbedPage extends React.Component {
 
         <div className="embed-preview-meta">
           <p>Standard embed</p>
-          <textarea value={`<div data-pym-src="https://data.adondevanlosdesaparecidos.org${iframeSrc}">Loading...</div>\n<script type="text/javascript" src="https://pym.nprapps.org/pym-loader.v1.min.js"></script>`} readOnly />
+          <textarea value={`<div data-pym-src="http://staging-graphics.adondevanlosdesaparecidos.org.s3-website-us-east-1.amazonaws.com${iframeSrc}">Loading...</div>\n<script type="text/javascript" src="https://pym.nprapps.org/pym-loader.v1.min.js"></script>`} readOnly />
 
           <p>Wordpress embed</p>
-          <textarea value={`[pym src="https://data.adondevanlosdesaparecidos.org${iframeSrc}"]`} readOnly />
+          <textarea value={`[pym src="http://staging-graphics.adondevanlosdesaparecidos.org.s3-website-us-east-1.amazonaws.com${iframeSrc}"]`} readOnly />
 
           <h2>Embed size <small>({this.state.embedWidth}px)</small></h2>
           <Slider
