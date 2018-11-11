@@ -495,10 +495,30 @@ table .number {
 
 /* Page grid */
 @media only screen and (min-width: 700px) {
-	.map { width: 68%; float: right; }
-	.controls { width: calc(34% - 30px); padding-right: 20px; }
+	.map { width: 64%; float: right; }
+	.controls { width: calc(38% - 30px); padding-right: 20px; }
 }
 
+.state-details .ReactTable .rt-thead .rt-tr {
+  text-align: left;
+  font-size: 12px;
+  background-color: #f5f5f5;
+}
+.state-details .ReactTable .rt-tbody .rt-tr {
+  font-size: 12px;
+}
+.state-details .ReactTable .rt-thead.-header {
+  box-shadow: none;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+.state-details .ReactTable {
+  height: 35vh;
+}
+@media only screen and (max-width: 740px) {
+  .state-details .ReactTable {
+    display: none;
+  }
+}
 
 .gif-layout .selected-year,
 .gif-layout .legend,
