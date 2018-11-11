@@ -115,7 +115,7 @@ html, body {
   overflow: hidden;
   width: 100%;
   margin: 0 auto;
-  padding-top: 96%;
+  padding-top: 82%;
   position: relative;
 }
 .municipio-map {
@@ -416,8 +416,22 @@ table .number {
   position: absolute;
   left: 0;
   top: 0;
-  height: 100%;
+  height: calc(100vh - 20px);
   padding-top: 0;
+}
+
+.credits {
+  margin: 15px 0 5px 0;
+  padding: 0 5px;
+  font-size: 11px;
+  font-style: italic;
+  color: #555;
+}
+
+.state-details.national .credits {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .state-details.national .rc-slider-mark-text {
@@ -472,6 +486,10 @@ table .number {
   .state-details.national .controls {
     position: static;
     width: calc(100% - 20px);
+  }
+  .state-details.national .credits {
+    margin-top: 5px;
+    position: static;
   }
   .state-details.national .municipio-map-wrapper {
     position: relative;

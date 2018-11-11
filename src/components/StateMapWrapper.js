@@ -1,20 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-import StateMap from './StateMap';
-import StateMapSlider from './StateMapSlider';
-import StateMapButtons from './StateMapButtons';
-import StateMapChart from './StateMapChart';
-import MunicipioRank from './MunicipioRank';
+import StateMap from './StateMap'
+import StateMapSlider from './StateMapSlider'
+import StateMapButtons from './StateMapButtons'
+import StateMapChart from './StateMapChart'
+import MunicipioRank from './MunicipioRank'
+import Credits from './Credits'
 
-import * as d3Scale from 'd3-scale';
+import * as d3Scale from 'd3-scale'
 
-const VARS = ['fosas', 'cuerpos'];
+const VARS = ['fosas', 'cuerpos']
 
 // The MINYEAR constant represents the "total" in the range. This is because
 // rc-slider wants discrete, continuous ranges.
 // @TODO fix this ugly hack
-const MINYEAR = 2005;
-const MAXYEAR = 2016;
+const MINYEAR = 2005
+const MAXYEAR = 2016
 
 class StateMapWrapper extends React.Component {
   state = {
@@ -45,30 +46,30 @@ class StateMapWrapper extends React.Component {
   }
 
   constructor(props) {
-    super(props);
-    this.state.selectedState = props.selectedState;
-    this.state.microcopy = props.microcopy;
-    this.state.mapFilter = (props.mapFilter) || ["==", "cve_ent", props.selectedState.state_code];
-    this.state.negativeFilter = (props.mapFilter) || ["!=", "cve_ent", props.selectedState.state_code];
+    super(props)
+    this.state.selectedState = props.selectedState
+    this.state.microcopy = props.microcopy
+    this.state.mapFilter = (props.mapFilter) || ["==", "cve_ent", props.selectedState.state_code]
+    this.state.negativeFilter = (props.mapFilter) || ["!=", "cve_ent", props.selectedState.state_code]
   }
 
   setYear = (selectedYear) => {
     this.setState({
       selectedYear
-    });
+    })
   }
 
   setVar = (selectedVar) => {
     this.setState({
       selectedVar
-    });
+    })
   }
 
   onMunicipioLoad = (municipioData, circleSteps) => {
     this.setState({
       municipioData,
       circleSteps
-    });
+    })
   }
 
   render() {
@@ -98,6 +99,7 @@ class StateMapWrapper extends React.Component {
             <MunicipioRank
               {...this.state}
             />
+            <Credits microcopy={this.props.microcopy} />
           </div>
           <div className="col map">
             <StateMap
@@ -112,4 +114,4 @@ class StateMapWrapper extends React.Component {
   }
 }
 
-export default StateMapWrapper;
+export default StateMapWrapper

@@ -1,32 +1,34 @@
-# gatsby-starter-default
-The default Gatsby starter
+# A donde van los desaparecidos
 
-For an overview of the project structure please refer to the [Gatsby documentation - Building with Components](https://www.gatsbyjs.org/docs/building-with-components/)
+README is @TODO.
 
-Install this starter (assuming Gatsby is installed) by running from your CLI:
+## Requirements
+
+* NodeJS (yarn optional)
+* GNU make
+* PostgreSQL + PostGIS
+* Python 3
+* GDAL
+* Mapbox + AWS S3 (for deployment)
+
+## Install
+
 ```
-gatsby new gatsby-example-site
+yarn install
+source env.sh
+make all
 ```
 
 ## Deploy
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
-
-## Hacky data processing
-
 ```
-cat scripts/mx.json | jq '[.objects.states.geometries[] | .properties]' > src/data/mxstates.json
-cat scripts/mx.json | jq '[.objects.municipalities.geometries[] | .properties]' > src/data/mxmunicipalities.json
+gatsby build && aws s3 sync ./public s3://graphics.adondevanlosdesparicidos.org/ --acl public-read --delete
 ```
 
-## Notes
+## Events
 
-- Per year
-- Number of fosas nationally
-- % change
-- Cuerpos nationally
-- % change
-
-- Sum of fosas for all years, per municipality
-
-
+| Category     | Action      | Label | Description                    |
+| ------------ | ----------- | ----- | ------------------------------ |
+| play button  | start       | none  | start playing                  |
+| play button  | stop        | none  | stop playing                   |
+| play button  | restart     | none  | rewind player                  |
