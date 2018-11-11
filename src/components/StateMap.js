@@ -74,7 +74,7 @@ class StateMap extends React.Component {
         const circleSteps = {...circleSteps}
 
         let minRadius, maxRadius;
-        if (window.innerWidth < 500) {
+        if (window.innerWidth < 640) {
           minRadius = 1.75
           maxRadius = 13
         } else {

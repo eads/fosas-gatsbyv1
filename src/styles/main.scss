@@ -74,8 +74,9 @@ html, body {
 }
 
 .pgr-toggle {
-  text-align: center;
-  margin-top: 15px;
+  //text-align: center;
+  margin-top: 25px;
+  margin-left: 5px;
 }
 .pgr-toggle button {
   display: inline-block;
@@ -386,17 +387,33 @@ table .number {
   height: 0;
   padding-top: 55%;
 }
-.state-details.national .controls .controls-content p {
+.state-details.national .controls-content {
+  margin-top: 1.2em;
+}
+.state-details.national .controls-content p {
   font-family: "Georgia", serif;
-  font-size: 12px;
-  margin-top: 1em;
+  font-size: 13px;
+  margin-top: 1.2em;
   line-height: 1.5;
   padding: 0 8px;
   margin-bottom: 0;
 }
-.state-details.national .controls .controls-content p:first-child {
-  margin-top: 10px;
+.state-details.national .controls-content .control-links a {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  display: inline-block;
+  margin-right: 1em;
+  color: #666;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 12px;
+  border-bottom: 1px solid #aaa;
+  &:hover {
+    color: #000;
+    border-color: #000;
+  }
 }
+
+
 .controls {
   padding: 0 10px;
 }
