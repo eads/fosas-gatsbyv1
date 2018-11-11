@@ -59,7 +59,7 @@ const TemplateWrapper = ({ children }) => (
         position: "relative",
         zIndex: 999,
       }}>
-        PREVIEW DO NOT SHARE
+        VISTA PREVIA - NO COMPARTIR
       </h1>
       {children()}
     </div>
