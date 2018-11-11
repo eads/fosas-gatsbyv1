@@ -3,6 +3,7 @@ import StateMap from './StateMap'
 import StateMapSlider from './StateMapSlider'
 import StateMapChart from './StateMapChart'
 import Microcopy from './Microcopy'
+import Credits from './Credits'
 import URL from 'url-parse'
 
 import * as d3Scale from 'd3-scale'
@@ -132,6 +133,7 @@ class NationalMapWrapper extends React.Component {
           onMunicipioLoad={() => {}}
           microcopy={microcopy}
         />
+        <Credits microcopy={microcopy} />
       </div>
     )
   }

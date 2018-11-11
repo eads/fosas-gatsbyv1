@@ -2,6 +2,8 @@ import React from 'react';
 import { FaPlay, FaPause, FaRedoAlt } from 'react-icons/fa';
 import StateMapButtons from './StateMapButtons';
 import Slider from 'rc-slider';
+import ReactGA from 'react-ga';
+
 import 'rc-slider/assets/index.css';
 
 class SliderControlButton extends React.Component {
@@ -29,18 +31,33 @@ class SliderControlButton extends React.Component {
       }
     }, 1000)
 
+    ReactGA.event({
+      category: 'play button',
+      action: 'start'
+    });
+
     this.setState({
       timer: timer,
     });
   }
 
   stopPlaying = () => {
+    ReactGA.event({
+      category: 'play button',
+      action: 'stop'
+    });
+
     this.setState({
       timer: clearInterval(this.state.timer),
     });
   }
 
   restartPlaying = () => {
+    ReactGA.event({
+      category: 'play button',
+      action: 'restart'
+    });
+
     const { onYearChange, minYear } = this.props;
     onYearChange(minYear);
   }
