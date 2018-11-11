@@ -28,12 +28,6 @@ html, body {
   }
 }
 
-/* Page grid */
-@media only screen and (min-width: 700px) {
-	.map { width: 62%; }
-	.controls { width: calc(30%); padding-right: 20px; }
-}
-
 /* Content wrapper */
 .state-details {
   max-width: 1280px;
@@ -497,6 +491,12 @@ table .number {
   .adonde-watermark img {
     height: 28px;
   }
+}
+
+/* Page grid */
+@media only screen and (min-width: 700px) {
+	.map { width: 68%; float: right; }
+	.controls { width: calc(34% - 30px); padding-right: 20px; }
 }
 
 
