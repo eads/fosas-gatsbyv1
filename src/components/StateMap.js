@@ -82,13 +82,23 @@ class StateMap extends React.Component {
           maxRadius = 20
         }
 
-        const maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016 || feature.properties.fosas_all_years)))
-        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([minRadius, maxRadius])
-        circleSteps.fosas = flatten(range(1, maxFosas).map( (value, i) => ( [value, fosasScale(value)] ) ))
+        let maxFosas = max(features.map( (feature) => (feature.properties.fosas_cumulative_2016 || feature.properties.fosas_all_years)))
 
-        const maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016 || feature.properties.cuerpos_all_years)))
+        if (maxFosas < 5) {
+          maxFosas = 5
+        }
+
+        const fosasScale = d3Scale.scaleSqrt().domain([1, maxFosas]).range([minRadius, maxRadius])
+        circleSteps.fosas = flatten(range(1, maxFosas + 1).map( (value, i) => ( [value, fosasScale(value)] ) ))
+
+        let maxCuerpos = max(features.map( (feature) => (feature.properties.cuerpos_cumulative_2016 || feature.properties.cuerpos_all_years)))
+
+        if (maxCuerpos < 5) {
+          maxCuerpos = 5
+        }
+
         const cuerposScale = d3Scale.scaleSqrt().domain([1, maxCuerpos]).range([minRadius, maxRadius])
-        circleSteps.cuerpos = flatten(range(1, maxCuerpos).map( (value, i) => ( [value, cuerposScale(value)] ) ))
+        circleSteps.cuerpos = flatten(range(1, maxCuerpos + 1).map( (value, i) => ( [value, cuerposScale(value)] ) ))
 
         this.setState({circleSteps})
         onMunicipioLoad(features, circleSteps)
