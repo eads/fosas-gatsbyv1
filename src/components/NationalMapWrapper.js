@@ -5,6 +5,7 @@ import StateMapChart from './StateMapChart'
 import Microcopy from './Microcopy'
 import Credits from './Credits'
 import URL from 'url-parse'
+import ReactGA from 'react-ga'
 
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
@@ -73,6 +74,10 @@ class NationalMapWrapper extends React.Component {
 
   togglePGR = () => {
     const { showPGR } = this.state
+    ReactGA.event({
+      category: 'switch pgr/state buttons',
+      action: (showPGR) ? 'pgr' : 'state',
+    })
     this.setState({
       showPGR: !showPGR
     })

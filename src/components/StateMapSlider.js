@@ -1,10 +1,10 @@
-import React from 'react';
-import { FaPlay, FaPause, FaRedoAlt } from 'react-icons/fa';
-import StateMapButtons from './StateMapButtons';
-import Slider from 'rc-slider';
-import ReactGA from 'react-ga';
+import React from 'react'
+import { FaPlay, FaPause, FaRedoAlt } from 'react-icons/fa'
+import StateMapButtons from './StateMapButtons'
+import Slider from 'rc-slider'
+import ReactGA from 'react-ga'
 
-import 'rc-slider/assets/index.css';
+import 'rc-slider/assets/index.css'
 
 class SliderControlButton extends React.Component {
   state = {
@@ -13,59 +13,59 @@ class SliderControlButton extends React.Component {
   }
 
   startPlaying = () => {
-    const { onYearChange, minYear, maxYear } = this.props;
+    const { onYearChange, minYear, maxYear } = this.props
 
     if (this.props.selectedYear == maxYear) {
-      onYearChange(minYear + 1);
+      onYearChange(minYear + 1)
     } else {
-      onYearChange(this.props.selectedYear + 1);
+      onYearChange(this.props.selectedYear + 1)
     }
     var timer = setInterval( () => {
       if (this.props.selectedYear == maxYear) {
-        onYearChange(minYear);
+        onYearChange(minYear)
         this.setState({
           timer: clearInterval(this.state.timer),
-        });
+        })
       } else {
-        onYearChange(this.props.selectedYear + 1);
+        onYearChange(this.props.selectedYear + 1)
       }
     }, 1000)
 
     ReactGA.event({
       category: 'play button',
       action: 'start'
-    });
+    })
 
     this.setState({
       timer: timer,
-    });
+    })
   }
 
   stopPlaying = () => {
     ReactGA.event({
       category: 'play button',
       action: 'stop'
-    });
+    })
 
     this.setState({
       timer: clearInterval(this.state.timer),
-    });
+    })
   }
 
   restartPlaying = () => {
     ReactGA.event({
       category: 'play button',
       action: 'restart'
-    });
+    })
 
-    const { onYearChange, minYear } = this.props;
-    onYearChange(minYear);
+    const { onYearChange, minYear } = this.props
+    onYearChange(minYear)
   }
 
   render() {
-    const { startPlaying, stopPlaying, restartPlaying } = this;
-    const { timer } = this.state;
-    const { selectedYear, maxYear } = this.props;
+    const { startPlaying, stopPlaying, restartPlaying } = this
+    const { timer } = this.state
+    const { selectedYear, maxYear } = this.props
     return (
       <div className="control-button">
         {timer && (<span>
@@ -85,8 +85,16 @@ class SliderControlButton extends React.Component {
 
 class StateMapSlider extends React.Component {
 
+  _onAfterChange = (year) => {
+    ReactGA.event({
+      category: 'year scrubber',
+      action: 'click year',
+      label: year.toString(),
+    })
+  }
+
   render() {
-    const { onYearChange, selectedYear, minYear, maxYear, hideButtons } = this.props;
+    const { onYearChange, selectedYear, minYear, maxYear, hideButtons } = this.props
 
     return (<div className="slider-container">
       <div className="row abs-row">
@@ -121,6 +129,7 @@ class StateMapSlider extends React.Component {
             min={minYear}
             max={maxYear}
             value={selectedYear}
+            onAfterChange={this._onAfterChange}
             onChange={onYearChange}
             dotStyle={{
               width: 11,
@@ -160,4 +169,4 @@ class StateMapSlider extends React.Component {
   }
 }
 
-export default StateMapSlider;
+export default StateMapSlider
