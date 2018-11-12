@@ -29,9 +29,10 @@ gatsby build && aws s3 sync ./public s3://graphics.adondevanlosdesparicidos.org/
 
 | Category     | Action      | Label | Description                    |
 | ------------ | ----------- | ----- | ------------------------------ |
-| play button  | start       | none  | start playing                  |
-| play button  | stop        | none  | stop playing                   |
-| play button  | restart     | none  | rewind player                  |
+| play button  | start       | none  | Start playing                  |
+| play button  | stop        | none  | Stop playing                   |
+| play button  | restart     | none  | Rewind player                  |
 | switch pgr/state buttons | \[pgr/state\] | none | PGR toggle (nat'l map) |
 | switch data type buttons | \[fosas, cuerpos\] | none | Data type toggle |
+| year scrubber | click year | \[2006-2016, total\] | Interact with year scrubber  |
 

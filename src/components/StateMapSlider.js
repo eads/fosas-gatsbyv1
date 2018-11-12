@@ -86,10 +86,11 @@ class SliderControlButton extends React.Component {
 class StateMapSlider extends React.Component {
 
   _onAfterChange = (year) => {
+    const yearStr = (year < 2006) ? 'total' : year.toString()
     ReactGA.event({
       category: 'year scrubber',
       action: 'click year',
-      label: year.toString(),
+      label: yearStr,
     })
   }
 
