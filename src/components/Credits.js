@@ -4,12 +4,12 @@ import Microcopy from './Microcopy'
 class Credits extends React.Component {
   render() {
     const { microcopy } = this.props
-    return (<p className="credits">
+    return (<div className="credits">
       <Microcopy
         datakey='credit_line'
         microcopy={microcopy}
       />
-    </p>)
+    </div>)
   }
 }
 
