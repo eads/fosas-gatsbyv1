@@ -99,7 +99,6 @@ class StateMapWrapper extends React.Component {
             <MunicipioRank
               {...this.state}
             />
-            <Credits microcopy={this.props.microcopy} />
           </div>
           <div className="col map">
             <StateMap
@@ -107,6 +106,7 @@ class StateMapWrapper extends React.Component {
               beforeLayer="water-label"
               onMunicipioLoad={this.onMunicipioLoad}
             />
+            <Credits microcopy={this.props.microcopy} />
           </div>
         </div>
       </div>

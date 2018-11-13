@@ -13,7 +13,7 @@ class StateMapLegend extends React.Component {
        maxDiameter = maxRadius * 2;
     }
 
-    return (<div className="legend">
+    return (<div className="legend"><div className="legend-inner">
       {(circleSteps !== null) && (<div>
         <div
           style={{
@@ -74,7 +74,7 @@ class StateMapLegend extends React.Component {
         </div>
 
       </div>)}
-    </div>);
+    </div></div>);
   }
 
 }

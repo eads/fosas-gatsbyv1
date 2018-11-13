@@ -91,14 +91,6 @@ class NationalMapWrapper extends React.Component {
     return (
       <div className={"state-details national" + ((qs.giflayout) ? " gif-layout" : "")}>
         <div className="controls">
-          <StateMapSlider
-            {...this.state}
-            vars={VARS}
-            onVarChange={this.setVar}
-            onYearChange={this.setYear}
-            hideButtons={true}
-          />
-
           {!qs.hidetext && (
             <div className="controls-content">
               <Microcopy
@@ -107,6 +99,8 @@ class NationalMapWrapper extends React.Component {
               />
             </div>
           )}
+
+          <hr />
 
           <div className="pgr-toggle">
             <button
@@ -128,6 +122,14 @@ class NationalMapWrapper extends React.Component {
               />
             </button>
           </div>
+          <StateMapSlider
+            {...this.state}
+            vars={VARS}
+            onVarChange={this.setVar}
+            onYearChange={this.setYear}
+            hideButtons={true}
+          />
+
         </div>
         <StateMap
           {...this.state}

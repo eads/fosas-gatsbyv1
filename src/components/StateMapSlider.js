@@ -133,17 +133,17 @@ class StateMapSlider extends React.Component {
             onAfterChange={this._onAfterChange}
             onChange={onYearChange}
             dotStyle={{
-              width: 11,
-              height: 11,
-              borderWidth: 1,
-              bottom: -3,
-              marginLeft: -4,
+              width: 15,
+              height: 15,
+              borderWidth: 0,
+              bottom: -5,
+              marginLeft: -6,
             }}
             handleStyle={{
               backgroundColor: 'rgba(255, 255, 255, 0.2)',
               width: 15,
               height: 15,
-              borderWidth: 2,
+              borderWidth: 1.5,
               borderColor: '#222',
               bottom: 0,
               marginLeft: -6,
