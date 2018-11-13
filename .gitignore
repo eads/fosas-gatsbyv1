@@ -9,3 +9,4 @@ yarn-error.log
 data/
 static/tiles
 secrets/
+secrets
