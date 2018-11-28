@@ -1,16 +1,17 @@
-import React from 'react';
+import React from 'react'
+import Microcopy from './Microcopy'
 
 class StateMapLegend extends React.Component {
 
   render() {
-    const { circleSteps, selectedVar } = this.props;
+    const { circleSteps, selectedVar, microcopy } = this.props
 
-    let minRadius, minDiameter, maxRadius, maxDiameter;
+    let minRadius, minDiameter, maxRadius, maxDiameter
     if (circleSteps !== null) {
-       minRadius = Math.floor(circleSteps[selectedVar][1]);
-       minDiameter = minRadius * 2;
-       maxRadius = Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1]);
-       maxDiameter = maxRadius * 2;
+       minRadius = Math.floor(circleSteps[selectedVar][1])
+       minDiameter = minRadius * 2
+       maxRadius = Math.floor(circleSteps[selectedVar][circleSteps[selectedVar].length - 1])
+       maxDiameter = maxRadius * 2
     }
 
     return (<div className="legend"><div className="legend-inner">
@@ -56,7 +57,10 @@ class StateMapLegend extends React.Component {
             top: 0,
           }}
         >
-        {circleSteps[selectedVar][circleSteps[selectedVar].length - 2]} {selectedVar}
+          {circleSteps[selectedVar][circleSteps[selectedVar].length - 2]} <Microcopy
+            datakey={`${selectedVar}_legend_label_plural`}
+            microcopy={microcopy}
+          />
         </div>
 
         <div
@@ -70,13 +74,16 @@ class StateMapLegend extends React.Component {
             top: maxDiameter - 9,
           }}
         >
-        {circleSteps[selectedVar][0]} {selectedVar.slice(0, -1)}
+          {circleSteps[selectedVar][0]} <Microcopy
+            datakey={`${selectedVar}_legend_label_singular`}
+            microcopy={microcopy}
+          />
         </div>
 
       </div>)}
-    </div></div>);
+    </div></div>)
   }
 
 }
 
-export default StateMapLegend;
+export default StateMapLegend

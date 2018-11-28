@@ -180,6 +180,7 @@ class StateMap extends React.Component {
         </div>
 
         <StateMapLegend
+          microcopy={microcopy}
           circleSteps={circleSteps}
           selectedVar={selectedVar}
         />
@@ -424,14 +425,20 @@ class StateMap extends React.Component {
               <Popup coordinates={hoverInfo.feature.geometry.coordinates}>
                 <h3>{hoverInfo.feature.properties.nom_mun} <span className="state-name">{(hoverInfo.stateData.state_name.indexOf('Veracruz') === 0) ? 'Veracruz' : hoverInfo.stateData.state_name }</span></h3>
                 {(hoverInfo.stateData.state_code === '17') && (<div>
-                  <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_all_years}</p>
+                  <p><strong><Microcopy
+                    datakey='fosas_legend_label_plural'
+                    microcopy={microcopy}
+                  /></strong> {hoverInfo.feature.properties.fosas_all_years}</p>
                   <div className="hoverchart-wrapper"><p><em><Microcopy
                     datakey='morelos_no_data_warning'
                     microcopy={microcopy}
                   /></em></p></div>
                 </div>)}
                 {(hoverInfo.stateData.state_code !== '17') && (<div>
-                  <p><strong>Fosas</strong> {hoverInfo.feature.properties.fosas_cumulative_2016}</p>
+                  <p><strong><Microcopy
+                    datakey='fosas_legend_label_plural'
+                    microcopy={microcopy}
+                  /></strong> {hoverInfo.feature.properties.fosas_cumulative_2016}</p>
                   {!showPGR && (
                   <HoverChart
                     hoverInfo={hoverInfo}
@@ -441,14 +448,20 @@ class StateMap extends React.Component {
                 )}
                 </div>)}
                 {(hoverInfo.stateData.state_code === '17') && (<div>
-                  <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_all_years}</p>
+                  <p><strong><Microcopy
+                    datakey='cuerpos_legend_label_plural'
+                    microcopy={microcopy}
+                  /></strong> {hoverInfo.feature.properties.cuerpos_all_years}</p>
                   <div className="hoverchart-wrapper"><p><em><Microcopy
                     datakey='morelos_no_data_warning'
                     microcopy={microcopy}
                   /></em></p></div>
                 </div>)}
                 {(hoverInfo.stateData.state_code !== '17') && (<div>
-                  <p><strong>Cuerpos</strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
+                  <p><strong><Microcopy
+                    datakey='cuerpos_legend_label_plural'
+                    microcopy={microcopy}
+                  /></strong> {hoverInfo.feature.properties.cuerpos_cumulative_2016}</p>
                   {!showPGR && (<div>
                   <HoverChart
                     hoverInfo={hoverInfo}
