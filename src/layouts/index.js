@@ -8,7 +8,7 @@ import "../styles/main.scss"
 const CONFIG = {
   title: "A donde van los desaparecidos",
   description: "A dónde van los desaparecidos es un sitio de investigación periodística y análisis sobre las lógicas de la desaparición de personas en México.",
-  image: "https://data.adondevanlosdesaparecidos.org/images/facebook-share.png",
+  image: "https://data.adondevanlosdesaparecidos.org/images/facebook-share.jpg",
   image_height: "788",
   image_width: "940",
   url: "https://data.adondevanlosdesaparecidos.org/",
@@ -16,6 +16,11 @@ const CONFIG = {
   fbAppID: "315929295670767",
   twitterUser: "desaparecerenmx",
 }
+
+/*
+      <meta property="og:image:height" content={CONFIG.image_height} />
+      <meta property="og:image:width" content={CONFIG.image_width} />
+*/
 
 const TemplateWrapper = ({ children }) => (
   <div>
@@ -37,8 +42,6 @@ const TemplateWrapper = ({ children }) => (
       <meta property="og:title" content={CONFIG.title} />
       <meta property="og:description" content={CONFIG.description} />
       <meta property="og:image" content={CONFIG.image} />
-      <meta property="og:image:height" content={CONFIG.image_height} />
-      <meta property="og:image:width" content={CONFIG.image_width} />
       <meta property="fb:app_id" content={CONFIG.fbAppID} />
 
       <meta name="twitter:card" content="summary_large_image" />
