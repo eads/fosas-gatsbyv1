@@ -141,7 +141,7 @@ class StateMap extends React.Component {
   }
 
   onCircleClick = ({ features }) => {
-    if (window.location.pathname === '/') {
+    if (window.location.pathname === '/' || window.location.pathname === '/en/') {
       const feature = features[0]
       const slug = slugify(feature.properties.nom_ent.toLowerCase())
       window.parent.location.href = `https://adondevanlosdesaparecidos.org/data/${slug}/`
