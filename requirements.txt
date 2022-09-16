@@ -24,7 +24,7 @@ iso3166==0.9
 jedi==0.12.0
 Jinja2==2.10
 jmespath==0.9.3
-Mako==1.0.7
+Mako==1.2.2
 mapbox==0.16.1
 mapboxcli==0.8.0
 MarkupSafe==1.0
