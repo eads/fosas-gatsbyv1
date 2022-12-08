@@ -5,7 +5,7 @@ banal==0.4.0
 boto3==1.9.37
 botocore==1.12.37
 CacheControl==0.12.5
-certifi==2018.4.16
+certifi==2022.12.7
 chardet==3.0.4
 Click==7.0
 click-plugins==1.0.4
